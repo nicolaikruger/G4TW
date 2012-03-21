@@ -2,3 +2,7 @@
 bin/
 out/
 src/G4TW.iml
+.metadata/
+.settings/
+.classpath
+.project
