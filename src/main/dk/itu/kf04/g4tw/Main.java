@@ -1,3 +1,5 @@
+package dk.itu.kf04.g4tw;
+
 public class Main {
 
     public static void main(String[] args) {
