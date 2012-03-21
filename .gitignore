@@ -2,3 +2,8 @@
 bin/
 out/
 src/G4TW.iml
+.git/
+.metadata/
+.settings/
+.classpath
+.project
