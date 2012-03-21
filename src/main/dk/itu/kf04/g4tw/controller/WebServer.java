@@ -18,11 +18,6 @@ public class WebServer implements HTTPConstants {
      * Tests whether the server already has been started.
      */
     private static boolean isInitialized = false;
-
-    /**
-     * A flag to ensure the server doesn't go on forever.
-     */
-    private static boolean isInterrupted = false;
     
     /**
      * The port of the webserver.
@@ -56,9 +51,10 @@ public class WebServer implements HTTPConstants {
                 // Read request from socket input stream
                 BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 String request = in.readLine();
+                // Ignore remaining input
                 s.shutdownInput();
 
-                // Get output-stream
+                // Get output-streams
                 OutputStream out = new BufferedOutputStream(s.getOutputStream());
                 PrintStream pout = new PrintStream(out);
 
@@ -69,80 +65,63 @@ public class WebServer implements HTTPConstants {
                     !request.endsWith("HTTP/1.1") ||
                     request.charAt(4) != '/') {
                     pout.println("Bad request. The server could not understand your query: " + request);
-                } else {
-                    // Find the request for a file
-                    String fileRequest = request.substring(5, request.length() - 9);
+                    break;
+                }
 
-                    // Set the input stream and content-type
-                    InputStream input = null;
-                    String contentType = null;
+                // Find the request for a file by omitting "GET /" and "HTTP/1.1"
+                String fileRequest = request.substring(5, request.length() - 9);
 
-                    // Match for map requests
-                    if (fileRequest.startsWith("?")) {
-                        // Set input stream via
-                        input = RequestParser.parseToInputStream(fileRequest.substring(1, fileRequest.length()));
+                // Set the input stream and content-type
+                InputStream input = null;
+                String contentType = null;
 
-                        // Set the content type
-                        if (input != null) {
-                            contentType = "text/xml";
-                        }
+                // Match for map requests
+                if (fileRequest.startsWith("?")) {
+                    // Set input stream via
+                    input = RequestParser.parseToInputStream(fileRequest.substring(1, fileRequest.length()));
 
-                    // Process request as normal
-                    } else {
-                        // Include the webRoot
-                        fileRequest = webRoot + (fileRequest.equals("") ? "index.html" : fileRequest);
-
-                        try {
-                            // Load file
-                            File file = new File(fileRequest);
-                            input = new FileInputStream(file);
-                            contentType = URLConnection.guessContentTypeFromName(fileRequest);
-                        } catch (FileNotFoundException e) {
-                            System.out.println("File " + fileRequest + " not found.");
-                        }
-                    }
-                    
-                    // Output the response
+                    // Set the content type
                     if (input != null) {
-                        // Print HTTP status code
-                        pout.println("HTTP/1.1 200 OK");
-                        pout.println("Server: KraXServer/1.0");
-                        pout.println("Date: " + new Date());
-                        if (contentType != null) {
-                            pout.println("Content-Type: " + contentType);
-                        }
-                        pout.println(); // Create line between meta code and content
+                        contentType = "text/xml";
+                    }
 
-                        // Send object
-                        byte[] buffer = new byte[1000];
-                        while(input.available() > 0) {
-                            out.write(buffer, 0, input.read(buffer));
-                        }
+                // Process request as normal
+                } else {
+                    // Include the webRoot and point the request
+                    // to index.html if it has no target
+                    fileRequest = webRoot + (fileRequest.equals("") ? "index.html" : fileRequest);
+
+                    try {
+                        // Load file
+                        input = new FileInputStream(new File(fileRequest));
+                        // Set content-type
+                        contentType = URLConnection.guessContentTypeFromName(fileRequest);
+                    } catch (FileNotFoundException e) {
+                        System.out.println("File " + fileRequest + " not found.");
                     }
                 }
 
-                // Flush the streams
-                pout.flush();
+                // Output the response
+                if (input != null) {
+                    respond(contentType, input, pout);
+                }
                 
-                // Close down the socket
+                // Close down the output and the socket
                 s.shutdownOutput();
                 s.close();
-
-                // Interrupt the server, if necessary.
-                if (isInterrupted) {
-                    throw new InterruptedException("Server has been interrupted.");
-                }
             }
-        } catch (InterruptedException e) { // SocketException
-            System.out.println("Interrupted with: " + e.getMessage());
-        } catch (SocketException e) { // SocketException
+        // SocketException
+        } catch (SocketException e) {
             System.out.println("SocketException");
             e.printStackTrace();
             isInitialized = false;
-        } catch (IOException e) { // IOException
+        // IOException
+        } catch (IOException e) {
             System.out.println("IOException: ");
             e.printStackTrace();
         }
+
+        // Return success or failure
         return isInitialized;
     }
 
@@ -153,9 +132,32 @@ public class WebServer implements HTTPConstants {
     public static int getPort() { return port; }
 
     /**
-     * Stop the server in the next loop.
+     * Respond the given input-stream to the given output-stream.
      */
-    public static void stop() { isInterrupted = true; }
+    private static void respond(String contentType, InputStream is, PrintStream os) {
+        // Print HTTP status code
+        os.println("HTTP/1.1 200 OK");
+        os.println("Server: KraXServer/1.0");
+        os.println("Date: " + new Date());
+        if (contentType != null) {
+            os.println("Content-Type: " + contentType);
+        }
+        os.println(); // Create line between meta code and content
+
+        // Send object
+        try {
+            byte[] buffer = new byte[1000];
+            while(is.available() > 0) {
+                os.write(buffer, 0, is.read(buffer));
+            }
+        } catch (IOException e) { // IOException
+            System.out.println("IOException: ");
+            e.printStackTrace();
+        }
+
+        // Flush the stream
+        os.flush();
+    }
     
     /**
      * Sets the port of the WebServer.
