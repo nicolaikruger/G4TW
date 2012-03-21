@@ -28,6 +28,11 @@ public class WebServer implements HTTPConstants {
      * The port of the webserver.
      */
     private static int port = 80;
+
+    /**
+     * The root directory of the www files.
+     */
+    private static String webRoot = "www/";
     
     /**
      * Initialize the server and prepare to respond on incoming requests.
@@ -84,10 +89,8 @@ public class WebServer implements HTTPConstants {
 
                     // Process request as normal
                     } else {
-                        if (fileRequest.equals("")) {
-                            // Replace "" with www/index.html
-                            fileRequest = "www/index.html";
-                        }
+                        // Include the webRoot
+                        fileRequest = webRoot + (fileRequest.equals("") ? "index.html" : fileRequest);
 
                         try {
                             // Load file
