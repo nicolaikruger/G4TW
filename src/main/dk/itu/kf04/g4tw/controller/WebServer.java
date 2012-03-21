@@ -76,9 +76,15 @@ public class WebServer implements HTTPConstants {
                 String contentType = null;
 
                 // Match for map requests
-                if (fileRequest.startsWith("?")) {
-                    // Set input stream via
-                    input = RequestParser.parseToInputStream(fileRequest.substring(1, fileRequest.length()));
+                if (fileRequest.startsWith("xml?")) {
+                    try {
+                        // Set input stream via
+                        input = RequestParser.parseToInputStream(fileRequest.substring(4, fileRequest.length()));
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Illegal argument: " + e.getMessage());
+                    } catch (UnsupportedEncodingException e) {
+                        System.out.println("Unsupported encoding: " + e.getMessage());
+                    }
 
                     // Set the content type
                     if (input != null) {
