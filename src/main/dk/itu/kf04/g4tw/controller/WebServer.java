@@ -42,22 +42,35 @@ public class WebServer implements HTTPConstants {
                 // Wait for a connection
                 Socket s = server.accept();
 
+                // Read request from socket input stream
                 BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 String request = in.readLine();
-                System.out.println("Request: " + request);
                 s.shutdownInput();
 
-                String contenttype = URLConnection.guessContentTypeFromName("C:/workspace/G4TW/index.html");
-                File file = new File("www/index.html");
-                InputStream fileIn = new FileInputStream(file);
-                OutputStream out = new BufferedOutputStream(s.getOutputStream());
-                PrintStream pout = new PrintStream(out);
+                // Split requests
+                String fileRequest = request.substring(5, request.length() - 9);
 
-                byte[] buffer = new byte[1000];
-                while(fileIn.available() > 0) {
-                    out.write(buffer, 0, fileIn.read(buffer));
+                // Replace "" with www/index.html
+                if (fileRequest.equals("")) fileRequest = "www/index.html";
+
+                try {
+                    // Load file
+                    File file = new File(fileRequest);
+                    InputStream fileIn = new FileInputStream(file);
+
+                    // Get output-stream
+                    OutputStream out = new BufferedOutputStream(s.getOutputStream());
+                    PrintStream pout = new PrintStream(out);
+
+                    // Send object
+                    byte[] buffer = new byte[1000];
+                    while(fileIn.available() > 0) {
+                        out.write(buffer, 0, fileIn.read(buffer));
+                    }
+                    pout.flush();
+                } catch (FileNotFoundException e) {
+                    System.out.println("File " + fileRequest + " not found.");
                 }
-                pout.flush();
                 
                 // Close down the socket
                 s.shutdownOutput();
