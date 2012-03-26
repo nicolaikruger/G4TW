@@ -1,3 +1,5 @@
+package dk.itu.kf04.g4tw.RoadKill;
+
 /**
  * An array that can be resized depending on the input.
  * @param <Item>  The type of the elements to store.

@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
  *
  */
 public class AddressParser {
-
     /**
      * The regex pattern for a floor.
      */

@@ -24,7 +24,7 @@ elementFormDefault="qualified">
 		</xs:sequence>
 		<xs:attribute ref="id" use="required"/>
 	</xs:complexType>
-</xs:element>
+</xs:element> s
 
 <xs:element name="tNode">
 	<xs:complexType>
