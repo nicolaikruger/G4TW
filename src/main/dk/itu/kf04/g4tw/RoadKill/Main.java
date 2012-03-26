@@ -1,3 +1,5 @@
+package dk.itu.kf04.g4tw.RoadKill;
+
 import java.io.*;
 import java.util.*;
 import java.lang.Math;

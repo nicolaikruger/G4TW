@@ -1,3 +1,4 @@
+package dk.itu.kf04.g4tw.RoadKill;
 /**
  * A node that contains information about a point in a 2-dimensional space 
  * and its connections to other points.
