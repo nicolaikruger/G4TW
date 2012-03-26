@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+targetNamespace="http://www.w3schools.com"
+xmlns="http://www.w3schools.com"
+elementFormDefault="qualified">
+
+<!-- definition of simple elements -->
+<xs:element name="name" type="xs:string"/>
+<xs:element name="length" type="xs:decimal"/>
+<xs:element name="speed" type="xs:decimal"/>
+<xs:element name="xCoord" type="xs:decimal"/>
+<xs:element name="yCoord" type="xs:decimal"/>
+
+<!-- definition of attributes -->
+<xs:attribute name="id" type="xs:integer"/>
+
+<!-- definition of complex elements -->
+<xs:element name="fNode">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="xCoord"/>
+			<xs:element ref="yCoord"/>
+		</xs:sequence>
+		<xs:attribute ref="id" use="required"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="tNode">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="xCord"/>
+			<xs:element ref="yCord"/>
+		</xs:sequence>
+		<xs:attribute ref="id" use="required"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="road">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="name"/>
+			<xs:element ref="length"/>
+			<xs:element ref="speed"/>
+			<xs:element ref="fNode"/>
+			<xs:element ref="tNode"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="roadCollection">
+	<xs:complexType>
+        <xs:sequence>
+            <xs:element ref="road"/>
+        </xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+</xs:schema>

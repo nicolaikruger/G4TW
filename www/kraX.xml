@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+	//////////////////////////////////////
+	//	kraX						   	//
+	//	Created by G4tw on 2012-02-29. 	//
+	//////////////////////////////////////
+-->
+<roadCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="kraX.xsd">
+	<road>
+			<name>Kruger</name>
+			<length>1.25</length>
+			<speed>130.0</speed>
+			<fNode id="1">
+				<xCoord>5.0</xCoord>
+				<yCoord>6.8</yCoord>
+			</fNode>
+			<tNode id="1">
+				<xCoord>10.1</xCoord>
+				<yCoord>66.6</yCoord>
+			</tNode>
+	</road>
+	
+	<road>
+			<name>Kruger2</name>
+			<length>1.25</length>
+			<speed>30.0</speed>
+			<fNode id="1">
+				<xCoord>10.1</xCoord>
+				<yCoord>66.6</yCoord>
+			</fNode>
+			<tNode id="1">
+				<xCoord>150</xCoord>
+				<yCoord>150</yCoord>
+			</tNode>
+	</road>
+</roadCollection>

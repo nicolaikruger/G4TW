@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URLConnection;
+import java.util.Date;
 
 /**
  *
@@ -21,48 +22,155 @@ public class WebServer implements HTTPConstants {
     /**
      * The port of the webserver.
      */
-    private static int port = 8080;
+    private static int port = 80;
+
+    /**
+     * The root directory of the www files.
+     */
+    private static String webRoot = "www/";
     
     /**
-     * Initialize the server
+     * Initialize the server and prepare to respond on incoming requests.
+     *
+     * @return  boolean  A boolean flag indicating success or failure
      */
     public static boolean init() {
-        if (isInitialized == true) return false;
+        // Return if webserver already has been started
+        if (isInitialized) return false;
 
+        // Try to initialize a ServerSocket
         try {
             ServerSocket server = new ServerSocket(port);
             isInitialized = true;
 
-            while (server.isBound()) {
+            // Loop
+            while(true) {
+                // Wait for a connection
                 Socket s = server.accept();
+
+                // Read request from socket input stream
                 BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                String contenttype = URLConnection.guessContentTypeFromName("C:/workspace/G4TW/index.html");
-                File file = new File("www/index.html");
-                InputStream fileIn = new FileInputStream(file);
+                String request = in.readLine();
+                // Ignore remaining input
+                s.shutdownInput();
+
+                // Get output-streams
                 OutputStream out = new BufferedOutputStream(s.getOutputStream());
                 PrintStream pout = new PrintStream(out);
 
-                String request = in.readLine();
-                System.out.println("Request: " + request);
-                s.shutdownInput();
-
-                byte[] buffer = new byte[1000];
-                while(fileIn.available() > 0) {
-                    out.write(buffer, 0, fileIn.read(buffer));
+                // Turn down bad requests
+                if (request == null ||
+                    !request.startsWith("GET") ||
+                    request.endsWith("HTTP/1.0") || // We do not accept 1.0
+                    !request.endsWith("HTTP/1.1") ||
+                    request.charAt(4) != '/') {
+                    pout.println("Bad request. The server could not understand your query: " + request);
+                    break;
                 }
-                pout.flush();
+
+                // Find the request for a file by omitting "GET /" and "HTTP/1.1"
+                String fileRequest = request.substring(5, request.length() - 9);
+
+                // Set the input stream and content-type
+                InputStream input = null;
+                String contentType = null;
+
+                // Match for map requests
+                if (fileRequest.startsWith("xml?")) {
+                    try {
+                        // Set input stream via
+                        input = RequestParser.parseToInputStream(fileRequest.substring(4, fileRequest.length()));
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Illegal argument: " + e.getMessage());
+                    } catch (UnsupportedEncodingException e) {
+                        System.out.println("Unsupported encoding: " + e.getMessage());
+                    }
+
+                    // Set the content type
+                    if (input != null) {
+                        contentType = "text/xml";
+                    }
+
+                // Process request as normal
+                } else {
+                    // Include the webRoot and point the request
+                    // to index.html if it has no target
+                    fileRequest = webRoot + (fileRequest.equals("") ? "index.html" : fileRequest);
+
+                    try {
+                        // Load file
+                        input = new FileInputStream(new File(fileRequest));
+                        // Set content-type
+                        contentType = URLConnection.guessContentTypeFromName(fileRequest);
+                    } catch (FileNotFoundException e) {
+                        System.out.println("File " + fileRequest + " not found.");
+                    }
+                }
+
+                // Output the response
+                if (input != null) {
+                    respond(contentType, input, pout);
+                }
+                
+                // Close down the output and the socket
                 s.shutdownOutput();
                 s.close();
             }
-        } catch (SocketException e) { // SocketException
+        // SocketException
+        } catch (SocketException e) {
             System.out.println("SocketException");
             e.printStackTrace();
             isInitialized = false;
+        // IOException
+        } catch (IOException e) {
+            System.out.println("IOException: ");
+            e.printStackTrace();
+        }
+
+        // Return success or failure
+        return isInitialized;
+    }
+
+    /**
+     * Returns the port of the WebServer.
+     * @return int  The port the WebServer listens to when initialized.
+     */
+    public static int getPort() { return port; }
+
+    /**
+     * Respond the given input-stream to the given output-stream.
+     */
+    private static void respond(String contentType, InputStream is, PrintStream os) {
+        // Print HTTP status code
+        os.println("HTTP/1.1 200 OK");
+        os.println("Server: KraXServer/1.0");
+        os.println("Date: " + new Date());
+        if (contentType != null) {
+            os.println("Content-Type: " + contentType);
+        }
+        os.println(); // Create line between meta code and content
+
+        // Send object
+        try {
+            byte[] buffer = new byte[1000];
+            while(is.available() > 0) {
+                os.write(buffer, 0, is.read(buffer));
+            }
         } catch (IOException e) { // IOException
             System.out.println("IOException: ");
             e.printStackTrace();
         }
-        return isInitialized;
+
+        // Flush the stream
+        os.flush();
+    }
+    
+    /**
+     * Sets the port of the WebServer.
+     * @param port  The port between 0 and 0xFFFF
+     */
+    public static void setPort(int port) {
+        WebServer.port = port;
     }
 
 }
