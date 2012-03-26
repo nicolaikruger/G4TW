@@ -17,20 +17,25 @@ public class Main {
 		startTime = System.currentTimeMillis();
 		
 		try{
-			nodeMap = getNodes("../kdv_node_unload.txt");
+			nodeMap = getNodes("../krak-data/kdv_node_unload.txt");
 		} catch (Exception e) {
 			System.out.println("Fuuuuuuuuuuuuu! Program said:\n\t" + e);
 		}
 		
 		try{
-			getEdges("../kdv_unload.txt");
+			roads = getEdges("../krak-data/kdv_unload.txt");
 		} catch (Exception e) {
 			System.out.println("Fuuu! Program said:\n\t" + e);
 		}
 		
 		System.out.println(nodeMap.size() + "\t\t" + connections);
 		
-		removeNodes();
+		//removeNodes();
+		
+		double max = FindMax.getMax(roads);
+		System.out.println(max);
+		
+		assignRoadToNode();
 		
 		//calculateConnections();
 	}
@@ -42,7 +47,7 @@ public class Main {
 			for (int i = 0; i < n.getConnectionsLength(); i++) {
 				if (n.getConnection(i) < id) {
 					Node n2 = nodeMap.get(n.getConnection(i));
-					double dist = Math.sqrt(Math.pow(n2.x - n.x, 2) + Math.pow(n2.y - n.y, 2));
+					double dist = Math.sqrt(Math.pow(n2.getX() - n.getX(), 2) + Math.pow(n2.getY() - n.getY(), 2));
 					System.out.println(id + "\t" + n.getConnection(i) + "\t" + dist);
 				}
 			}
@@ -76,7 +81,7 @@ public class Main {
 	}
 
 	
-	private static void getEdges(String url) throws FileNotFoundException
+	private static DynamicArray<Road> getEdges(String url) throws FileNotFoundException
 	{		
 		// Fills in the data in the arrays
 		Scanner scanner = new Scanner(new FileReader(url));
@@ -93,8 +98,6 @@ public class Main {
 				Node nodeA = nodeMap.get(a);
 				Node nodeB = nodeMap.get(b);
 				
-				Point2D.Double pFrom = new Point2D.Double(nodeA.x, nodeA.y);
-				Point2D.Double pTo = new Point2D.Double(nodeB.x, nodeB.y);
 				int type = Integer.parseInt(nextLine[5]);
 				double speed = Double.parseDouble(nextLine[25]);
 				double length = Double.parseDouble(nextLine[2]);
@@ -104,17 +107,16 @@ public class Main {
 				
 				connections++;
 				
-				Road tmp = new Road(name, pFrom, pTo, type, speed, length);
-				System.out.println(tmp.toString());
+				Road tmp = new Road(name, nodeA, nodeB, type, speed, length);
+				//System.out.println(tmp.toString());
 				tmpRoads.add(tmp);
 			}
 			
-			roads = tmpRoads;
+			return tmpRoads;
 		}
 		finally {
 			scanner.close();
 		}
-		
 	}
 
 	
@@ -139,5 +141,11 @@ public class Main {
 			scanner.close();
 		}
 		return hmap;
+	}
+	
+	private static void assignRoadToNode() {
+		for (int i = 0; i<roads.length(); i++) {
+			roads.get(i).assignNodes();
+		}
 	}
 }

@@ -3,16 +3,21 @@
  * and its connections to other points.
  */
 public class Node {
-
+	
+	DynamicArray<Road> roads = new DynamicArray<Road>();
+	
     /**
      * The x coordinate of the Node.
      */
-	public final double x;
+	private final double x;
     
     /**
      * The y coordinate of the Node.
      */
-	public final double y;
+	private final double y;
+
+	public double getX() { return x; }
+	public double getY() { return y; }
     
     /**
      * The connections to other Nodes.
@@ -63,4 +68,7 @@ public class Node {
 		return connections.get(index);
 	}
     
+	public void createRelation(Road r) {
+		roads.add(r);
+	}
 }
