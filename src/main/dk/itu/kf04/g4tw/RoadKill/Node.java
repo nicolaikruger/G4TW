@@ -1,10 +1,17 @@
 package dk.itu.kf04.g4tw.RoadKill;
+
+import java.util.ArrayList;
+
 /**
  * A node that contains information about a point in a 2-dimensional space 
  * and its connections to other points.
  */
 public class Node {
-	
+
+	// Krüger implementation //
+	private ArrayList<Integer> roadsArray = new ArrayList<Integer>();
+	// Krüger end //
+
 	DynamicArray<Road> roads = new DynamicArray<Road>();
 	
     /**
@@ -72,4 +79,11 @@ public class Node {
 	public void createRelation(Road r) {
 		roads.add(r);
 	}
+	
+	// Krüger //
+	public void addRoadID(int ID)
+	{
+		roadsArray.add(ID);
+	}
+	// Krüger end //
 }
