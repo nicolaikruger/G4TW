@@ -6,44 +6,29 @@ xmlns="http://www.w3schools.com"
 elementFormDefault="qualified">
 
 <!-- definition of simple elements -->
-<xs:element name="name" type="xs:string"/>
-<xs:element name="length" type="xs:decimal"/>
-<xs:element name="speed" type="xs:decimal"/>
-<xs:element name="xCoord" type="xs:decimal"/>
-<xs:element name="yCoord" type="xs:decimal"/>
+<xs:element name="n" type="xs:string"/>
+<xs:element name="l" type="xs:decimal"/>
+<xs:element name="s" type="xs:decimal"/>
+<xs:element name="fx" type="xs:decimal"/>
+<xs:element name="fy" type="xs:decimal"/>
+<xs:element name="tx" type="xs:decimal"/>
+<xs:element name="ty" type="xs:decimal"/>
 
 <!-- definition of attributes -->
 <xs:attribute name="id" type="xs:integer"/>
 
 <!-- definition of complex elements -->
-<xs:element name="fNode">
-	<xs:complexType>
-		<xs:sequence>
-			<xs:element ref="xCoord"/>
-			<xs:element ref="yCoord"/>
-		</xs:sequence>
-		<xs:attribute ref="id" use="required"/>
-	</xs:complexType>
-</xs:element> s
 
-<xs:element name="tNode">
+<xs:element name="r">
 	<xs:complexType>
 		<xs:sequence>
-			<xs:element ref="xCord"/>
-			<xs:element ref="yCord"/>
-		</xs:sequence>
-		<xs:attribute ref="id" use="required"/>
-	</xs:complexType>
-</xs:element>
-
-<xs:element name="road">
-	<xs:complexType>
-		<xs:sequence>
-			<xs:element ref="name"/>
-			<xs:element ref="length"/>
-			<xs:element ref="speed"/>
-			<xs:element ref="fNode"/>
-			<xs:element ref="tNode"/>
+			<xs:element ref="n"/>
+			<xs:element ref="l"/>
+			<xs:element ref="s"/>
+			<xs:element ref="fx"/>
+			<xs:element ref="fy"/>
+			<xs:element ref="tx"/>
+			<xs:element ref="ty"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:element>
@@ -51,7 +36,7 @@ elementFormDefault="qualified">
 <xs:element name="roadCollection">
 	<xs:complexType>
         <xs:sequence>
-            <xs:element ref="road"/>
+            <xs:element ref="r"/>
         </xs:sequence>
 	</xs:complexType>
 </xs:element>
