@@ -39,4 +39,13 @@ public class Road {
 		getFrom().createRelation(this);
 		getTo().createRelation(this);
 	}
+	
+	public String toXML()
+	{
+		String returnString;
+
+
+
+		return returnString;
+	}
 }

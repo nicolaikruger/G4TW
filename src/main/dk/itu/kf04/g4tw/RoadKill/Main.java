@@ -47,18 +47,18 @@ public class Main {
 			tree.addNode(node.getX(), node.getY(), nodeID);
 		}
 		System.out.println("Building done!");
-		tree.search(595527.51786,6402050.98297,595527.51786,6402050.98297);
+		tree.search(255527.51786,4402050.98297,595527.51786,6402050.98297);
 		// Krüger end //
 
-		System.out.println(nodeMap.size() + "\t\t" + connections);
+		//System.out.println(nodeMap.size() + "\t\t" + connections);
 
-		removeNodes();
-		double max = FindMax.getMax(roads);
-		System.out.println(max);
+		//removeNodes();
+		//double max = FindMax.getMax(roads);
+		//System.out.println(max);
 
-		assignRoadToNode();
+		//assignRoadToNode();
 
-		calculateConnections();
+		//calculateConnections();
 	}
 
 	private static void calculateConnections() {
