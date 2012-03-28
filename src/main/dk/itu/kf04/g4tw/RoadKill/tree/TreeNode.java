@@ -11,7 +11,12 @@ public class TreeNode {
 	/**
 	 * A boolean value indicating whether we use the x-axis
 	 */
-	private final boolean useX;
+	private boolean useX;
+
+	/**
+	 * A boolean value indicating whether this is a "red" or a "black" node
+	 */
+	private boolean isRed;
 
 	/**
 	 * The left TreeNode - if any.
@@ -36,12 +41,28 @@ public class TreeNode {
 	/**
 	 * Constructs a TreeNode
 	 * @param useX  Whether or not to use the x-axis to compare other rectangles.
+	 * @param isRed Whether or not to this node has a "red" link to its parent
+	 * @param rect  The rectangle enclosing this road.
+	 * @param id  The id of this road.
+	 */
+	public TreeNode (boolean useX, boolean isRed, RoadRectangle rect, int id)
+	{
+		this.useX = useX;
+		this.isRed = isRed;
+		this.rect = rect;
+		this.id = id;
+	}
+
+	/**
+	 * Constructs a TreeNode. The isRed boolean is being set to true;
+	 * @param useX  Whether or not to use the x-axis to compare other rectangles.
 	 * @param rect  The rectangle enclosing this road.
 	 * @param id  The id of this road.
 	 */
 	public TreeNode (boolean useX, RoadRectangle rect, int id)
 	{
 		this.useX = useX;
+		this.isRed = true;
 		this.rect = rect;
 		this.id = id;
 	}
@@ -109,4 +130,32 @@ public class TreeNode {
 		return returnList;
 	}
 
+	
+	private TreeNode rotateLeft(TreeNode h)
+	{
+		TreeNode x = h.rightTreeNode;
+		h.rightTreeNode = x.leftTreeNode;
+		x.leftTreeNode = h;
+		x.isRed = h.isRed;
+		h.isRed = true;
+		return x;
+	}
+	
+	private TreeNode rotateRight(TreeNode h)
+	{
+		TreeNode x = h.leftTreeNode;
+		h.leftTreeNode = x.rightTreeNode;
+		x.rightTreeNode = h;
+		x.isRed = h.isRed;
+		h.isRed = true;
+		return  x;
+	}
+	
+	private void flipColors(TreeNode h)
+	{
+		h.useX = !h.useX;
+		h.isRed = true;
+		h.leftTreeNode.isRed = false;
+		h.rightTreeNode.isRed = false;
+	}
 }
