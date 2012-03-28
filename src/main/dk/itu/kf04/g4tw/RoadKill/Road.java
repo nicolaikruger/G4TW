@@ -5,8 +5,8 @@ public class Road {
 	
 	private String name;
 	private int type;
-	private Point2D.Double from;
-	private Point2D.Double to;
+	public final Point2D.Double from;
+	public final Point2D.Double to;
 	private double speed;
 	private double length;
 	

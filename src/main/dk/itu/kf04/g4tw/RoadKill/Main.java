@@ -9,15 +9,29 @@ import java.awt.geom.Point2D;
 
 public class Main {
 
-	// Krüger implementation //
-	private static ArrayList<Road> roadArray = new ArrayList<Road>();
-	private static ArrayList<Node> nodeArray = new ArrayList<Node>();
+	/**
+	 * The kd-tree for our awesome data.
+	 */
 	private static Tree2D tree = new Tree2D();
-	// Krüger end //
-	
+
+	/**
+	 * The nodes mapped to integers.
+	 */
 	public static HashMap<Integer, Node> nodeMap;
+
+	/**
+	 * The number of connections in the map.
+	 */
 	public static int connections = 0;
+
+	/**
+	 * The start time.
+	 */
 	public static long startTime;
+
+	/**
+	 * The roads of the map.
+	 */
 	public static DynamicArray<Road> roads;
 
 	/**
@@ -37,17 +51,21 @@ public class Main {
 		} catch (Exception e) {
 			System.out.println("Fuuu! Program said:\n\t" + e);
 		}
+		
+		// Såfle!
+		roads.shuffle();
+
+		// Cræajte che tree
+		tree = new Tree2D();
 
 		// Krüger //
-		System.out.println("Starts building the tree!");
-		int i = 1;
-		for(Node node : nodeArray)
+		System.out.println("Tree-Building initialized !");
+		for(int i = 0; i < roads.length(); i++)
 		{
-			String nodeID = Integer.toString(i++);
-			tree.addNode(node.getX(), node.getY(), nodeID);
+			tree.addNode(roads.get(i).from, roads.get(i).to, i);
 		}
-		System.out.println("Building done!");
-		tree.search(255527.51786,4402050.98297,595527.51786,6402050.98297);
+		System.out.println("Tree has been built!");
+		//tree.search(255527.51786,4402050.98297,595527.51786,6402050.98297);
 		// Krüger end //
 
 		//System.out.println(nodeMap.size() + "\t\t" + connections);
@@ -117,12 +135,6 @@ public class Main {
 				int a = Integer.parseInt(nextLine[0]);
 				int b = Integer.parseInt(nextLine[1]);
 
-				// Krüger //
-				int ID = Integer.parseInt(nextLine[4]);
-				nodeArray.get(a-1).addRoadID(ID);
-				nodeArray.get(b-1).addRoadID(ID);
-				// Krüger end //
-
 				Node nodeA = nodeMap.get(a);
 				Node nodeB = nodeMap.get(b);
 
@@ -168,13 +180,9 @@ public class Main {
 				Node node = new Node(xPos, yPos);
 
 				hmap.put(id, node);
-
-				// Krüger //
-				nodeArray.add(node);
-				// Krüger end //
 			}
 		} catch (Exception e) {
-
+			System.out.println("Exception while creating the map: " + e);
 		} finally {
 			scanner.close();
 		}

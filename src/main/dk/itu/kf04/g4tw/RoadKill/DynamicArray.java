@@ -1,5 +1,7 @@
 package dk.itu.kf04.g4tw.RoadKill;
 
+import java.util.Random;
+
 /**
  * An array that can be resized depending on the input.
  * @param <Item>  The type of the elements to store.
@@ -56,6 +58,7 @@ public class DynamicArray<Item> {
 	
     /**
      * Is the array empty?!
+	 * @return boolean 
      */
 	public boolean isEmpty()
 	{
@@ -90,5 +93,22 @@ public class DynamicArray<Item> {
 			temp[i] = a[i];
 		
 		a = temp;
+	}
+
+	/**
+	 * Shuffle the array.
+	 */
+	public void shuffle() {
+		Random r = new Random();
+		for (int i = 0; i < N; i++) swap(i, r.nextInt(N));
+	}
+
+	/**
+	 * Swaps two elements in the array.
+	 */
+	private void swap(int x, int y) {
+		Item tmp = a[x];
+		a[x] = a[y];
+		a[y] = tmp;
 	}
 }
