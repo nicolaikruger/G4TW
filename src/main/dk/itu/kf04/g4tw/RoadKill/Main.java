@@ -56,7 +56,7 @@ public class Main {
 		double max = FindMax.getMax(roads);
 		System.out.println(max);
 
-		assignRoadToNode();
+		//assignRoadToNode();
 
 		calculateConnections();
 	}
@@ -126,6 +126,9 @@ public class Main {
 				Node nodeA = nodeMap.get(a);
 				Node nodeB = nodeMap.get(b);
 
+				Point2D.Double pointA = new Point2D.Double(nodeA.getX(),nodeA.getY());
+				Point2D.Double pointB = new Point2D.Double(nodeB.getX(),nodeB.getY());
+				
 				int type = Integer.parseInt(nextLine[5]);
 				double speed = Double.parseDouble(nextLine[25]);
 				double length = Double.parseDouble(nextLine[2]);
@@ -135,7 +138,7 @@ public class Main {
 
 				connections++;
 
-				Road tmp = new Road(name, nodeA, nodeB, type, speed, length);
+				Road tmp = new Road(name, pointA, pointB, type, speed, length);
 				//System.out.println(tmp.toString());
 				tmpRoads.add(tmp);
 			}
@@ -177,10 +180,11 @@ public class Main {
 		}
 		return hmap;
 	}
-
+	
+	/**
 	private static void assignRoadToNode() {
 		for (int i = 0; i<roads.length(); i++) {
 			roads.get(i).assignNodes();
 		}
-	}
+	}*/
 }

@@ -5,12 +5,12 @@ public class Road {
 	
 	private String name;
 	private int type;
-	private Node from;
-	private Node to;
+	private Point2D.Double from;
+	private Point2D.Double to;
 	private double speed;
 	private double length;
 	
-	public Road(String name, Node f, Node t, int type, double speed, double length) {
+	public Road(String name, Point2D.Double f, Point2D.Double t, int type, double speed, double length) {
 		this.name = name;
 		this.type = type;
 		this.from = f;
@@ -27,16 +27,16 @@ public class Road {
 		return length;
 	}
 	
-	public Node getFrom() {
+	public Point2D.Double getFrom() {
 		return from;
 	}
 	
-	public Node getTo() {
+	public Point2D.Double getTo() {
 		return to;
 	}
-	
+	/**
 	public void assignNodes() {
 		getFrom().createRelation(this);
 		getTo().createRelation(this);
-	}
+	}*/
 }
