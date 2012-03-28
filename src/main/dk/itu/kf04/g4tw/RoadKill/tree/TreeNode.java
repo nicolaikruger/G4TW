@@ -130,7 +130,7 @@ public class TreeNode {
 		return returnList;
 	}
 
-	
+
 	private TreeNode rotateLeft(TreeNode h)
 	{
 		TreeNode x = h.rightTreeNode;
@@ -140,7 +140,7 @@ public class TreeNode {
 		h.isRed = true;
 		return x;
 	}
-	
+
 	private TreeNode rotateRight(TreeNode h)
 	{
 		TreeNode x = h.leftTreeNode;
@@ -150,12 +150,13 @@ public class TreeNode {
 		h.isRed = true;
 		return  x;
 	}
-	
+
 	private void flipColors(TreeNode h)
 	{
-		h.useX = !h.useX;
 		h.isRed = true;
 		h.leftTreeNode.isRed = false;
 		h.rightTreeNode.isRed = false;
+		h.leftTreeNode.useX = !h.useX;
+		h.rightTreeNode.useX = !h.useX;
 	}
 }

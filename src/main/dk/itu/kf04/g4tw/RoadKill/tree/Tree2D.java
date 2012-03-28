@@ -1,43 +1,41 @@
 package dk.itu.kf04.g4tw.RoadKill.tree;
 
+import java.awt.geom.Point2D;
+
+/**
+ * A 2-dimensional binary tree storing roads.
+ */
 public class Tree2D {
 
-	TreeNode root;
+	/**
+	 * The root of the tree.
+	 */
+	private TreeNode root;
 
-	public Tree2D() 
-	{	}
-	
-	public void addNode(double X, double Y, String name)
+	/**
+	 * Adds a node to the tree.
+	 * @param from  The point the road starts.
+	 * @param to  The point the road ends.
+	 * @param id  The id of the road.
+	 */
+	public void addNode(Point2D.Double from, Point2D.Double to, int id)
 	{
-		if(root == null) 	root = new TreeNode(true, X, Y, name);
-		else 				root.addTreeNode(X, Y, name);
+		RoadRectangle rect = new RoadRectangle(from.x, from.y, to.x, to.y);
+		if(root == null) 	root = new TreeNode(true, rect, id);
+		else 				root.addTreeNode(rect, id);
 	}
-	
-	public void search(double X1, double Y1, double X2, double Y2)
+
+	/**
+	 * Search for the roads the intersects with the given coordinates.
+	 * @param xMin
+	 * @param yMin
+	 * @param xMax
+	 * @param yMax
+	 */
+	public void search(double xMin, double yMin, double xMax, double yMax)
 	{
-		for(TreeNode n : root.search(X1, Y1, X2, Y2))
-			System.out.println(n.getName());
+		for(Integer n : root.search(new RoadRectangle(xMin, yMin, xMax, yMax)))
+			System.out.println(n);
 	}
-	
-	
-	public static void main(String[] args)
-	{
-		Tree2D T = new Tree2D();
-		
-		T.addNode(6,4,"1");
-		T.addNode(4,2,"2");
-		T.addNode(8,3,"3");
-		T.addNode(7,6,"4");
-		T.addNode(9,8,"5");
-		T.addNode(10,10,"6");
-		T.addNode(5,9,"7");
-		T.addNode(2,7,"8");
-		T.addNode(3,5,"9");
-		T.addNode(1,1,"10");
-		T.addNode(1,2,"11");
-		T.addNode(2,1,"12");
-		
-		T.search(1,1,2,1);
-		
-	}
+
 }
