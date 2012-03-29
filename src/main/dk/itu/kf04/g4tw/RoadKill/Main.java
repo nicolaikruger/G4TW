@@ -2,6 +2,7 @@ package dk.itu.kf04.g4tw.RoadKill;
 
 import dk.itu.kf04.g4tw.RoadKill.tree.Tree2D;
 
+import javax.naming.directory.SearchControls;
 import java.io.*;
 import java.util.*;
 import java.lang.Math;
@@ -53,19 +54,22 @@ public class Main {
 		}
 		
 		// Såfle!
-		roads.shuffle();
+		//roads.shuffle();
 
 		// Cræajte che tree
-		tree = new Tree2D();
+		//tree = new Tree2D();
 
 		// Krüger //
 		System.out.println("Tree-Building initialized !");
+		long time = System.currentTimeMillis();
 		for(int i = 0; i < roads.length(); i++)
 		{
 			tree.addNode(roads.get(i).from, roads.get(i).to, i);
 		}
-		System.out.println("Tree has been built!");
-		//tree.search(255527.51786,4402050.98297,595527.51786,6402050.98297);
+		System.out.println("Tree has been built!\n\t Build time is: " + (System.currentTimeMillis()-time) + " ms");
+		time = System.currentTimeMillis();
+		tree.search(0,0,99595527.51786,996402050.98297);
+		System.out.println("Search takes: " + (System.currentTimeMillis()-time) + " ms");
 		// Krüger end //
 
 		//System.out.println(nodeMap.size() + "\t\t" + connections);

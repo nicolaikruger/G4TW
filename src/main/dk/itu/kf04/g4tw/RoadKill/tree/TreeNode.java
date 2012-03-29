@@ -76,19 +76,19 @@ public class TreeNode {
 	{
 		if(useX) {
 			if(this.rect.xMin < that.xMin) {
-				if(rightTreeNode == null)	rightTreeNode = new TreeNode(false, rect, id);
-				else					rightTreeNode.addTreeNode(rect, id);
+				if(rightTreeNode == null)	rightTreeNode = new TreeNode(false, that, id);
+				else					rightTreeNode.addTreeNode(that, id);
 			} else {
-				if(leftTreeNode == null)	leftTreeNode = new TreeNode(false, rect, id);
-				else					leftTreeNode.addTreeNode(rect, id);
+				if(leftTreeNode == null)	leftTreeNode = new TreeNode(false, that, id);
+				else					leftTreeNode.addTreeNode(that, id);
 			}
 		} else {
 			if(this.rect.yMin < that.yMin) {
-				if(rightTreeNode == null)	rightTreeNode = new TreeNode(true, rect, id);
-				else					rightTreeNode.addTreeNode(rect, id);
+				if(rightTreeNode == null)	rightTreeNode = new TreeNode(true, that, id);
+				else					rightTreeNode.addTreeNode(that, id);
 			} else {
-				if(leftTreeNode == null)	leftTreeNode = new TreeNode(true, rect, id);
-				else					leftTreeNode.addTreeNode(rect, id);
+				if(leftTreeNode == null)	leftTreeNode = new TreeNode(true, that, id);
+				else					leftTreeNode.addTreeNode(that, id);
 			}
 		}
 	}
