@@ -1,5 +1,7 @@
 package dk.itu.kf04.g4tw.RoadKill.tree;
 
+import java.awt.geom.Point2D;
+
 /**
  * A rectangle that encapsulates a road.
  */
@@ -16,6 +18,13 @@ public class RoadRectangle implements ComparableByDimension {
 		this.xMax = Math.max(x1, x2);
 		this.yMax = Math.max(y1, y2);
 	}     
+    
+    public RoadRectangle(Point2D.Double p1, Point2D.Double p2) {
+        this.xMin = Math.min(p1.getX(), p2.getX());
+        this.yMin = Math.min(p1.getY(), p2.getY());
+        this.xMax = Math.max(p1.getX(), p2.getX());
+        this.yMax = Math.max(p1.getY(), p2.getY());
+    }
 
     public int compareTo(ComparableByDimension that, byte dimension) {
         double d1 = getDimensionValue(dimension).doubleValue();
@@ -64,4 +73,8 @@ public class RoadRectangle implements ComparableByDimension {
 	public boolean intersects(RoadRectangle that) {
 		return (xMin < that.xMax || xMax > that.xMin || yMin < that.yMax || yMax > that.yMin);
 	}
+    
+    @Override public String toString() {
+        return "RoadRectangle: (" + xMin + ", " + yMin + "), " + xMax + ", " + yMax + ")";
+    }
 }

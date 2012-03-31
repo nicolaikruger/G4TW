@@ -61,4 +61,7 @@ class RBNode<Key extends ComparableByDimension, Value> {
         this.right = null;
     }
 
+    @Override public String toString() {
+        return "Node with " + N + " children: " + key + " -> " + value + ".";
+    }
 }

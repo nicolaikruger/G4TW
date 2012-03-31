@@ -1,7 +1,5 @@
 package dk.itu.kf04.g4tw.RoadKill.tree;
 
-import dk.itu.kf04.g4tw.RoadKill.Road;
-
 /**
  * A Red-Black binary k-dimensional search-tree. The tree builds on the ComparableByDimension interface
  * to compare different comparable objects.
@@ -44,11 +42,11 @@ public class RBTree<Key extends ComparableByDimension, Value> {
         final byte initialAxis = axis;
 
         // Iterate through the axises until we find a difference
-        while(axis != initialAxis) {
+        do {
             int comparison = k1.compareTo(k2, axis);
             if (comparison != 0) return comparison;
             else axis = incrementAxis(axis);
-        }
+        } while (axis != initialAxis);
 
         // .. or we are back at the initial axis
         // In that case we have equality
@@ -106,7 +104,7 @@ public class RBTree<Key extends ComparableByDimension, Value> {
         if (node == null) {
             return new RBNode<Key, Value>(key, value, 1, RED, incrementAxis(axis));
         }
-        
+
         // Do the comparison (in all directions!)
         int comparison = compare(key, node.key, node.axis);
 
@@ -168,13 +166,21 @@ public class RBTree<Key extends ComparableByDimension, Value> {
     private int size(RBNode node) { return node == null ? 0 : node.N; }
     
     @Override public String toString() {
-        return "Red-Black Tree with " + (root == null ? 0 : root.N) + " nodes.";
+        return "RBTree: " + (root == null ? 0 : root.N) + " node" + (size(root) == 1 ? "" : "s") + " sorted in " + MAX_DIMENSIONS + " axises.";
     }
     
     public static void main(String[] args) {
-        RBTree<RoadRectangle, Road> tree = new RBTree(4);
-        RoadRectangle r1 = new RoadRectangle(0, 0, 1, 1);
-        RoadRectangle r2 = new RoadRectangle(0, 0, 1, 2);
+        RBTree<RoadRectangle, String> tree = new RBTree(4);
+        RoadRectangle r1 = new RoadRectangle(0, 0, 0, 0);
+        RoadRectangle r2 = new RoadRectangle(1, 1, 1, 1);
+        RoadRectangle r3 = new RoadRectangle(4, 4, 4, 4);
+        RoadRectangle r4 = new RoadRectangle(3, 3, 3, 3);
+        tree.put(r1, "Hej");
+        tree.put(r2, "Hej2");
+        tree.put(r3, "Hej3");
+        tree.put(r4, "Hej4");
+
+        System.out.println(tree);
     }
 
 }
