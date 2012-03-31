@@ -1,11 +1,9 @@
 package dk.itu.kf04.g4tw.RoadKill.tree;
 
-import java.awt.geom.Point2D;
-
 /**
  * A rectangle that encapsulates a road.
  */
-public class RoadRectangle {
+public class RoadRectangle implements ComparableByDimension {
 	
 	public final double xMin;
 	public final double yMin;
@@ -17,7 +15,37 @@ public class RoadRectangle {
 		this.yMin = Math.min(y1, y2);
 		this.xMax = Math.max(x1, x2);
 		this.yMax = Math.max(y1, y2);
-	}
+	}     
+
+    public int compareTo(ComparableByDimension that, byte dimension) {
+        double d1 = getDimensionValue(dimension).doubleValue();
+        double d2 = that.getDimensionValue(dimension).doubleValue();
+        return Double.compare(d1, d2);
+    }   
+    
+    @Override public boolean equals(Object obj) {
+        if (obj instanceof RoadRectangle) {
+            RoadRectangle that = (RoadRectangle) obj;
+            return (that.xMin == this.xMin && that.yMin == this.yMin &&
+                    that.xMax == this.xMax && that.yMax == this.xMax);
+        } else {
+            return false;
+        }
+    }
+
+    public Number getDimensionValue(byte dimension) {
+        // Make sure input is ok
+        if (dimension < 1) {
+            throw new IllegalArgumentException("Dimension cannot be less than 1.");
+        } else if (dimension > 4) {
+            throw new IllegalArgumentException("RoadRectangle cannot handle more than 4 dimensions.");
+        }
+
+        if      (dimension == 1) return xMin;
+        else if (dimension == 2) return yMin;
+        else if (dimension == 3) return xMax;
+        else                     return yMax;
+    }
 
 	/**
 	 * Examines whether a given rectangle intersects with this rectangle.
@@ -29,9 +57,11 @@ public class RoadRectangle {
 	 * Cond4.  If A's bottom edge is above B's top edge,               then A is Totally above B
 	 *
 	 * Reference: http://stackoverflow.com/questions/306316/determine-if-two-rectangles-overlap-each-other/306332#306332
+     *
+     * @param that  The rectangle to examine.
+     * @return True if there is an intersection, false otherwise.
 	 */
 	public boolean intersects(RoadRectangle that) {
 		return (xMin < that.xMax || xMax > that.xMin || yMin < that.yMax || yMax > that.yMin);
 	}
-	
 }
