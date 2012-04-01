@@ -1,4 +1,4 @@
-package dk.itu.kf04.g4tw.model;
+package dk.itu.kf04.g4tw.model.map;
 
 import dk.itu.kf04.g4tw.util.DynamicArray;
 

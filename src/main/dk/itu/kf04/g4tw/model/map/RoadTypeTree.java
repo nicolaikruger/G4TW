@@ -1,6 +1,6 @@
-package dk.itu.kf04.g4tw.model;
+package dk.itu.kf04.g4tw.model.map;
 
-import dk.itu.kf04.g4tw.model.tree.Tree2D;
+import dk.itu.kf04.g4tw.model.map.tree.Tree2D;
 
 /**
  * A part of a larger map containing only the specified entity-types.

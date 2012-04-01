@@ -87,35 +87,34 @@ public class WebServer implements HTTPConstants {
                         input = RequestParser.parseToInputStream(fileRequest.substring(4, fileRequest.length()));
 
 						//String responsText =
-						respond("<?xml version=\"1.0\" encoding=\"UTF-8\" ?><roadCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
-								"xsi:noNamespaceSchemaLocation=\"kraX.xsd\">\n" +
-								"\t<road>\n" +
-								"\t\t\t<name>Kruger</name>\n" +
-								"\t\t\t<length>1.25</length>\n" +
-								"\t\t\t<speed>130.0</speed>\n" +
-								"\t\t\t<fNode id=\"1\">\n" +
-								"\t\t\t\t<xCoord>5.0</xCoord>\n" +
-								"\t\t\t\t<yCoord>6.8</yCoord>\n" +
-								"\t\t\t</fNode>\n" +
-								"\t\t\t<tNode id=\"1\">\n" +
-								"\t\t\t\t<xCoord>10.1</xCoord>\n" +
-								"\t\t\t\t<yCoord>66.6</yCoord>\n" +
-								"\t\t\t</tNode>\n" +
-								"\t</road>\n" +
-								"\t\n" +
-								"\t<road>\n" +
-								"\t\t\t<name>Kruger2</name>\n" +
-								"\t\t\t<length>1.25</length>\n" +
-								"\t\t\t<speed>30.0</speed>\n" +
-								"\t\t\t<fNode id=\"1\">\n" +
-								"\t\t\t\t<xCoord>10.1</xCoord>\n" +
-								"\t\t\t\t<yCoord>66.6</yCoord>\n" +
-								"\t\t\t</fNode>\n" +
-								"\t\t\t<tNode id=\"1\">\n" +
-								"\t\t\t\t<xCoord>150</xCoord>\n" +
-								"\t\t\t\t<yCoord>150</yCoord>\n" +
-								"\t\t\t</tNode>\n" +
-								"\t</road>\n" +
+						respond("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
+								"\n" +
+								"<!--\n" +
+								"\t//////////////////////////////////////\n" +
+								"\t//\tkraX\t\t\t\t\t\t   \t//\n" +
+								"\t//\tCreated by G4tw on 2012-02-29. \t//\n" +
+								"\t//////////////////////////////////////\n" +
+								"-->\n" +
+								"<roadCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
+								"\txsi:noNamespaceSchemaLocation=\"http://online-sporstudstyr.dk//kraX.xsd\" xmlns=\"http://www.w3schools.com\">\n" +
+								"\t<r>\n" +
+								"\t\t<n>Kruger</n>\n" +
+								"\t\t<l>1.25</l>\n" +
+								"\t\t<s>130.0</s>\n" +
+								"\t\t<fx>5.0</fx>\n" +
+								"\t\t<fy>6.8</fy>\n" +
+								"\t\t<tx>10.1</tx>\n" +
+								"\t\t<ty>66.6</ty>\n" +
+								"\n" +
+								"\t\t<n>Kruger2</n>\n" +
+								"\t\t<l>1.25</l>\n" +
+								"\t\t<s>30.0</s>\n" +
+								"\t\t<fx>10.1</fx>\n" +
+								"\t\t<fy>66.6</fy>\n" +
+								"\t\t<tx>150</tx>\n" +
+								"\t\t<ty>150</ty>\n" +
+								"\t</r>\n" +
+								"\n" +
 								"</roadCollection>", input, pout);
                     } catch (IllegalArgumentException e) {
                         System.out.println("Illegal argument: " + e.getMessage());

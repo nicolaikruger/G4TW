@@ -1,5 +1,6 @@
 package dk.itu.kf04.g4tw.model.tree;
 
+import dk.itu.kf04.g4tw.model.map.tree.RoadRectangle;
 import org.junit.Test;
 
 import static junit.framework.Assert.*;

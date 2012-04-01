@@ -1,11 +1,11 @@
-package dk.itu.kf04.g4tw.model.tree;
+package dk.itu.kf04.g4tw.model.map.tree;
 
 import java.awt.geom.Point2D;
 
 /**
  * A rectangle that encapsulates a road.
  */
-public class RoadRectangle implements ComparableByDimension {
+public class RoadRectangle {
 	
 	public final double xMin;
 	public final double yMin;
@@ -26,7 +26,7 @@ public class RoadRectangle implements ComparableByDimension {
         this.yMax = Math.max(p1.getY(), p2.getY());
     }
 
-    public int compareTo(ComparableByDimension that, byte dimension) {
+    public int compareTo(RoadRectangle that, byte dimension) {
         double d1 = getDimensionValue(dimension).doubleValue();
         double d2 = that.getDimensionValue(dimension).doubleValue();
         return Double.compare(d1, d2);
@@ -70,7 +70,7 @@ public class RoadRectangle implements ComparableByDimension {
      * @param that  The rectangle to examine.
      * @return True if there is an intersection, false otherwise.
 	 */
-	public boolean intersects(ComparableByDimension that) {
+	public boolean intersects(RoadRectangle that) {
 		double xMin = that.getDimensionValue((byte) 1).doubleValue();
 		double yMin = that.getDimensionValue((byte) 2).doubleValue();
 		double xMax = that.getDimensionValue((byte) 3).doubleValue();
