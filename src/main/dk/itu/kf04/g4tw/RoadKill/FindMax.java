@@ -1,5 +1,8 @@
 package dk.itu.kf04.g4tw.RoadKill;
 
+import dk.itu.kf04.g4tw.model.Road;
+import dk.itu.kf04.g4tw.util.DynamicArray;
+
 public class FindMax
 {
 	public static double getMax(DynamicArray<Road> a) {

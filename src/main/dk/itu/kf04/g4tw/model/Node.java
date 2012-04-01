@@ -1,4 +1,6 @@
-package dk.itu.kf04.g4tw.RoadKill;
+package dk.itu.kf04.g4tw.model;
+
+import dk.itu.kf04.g4tw.util.DynamicArray;
 
 import java.util.ArrayList;
 

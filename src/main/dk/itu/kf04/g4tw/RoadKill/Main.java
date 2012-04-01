@@ -1,10 +1,12 @@
 package dk.itu.kf04.g4tw.RoadKill;
 
-import dk.itu.kf04.g4tw.RoadKill.tree.RBTree;
-import dk.itu.kf04.g4tw.RoadKill.tree.RoadRectangle;
-import dk.itu.kf04.g4tw.RoadKill.tree.Tree2D;
+import dk.itu.kf04.g4tw.model.Node;
+import dk.itu.kf04.g4tw.model.Road;
+import dk.itu.kf04.g4tw.model.tree.RBTree;
+import dk.itu.kf04.g4tw.model.tree.RoadRectangle;
+import dk.itu.kf04.g4tw.model.tree.Tree2D;
+import dk.itu.kf04.g4tw.util.DynamicArray;
 
-import javax.naming.directory.SearchControls;
 import java.io.*;
 import java.util.*;
 import java.lang.Math;
@@ -45,13 +47,13 @@ public class Main {
 		startTime = System.currentTimeMillis();
 
 		try{
-			nodeMap = getNodes("./src/main/dk/itu/kf04/g4tw/krakData/kdv_node_unload.txt");
+			nodeMap = getNodes("kdv_node_unload.txt");
 		} catch (Exception e) {
 			System.out.println("Fuuuuuuuuuuuuu! Program said:\n\t" + e);
 		}
 
 		try{
-			roads = getEdges("./src/main/dk/itu/kf04/g4tw/krakData/kdv_unload.txt");
+			roads = getEdges("kdv_unload.txt");
 		} catch (Exception e) {
 			System.out.println("Fuuu! Program said:\n\t" + e);
 		}
@@ -76,7 +78,7 @@ public class Main {
 		System.out.println("Tree has been built!\n\t Build time is: " + (System.currentTimeMillis()-time) + " ms.");
 		time = System.currentTimeMillis();
 
-		/*for(int i = 0; i < roads.length(); i++)
+	    for(int i = 0; i < roads.length(); i++)
 		{
 			Point2D.Double p1 = roads.get(i).from;
 			Point2D.Double p2 = roads.get(i).to;
@@ -87,7 +89,8 @@ public class Main {
 		time = System.currentTimeMillis();
 		DynamicArray<Road> arr = rbTree.search(new RoadRectangle(0,0,9999999,9999999));
 		System.out.println("Search takes: " + (System.currentTimeMillis()-time) + " ms - Number of elements returned: "+ arr.length());
-		*/// Krüger end //
+
+		// Krüger end //
 
 		//System.out.println(nodeMap.size() + "\t\t" + connections);
 

@@ -1,4 +1,4 @@
-package dk.itu.kf04.g4tw.RoadKill.tree;
+package dk.itu.kf04.g4tw.model.tree;
 
 import java.util.ArrayList;
 

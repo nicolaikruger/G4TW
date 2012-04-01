@@ -1,4 +1,4 @@
-package dk.itu.kf04.g4tw.RoadKill;
+package dk.itu.kf04.g4tw.model;
 import java.awt.geom.Point2D;
 
 public class Road {

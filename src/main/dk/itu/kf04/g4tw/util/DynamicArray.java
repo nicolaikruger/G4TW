@@ -1,4 +1,4 @@
-package dk.itu.kf04.g4tw.RoadKill;
+package dk.itu.kf04.g4tw.util;
 
 import java.util.Random;
 
