@@ -14,18 +14,30 @@
 			var c = canvas.getContext("2d");
             var model; var view;
             var xml;
+			var xmlDoc;
 			var req = new XMLHttpRequest();
 			req.onreadystatechange = function() { // Function to be called when result arrives
+				if (window.DOMParser) {
+					parser = new DOMParser();
+					xmlDoc = parser.parseFromString(text,"text/xml");
+				} else {	// Internet Explorer
+					xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+					xmlDoc.async = false;
+					xmlDoc.loadXML(text);
+				}  
+				
 				if (req.readyState==4 && (req.status==0 || req.status==200)) {
-                    xml = req.responseXML;
+                    xml = xmlDoc;
                     model = new Model(xml);
                     view = new View(model, c);
                     view.draw();
 				}
             };
-
+			
+			// Request should not open KraX, but something else entirely.
 			req.open("GET", "kraX.xml", true);
-			req.send(null);
-		    </script>
-	    </body>
+			req.send("getMap");
+			xmlDoc = xhttp.responseXML;
+		</script>
+	</body>
 </html>
