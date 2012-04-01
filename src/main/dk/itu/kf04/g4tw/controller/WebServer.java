@@ -28,6 +28,11 @@ public class WebServer implements HTTPConstants {
      * The root directory of the www files.
      */
     private static String webRoot = "www/";
+
+	/**
+	 * Retrieves data from the Kraks data-set (XML).
+	 */
+	private static  MapController map = new MapController();
     
     /**
      * Initialize the server and prepare to respond on incoming requests.
@@ -80,6 +85,38 @@ public class WebServer implements HTTPConstants {
                     try {
                         // Set input stream via
                         input = RequestParser.parseToInputStream(fileRequest.substring(4, fileRequest.length()));
+
+						//String responsText =
+						respond("<?xml version=\"1.0\" encoding=\"UTF-8\" ?><roadCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
+								"xsi:noNamespaceSchemaLocation=\"kraX.xsd\">\n" +
+								"\t<road>\n" +
+								"\t\t\t<name>Kruger</name>\n" +
+								"\t\t\t<length>1.25</length>\n" +
+								"\t\t\t<speed>130.0</speed>\n" +
+								"\t\t\t<fNode id=\"1\">\n" +
+								"\t\t\t\t<xCoord>5.0</xCoord>\n" +
+								"\t\t\t\t<yCoord>6.8</yCoord>\n" +
+								"\t\t\t</fNode>\n" +
+								"\t\t\t<tNode id=\"1\">\n" +
+								"\t\t\t\t<xCoord>10.1</xCoord>\n" +
+								"\t\t\t\t<yCoord>66.6</yCoord>\n" +
+								"\t\t\t</tNode>\n" +
+								"\t</road>\n" +
+								"\t\n" +
+								"\t<road>\n" +
+								"\t\t\t<name>Kruger2</name>\n" +
+								"\t\t\t<length>1.25</length>\n" +
+								"\t\t\t<speed>30.0</speed>\n" +
+								"\t\t\t<fNode id=\"1\">\n" +
+								"\t\t\t\t<xCoord>10.1</xCoord>\n" +
+								"\t\t\t\t<yCoord>66.6</yCoord>\n" +
+								"\t\t\t</fNode>\n" +
+								"\t\t\t<tNode id=\"1\">\n" +
+								"\t\t\t\t<xCoord>150</xCoord>\n" +
+								"\t\t\t\t<yCoord>150</yCoord>\n" +
+								"\t\t\t</tNode>\n" +
+								"\t</road>\n" +
+								"</roadCollection>", input, pout);
                     } catch (IllegalArgumentException e) {
                         System.out.println("Illegal argument: " + e.getMessage());
                     } catch (UnsupportedEncodingException e) {
@@ -145,11 +182,11 @@ public class WebServer implements HTTPConstants {
         os.println("HTTP/1.1 200 OK");
         os.println("Server: KraXServer/1.0");
         os.println("Date: " + new Date());
+        //os.println(); // Create line between meta code and content
         if (contentType != null) {
             os.println("Content-Type: " + contentType);
         }
-        os.println(); // Create line between meta code and content
-
+		os.println();
         // Send object
         try {
             byte[] buffer = new byte[1000];

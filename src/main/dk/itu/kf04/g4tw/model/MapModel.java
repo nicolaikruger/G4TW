@@ -21,7 +21,7 @@ public class MapModel {
 
     protected void loadTypeReference(int type, int... values) {
         for (int i = 0; i < values.length; i++) {
-            mapTypeReference.put(values[i], i);
+			mapTypeReference.put(values[i], type);
         }
     }
 
