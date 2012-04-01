@@ -1,5 +1,9 @@
 package dk.itu.kf04.g4tw.RoadKill.tree;
 
+import dk.itu.kf04.g4tw.RoadKill.DynamicArray;
+
+import java.util.ArrayList;
+
 /**
  * A Red-Black binary k-dimensional search-tree. The tree builds on the ComparableByDimension interface
  * to compare different comparable objects.
@@ -70,7 +74,7 @@ public class RBTree<Key extends ComparableByDimension, Value> {
      * @return The axis incremented or set to 1.
      */
     protected byte incrementAxis(byte axis) {
-        return (byte) ((axis + 1) % MAX_DIMENSIONS + 1);
+        return (byte) (axis % MAX_DIMENSIONS + 1);
     }
 
     /**
@@ -137,6 +141,7 @@ public class RBTree<Key extends ComparableByDimension, Value> {
         node.color = RED;
         tmp.N = node.N;
         node.N = 1 + size(node.left) + size(node.right);
+
         return tmp;
     }
 
@@ -158,6 +163,40 @@ public class RBTree<Key extends ComparableByDimension, Value> {
         return tmp;
     }
 
+	/**
+	 * Starts a search...
+	 * @param query
+	 * @return
+	 */
+	public DynamicArray<Value> search(Key query) {
+		DynamicArray<Value> arr = new DynamicArray<Value>();
+		search(root, query, arr);
+		return arr;
+	}
+
+	private void search(RBNode<Key, Value> node, Key query, DynamicArray<Value> arr)
+	{
+		if (node == null) return;
+
+		// Examine intersection.
+		boolean intersects = node.key.intersects(query);
+		if (intersects) {
+			// Add the Node itself
+			arr.add(node.value);
+		}
+
+		// Find the compare-value
+		int comparison = compare(query, node.key, node.axis);
+		if (comparison < 0) {        // Search only left
+			search(node.left, query, arr);
+		} else if (comparison > 0) { // Search right
+			search(node.right, query, arr);
+		} else {
+			search(node.left, query, arr);
+			search(node.right, query, arr);
+		}
+	}
+
     /**
      * A quick-access method for the size of a Node
      * @param node The node to examine.
@@ -166,7 +205,7 @@ public class RBTree<Key extends ComparableByDimension, Value> {
     private int size(RBNode node) { return node == null ? 0 : node.N; }
     
     @Override public String toString() {
-        return "RBTree: " + (root == null ? 0 : root.N) + " node" + (size(root) == 1 ? "" : "s") + " sorted in " + MAX_DIMENSIONS + " axises.";
+        return "RBTree: " + (root == null ? 0 : root.N) + " node" + (size(root) == 1 ? "" : "s") + " sorted in " + MAX_DIMENSIONS + " axes.";
     }
     
     public static void main(String[] args) {

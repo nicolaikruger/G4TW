@@ -57,7 +57,7 @@ public class RoadRectangle implements ComparableByDimension {
     }
 
 	/**
-	 * Examines whether a given rectangle intersects with this rectangle.
+	 * Examines whether a given rectangle intersects with this ComparableByDimension.
 	 *
 	 * A = this, B = that.
 	 * Cond1.  If A's left edge is to the right of the B's right edge, then A is Totally to right Of B
@@ -70,11 +70,15 @@ public class RoadRectangle implements ComparableByDimension {
      * @param that  The rectangle to examine.
      * @return True if there is an intersection, false otherwise.
 	 */
-	public boolean intersects(RoadRectangle that) {
-		return (xMin < that.xMax || xMax > that.xMin || yMin < that.yMax || yMax > that.yMin);
+	public boolean intersects(ComparableByDimension that) {
+		double xMin = that.getDimensionValue((byte) 1).doubleValue();
+		double yMin = that.getDimensionValue((byte) 2).doubleValue();
+		double xMax = that.getDimensionValue((byte) 3).doubleValue();
+		double yMax = that.getDimensionValue((byte) 4).doubleValue();
+		return (this.xMin < xMax || this.xMax > xMin || this.yMin < yMax || this.yMax > yMin);
 	}
     
     @Override public String toString() {
-        return "RoadRectangle: (" + xMin + ", " + yMin + "), " + xMax + ", " + yMax + ")";
+        return "RoadRectangle: (" + xMin + ", " + yMin + "), (" + xMax + ", " + yMax + ")";
     }
 }

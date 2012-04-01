@@ -34,8 +34,11 @@ public class Tree2D {
 	 */
 	public void search(double xMin, double yMin, double xMax, double yMax)
 	{
+		int i = 0;
 		for(Integer n : root.search(new RoadRectangle(xMin, yMin, xMax, yMax)))
-			System.out.println(n);
+		//	System.out.println(n);
+			i++;
+		System.out.println("Total number of roads: " + i);
 	}
 
 }

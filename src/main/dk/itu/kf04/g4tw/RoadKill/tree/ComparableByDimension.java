@@ -24,4 +24,11 @@ public interface ComparableByDimension<T extends ComparableByDimension> {
      */
     public int compareTo(T that, byte dimension);
 
+	/**
+	 * Write this...
+	 * @param that
+	 * @return
+	 */
+	public boolean intersects(T that);
+
 }
