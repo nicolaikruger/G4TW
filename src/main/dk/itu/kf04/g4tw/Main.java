@@ -1,5 +1,6 @@
 package dk.itu.kf04.g4tw;
 
+import dk.itu.kf04.g4tw.controller.MapArtist;
 import dk.itu.kf04.g4tw.controller.WebServer;
 
 /**
@@ -13,6 +14,9 @@ public class Main {
      */
     public static void main(String[] args) {
         // Import data
+
+		// Init draw
+		MapArtist.initMapArtist();
 
         // Init server
         boolean success = WebServer.init();

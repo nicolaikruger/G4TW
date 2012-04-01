@@ -2,15 +2,18 @@ package dk.itu.kf04.g4tw.RoadKill;
 
 import dk.itu.kf04.g4tw.model.map.Node;
 import dk.itu.kf04.g4tw.model.map.Road;
-import dk.itu.kf04.g4tw.model.tree.RBTree;
-import dk.itu.kf04.g4tw.model.map.tree.RoadRectangle;
 import dk.itu.kf04.g4tw.model.map.tree.Tree2D;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 
-import java.io.*;
-import java.util.*;
-import java.lang.Math;
 import java.awt.geom.Point2D;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Scanner;
+
+//import dk.itu.kf04.g4tw.model.tree.RBTree;
 
 public class Main {
 
@@ -18,7 +21,7 @@ public class Main {
 	 * The kd-tree for our awesome data.
 	 */
 	private static Tree2D tree = new Tree2D();
-	private static RBTree<RoadRectangle, Road> rbTree = new RBTree<RoadRectangle, Road>(4);
+//	private static RBTree<RoadRectangle, Road> rbTree = new RBTree<RoadRectangle, Road>(4);
 
 	/**
 	 * The nodes mapped to integers.
@@ -57,7 +60,7 @@ public class Main {
 		} catch (Exception e) {
 			System.out.println("Fuuu! Program said:\n\t" + e);
 		}
-		
+
 		// Såfle!
 		//roads.shuffle();
 
@@ -78,17 +81,17 @@ public class Main {
 		System.out.println("Tree has been built!\n\t Build time is: " + (System.currentTimeMillis()-time) + " ms.");
 		time = System.currentTimeMillis();
 
-	    for(int i = 0; i < roads.length(); i++)
+		for(int i = 0; i < roads.length(); i++)
 		{
 			Point2D.Double p1 = roads.get(i).from;
 			Point2D.Double p2 = roads.get(i).to;
 
-			rbTree.put(new RoadRectangle(p1, p2), roads.get(i));
+//			rbTree.put(new RoadRectangle(p1, p2), roads.get(i));
 		}
-		System.out.println("RBTree has been built!\n\t Build time is: " + (System.currentTimeMillis()-time) + " ms: " + rbTree);
+//		System.out.println("RBTree has been built!\n\t Build time is: " + (System.currentTimeMillis()-time) + " ms: " + rbTree);
 		time = System.currentTimeMillis();
-		DynamicArray<Road> arr = rbTree.search(new RoadRectangle(0,0,9999999,9999999));
-		System.out.println("Search takes: " + (System.currentTimeMillis()-time) + " ms - Number of elements returned: "+ arr.length());
+//		DynamicArray<Road> arr = rbTree.search(new RoadRectangle(0,0,9999999,9999999));
+//		System.out.println("Search takes: " + (System.currentTimeMillis()-time) + " ms - Number of elements returned: "+ arr.length());
 
 		// Krüger end //
 
@@ -164,7 +167,7 @@ public class Main {
 
 				Point2D.Double pointA = new Point2D.Double(nodeA.getX(),nodeA.getY());
 				Point2D.Double pointB = new Point2D.Double(nodeB.getX(),nodeB.getY());
-				
+
 				int type = Integer.parseInt(nextLine[5]);
 				double speed = Double.parseDouble(nextLine[25]);
 				double length = Double.parseDouble(nextLine[2]);
@@ -212,11 +215,11 @@ public class Main {
 		}
 		return hmap;
 	}
-	
+
 	/**
-	private static void assignRoadToNode() {
-		for (int i = 0; i<roads.length(); i++) {
-			roads.get(i).assignNodes();
-		}
-	}*/
+	 private static void assignRoadToNode() {
+	 for (int i = 0; i<roads.length(); i++) {
+	 roads.get(i).assignNodes();
+	 }
+	 }*/
 }
