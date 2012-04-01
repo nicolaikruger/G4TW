@@ -4,7 +4,7 @@ import dk.itu.kf04.g4tw.model.MapModel;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Kruger
+ * User: Krüger-Pony  **mwuahahah**
  * Date: 01-04-12
  * Time: 12:15
  * To change this template use File | Settings | File Templates.
