@@ -3,6 +3,7 @@ package dk.itu.kf04.g4tw.model.map;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
@@ -14,7 +15,6 @@ import java.util.Scanner;
 public class MapModel {
 
 	private static HashMap<Integer, Node> nodeMap;
-	private static DynamicArray<Road> roads;
     
     public static final int HIGHWAY        = 1;
     public static final int EXPRESSWAY     = 2;
@@ -24,6 +24,8 @@ public class MapModel {
     public static final int PATH           = 32;
     public static final int SEAWAY         = 64;
     public static final int LOCATION       = 128;
+	
+	private int i = 1;
 
     protected HashMap<Integer, Integer> mapTypeReference = new HashMap<Integer, Integer>();
     protected HashMap<Integer, RoadTypeTree> roadTrees = new HashMap<Integer, RoadTypeTree>();
@@ -36,41 +38,72 @@ public class MapModel {
     }
 
     public MapModel() {
-        loadTypeReference(HIGHWAY,        1, 21, 41);
+		// Added 0, 31, 95
+
+        loadTypeReference(HIGHWAY,        1, 21, 31, 41);
         loadTypeReference(EXPRESSWAY,     2, 22, 32, 42);
         loadTypeReference(PRIMARY_ROAD,   3, 23, 33, 43);
-        loadTypeReference(SECONDARY_ROAD, 4, 24, 34, 44);
-        loadTypeReference(MINOR_ROAD,     5, 25, 6, 35, 45, 46);
+        loadTypeReference(SECONDARY_ROAD, 4, 24, 34, 44, 95);
+        loadTypeReference(MINOR_ROAD,     0, 5, 25, 26, 6, 35, 45, 46);
         loadTypeReference(PATH,           8, 28, 48, 10, 11);
         loadTypeReference(SEAWAY,         80);
         loadTypeReference(LOCATION,       99);
+		
+		loadMapData();
     }
+	
+	public String getXML(double xMin, double yMin, double xMax, double yMax, int... type)
+	{
+		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
+				"<roadCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
+				"xsi:noNamespaceSchemaLocation=\"http://online-sporstudstyr.dk/kraX.xsd\"" +
+				"xmlns=\"http://www.w3schools.com\">";
+		for(Integer i : type)
+		{
+			RoadTypeTree tree = roadTrees.get(i);
+			String newXML = tree.search(xMin, yMin, xMax, yMax);
+			xmlData += newXML;
+		}
+
+		xmlData += "</roadCollection>";
+
+		return xmlData;
+	}
+
+	private void addRoad(Road road)
+	{
+		int roadType = road.getType();
+		int treeType = mapTypeReference.get(roadType);
+		RoadTypeTree tree = roadTrees.get(treeType);
+		tree.addNode(road);
+	}
     
     // ... //
 
 	private void loadMapData()
 	{
+		File hmm = new File(".");
+		System.out.println("PATH = " + hmm.getAbsolutePath());
 
+		String folderPath = "src/main/dk/itu/kf04/g4tw/krakData/";
+		
 		try{
-			nodeMap = getNodes("kdv_node_unload.txt");
+			nodeMap = getNodes(folderPath + "kdv_node_unload.txt");
 		} catch (Exception e) {
 			System.out.println("Fuuuuuuuuuuuuu! Program said:\n\t" + e);
 		}
 
 		try{
-			roads = getEdges("kdv_unload.txt");
+			getEdges(folderPath + "kdv_unload.txt");
 		} catch (Exception e) {
 			System.out.println("Fuuu! Program said:\n\t" + e);
 		}
 	}
 
-	private static DynamicArray<Road> getEdges(String url) throws FileNotFoundException {
-// Fills in the data in the arrays
+	private void getEdges(String url) throws FileNotFoundException {
+		// Fills in the data in the arrays
 		Scanner scanner = new Scanner(new FileReader(url));
-		DynamicArray<Road> tmpRoads = null;
 		try {
-			tmpRoads = new DynamicArray<Road>();
-
 			scanner.nextLine();
 
 			while (scanner.hasNextLine()) {
@@ -94,8 +127,8 @@ public class MapModel {
 				nodeB.connect(a);
 
 				Road tmp = new Road(name, pointA, pointB, type, speed, length);
-				//System.out.println(tmp.toString());
-				tmpRoads.add(tmp);
+
+				addRoad(tmp);
 			}
 
 		} catch (IndexOutOfBoundsException e) {
@@ -104,11 +137,10 @@ public class MapModel {
 		} finally {
 			scanner.close();
 		}
-		return tmpRoads;
 	}
 
 
-	private static HashMap<Integer, Node> getNodes(String url) throws FileNotFoundException
+	private HashMap<Integer, Node> getNodes(String url) throws FileNotFoundException
 	{
 		HashMap<Integer, Node> hmap = new HashMap<Integer, Node>();
 		Scanner scanner = new Scanner(new FileReader(url));

@@ -72,7 +72,7 @@ public class Main {
 			Point2D.Double p2 = roads.get(i).to;
 
 
-			tree.addNode(p1, p2, i);
+			//tree.addNode(p1, p2, i);
 		}
 		System.out.println("Tree has been built!\n\t Build time is: " + (System.currentTimeMillis()-time) + " ms.");
 		time = System.currentTimeMillis();

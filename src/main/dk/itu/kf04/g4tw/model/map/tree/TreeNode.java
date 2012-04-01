@@ -1,5 +1,7 @@
 package dk.itu.kf04.g4tw.model.map.tree;
 
+import dk.itu.kf04.g4tw.model.map.Road;
+
 import java.util.ArrayList;
 
 /**
@@ -29,66 +31,54 @@ public class TreeNode {
 	private TreeNode rightTreeNode = null;
 
 	/**
-	 * The rectangle enclosing this road.
-	 */
-	private final RoadRectangle rect;
-
-	/**
 	 * The id of the road.
 	 */
-	public final int id;
+	public final Road road;
 
 	/**
 	 * Constructs a TreeNode
 	 * @param useX  Whether or not to use the x-axis to compare other rectangles.
 	 * @param isRed Whether or not to this node has a "red" link to its parent
-	 * @param rect  The rectangle enclosing this road.
-	 * @param id  The id of this road.
+	 * @param road  This road.
 	 */
-	public TreeNode (boolean useX, boolean isRed, RoadRectangle rect, int id)
+	public TreeNode (boolean useX, boolean isRed, Road road)
 	{
 		this.useX = useX;
 		this.isRed = isRed;
-		this.rect = rect;
-		this.id = id;
+		this.road = road;
 	}
 
 	/**
 	 * Constructs a TreeNode. The isRed boolean is being set to true;
-	 * @param useX  Whether or not to use the x-axis to compare other rectangles.
-	 * @param rect  The rectangle enclosing this road.
-	 * @param id  The id of this road.
+	 * @param road  This road.
 	 */
-	public TreeNode (boolean useX, RoadRectangle rect, int id)
+	public TreeNode (boolean useX, Road road)
 	{
 		this.useX = useX;
 		this.isRed = true;
-		this.rect = rect;
-		this.id = id;
+		this.road = road;
 	}
 
 	/**
 	 * Adds a tree node beneath this node.
-	 * @param that  The rectangle of the road.
-	 * @param id The id of the road.
 	 */
-	public void addTreeNode(RoadRectangle that, int id)
+	public void addTreeNode(Road that)
 	{
 		if(useX) {
-			if(this.rect.xMin < that.xMin) {
-				if(rightTreeNode == null)	rightTreeNode = new TreeNode(false, that, id);
-				else					rightTreeNode.addTreeNode(that, id);
+			if(road.rect.xMin < that.rect.xMin) {
+				if(rightTreeNode == null)	rightTreeNode = new TreeNode(false, that);
+				else						rightTreeNode.addTreeNode(that);
 			} else {
-				if(leftTreeNode == null)	leftTreeNode = new TreeNode(false, that, id);
-				else					leftTreeNode.addTreeNode(that, id);
+				if(leftTreeNode == null)	leftTreeNode = new TreeNode(false, that);
+				else						leftTreeNode.addTreeNode(that);
 			}
 		} else {
-			if(this.rect.yMin < that.yMin) {
-				if(rightTreeNode == null)	rightTreeNode = new TreeNode(true, that, id);
-				else					rightTreeNode.addTreeNode(that, id);
+			if(road.rect.yMin < that.rect.yMin) {
+				if(rightTreeNode == null)	rightTreeNode = new TreeNode(true, that);
+				else						rightTreeNode.addTreeNode(that);
 			} else {
-				if(leftTreeNode == null)	leftTreeNode = new TreeNode(true, that, id);
-				else					leftTreeNode.addTreeNode(that, id);
+				if(leftTreeNode == null)	leftTreeNode = new TreeNode(true, that);
+				else						leftTreeNode.addTreeNode(that);
 			}
 		}
 	}
@@ -98,16 +88,16 @@ public class TreeNode {
 	 * @param query  The rectangle we want to find roads inside.
 	 * @return A list of ids of the roads the intersects the given query-rectangle.
 	 */
-	public ArrayList<Integer> search(RoadRectangle query)
+	public ArrayList<String> search(RoadRectangle query)
 	{
 		// TODO: Create own dynamic array with no generic types!
-		ArrayList<Integer> returnList = new ArrayList<Integer>();
-		if(rect.intersects(query)) returnList.add(id);
+		ArrayList<String> returnList = new ArrayList<String>();
+		if(road.rect.intersects(query)) returnList.add(road.toXML());
 		
 		if(useX) {
-			if(this.rect.xMin >= query.xMax && leftTreeNode != null) // Search only in the TreeNodes to the left
+			if(road.rect.xMin >= query.xMax && leftTreeNode != null) // Search only in the TreeNodes to the left
 				returnList.addAll(leftTreeNode.search(query));
-			else if(this.rect.xMax <= query.xMin && rightTreeNode != null) // Search only in the TreeNodes to the right
+			else if(road.rect.xMax <= query.xMin && rightTreeNode != null) // Search only in the TreeNodes to the right
 				returnList.addAll(rightTreeNode.search(query));
 			else {  // Search in the TreeNodes to the left and the right
 				if(leftTreeNode != null)
@@ -116,9 +106,9 @@ public class TreeNode {
 					returnList.addAll(rightTreeNode.search(query));
 			}
 		} else {
-			if(this.rect.yMin >= query.yMax && leftTreeNode != null) // Search only in the TreeNodes to the left
+			if(road.rect.yMin >= query.yMax && leftTreeNode != null) // Search only in the TreeNodes to the left
 				returnList.addAll(leftTreeNode.search(query));
-			else if(this.rect.yMax <= query.yMin && rightTreeNode != null) // Search only in the TreeNodes to the right
+			else if(road.rect.yMax <= query.yMin && rightTreeNode != null) // Search only in the TreeNodes to the right
 				returnList.addAll(rightTreeNode.search(query));
 			else {  // Search in the TreeNodes to the left and the right
 				if(leftTreeNode != null)

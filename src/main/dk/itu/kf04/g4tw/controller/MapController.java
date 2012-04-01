@@ -13,13 +13,8 @@ public class MapController {
 
 	MapModel map = new MapModel();
 
-	public String getXML(double x1, double y1, double x2, double y2, int filter)
+	public String getXML(double xMin, double yMin, double xMax, double yMax, int... type)
 	{
-		String returnString;
-		returnString = "";
-
-		//map.search();
-
-		return returnString;
+		return map.getXML(xMin, yMin, xMax, yMax, type);
 	}
 }

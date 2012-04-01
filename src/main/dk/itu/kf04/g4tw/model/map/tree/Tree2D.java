@@ -1,6 +1,9 @@
 package dk.itu.kf04.g4tw.model.map.tree;
 
+import dk.itu.kf04.g4tw.model.map.Road;
+
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 /**
  * A 2-dimensional binary tree storing roads.
@@ -14,15 +17,12 @@ public class Tree2D {
 
 	/**
 	 * Adds a node to the tree.
-	 * @param from  The point the road starts.
-	 * @param to  The point the road ends.
-	 * @param id  The id of the road.
+	 * @param road The road that belongs to the node
 	 */
-	public void addNode(Point2D.Double from, Point2D.Double to, int id)
+	public void addNode(Road road)
 	{
-		RoadRectangle rect = new RoadRectangle(from.x, from.y, to.x, to.y);
-		if(root == null) 	root = new TreeNode(true, rect, id);
-		else 				root.addTreeNode(rect, id);
+		if(root == null) 	root = new TreeNode(true, road);
+		else 				root.addTreeNode(road);
 	}
 
 	/**
@@ -32,13 +32,16 @@ public class Tree2D {
 	 * @param xMax
 	 * @param yMax
 	 */
-	public void search(double xMin, double yMin, double xMax, double yMax)
+	public String search(double xMin, double yMin, double xMax, double yMax)
 	{
-		int i = 0;
-		for(Integer n : root.search(new RoadRectangle(xMin, yMin, xMax, yMax)))
-		//	System.out.println(n);
-			i++;
-		System.out.println("Total number of roads: " + i);
+		ArrayList<String> resultList = root.search(new RoadRectangle(xMin, yMin, xMax, yMax));
+
+		String resultString = "";
+		for(String s : resultList)
+		{
+			resultString += s;
+		}
+		return resultString;
 	}
 
 }
