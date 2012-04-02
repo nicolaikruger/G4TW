@@ -18,14 +18,14 @@ public class MapController {
     /**
      * The model containing the Map-data.
      */
-    MapModel model;
+    static MapModel model;
 
     /**
      * Creates a new controller with the information stored in the model,
      * @param model  The model containing the map-data.
      */
 	public MapController(MapModel model) {
-        this.model = model;
+        MapController.model = model;
 
         // Init server
         boolean success = WebServer.init();
