@@ -18,10 +18,19 @@ public class DynamicArray<Item> {
 	public void add(Item item)
 	{
 		if(N == a.length)
-			resize(a.length*2);
+			resize(a.length << 1);
 		
 		a[N++] = item;
 	}
+
+    /**
+     * Adds another DynamicArray to the array.
+     */
+    public void add(DynamicArray<Item> that) {
+        for (int i = 0; i < that.length(); i++) {
+            add(that.get(i));
+        }
+    }
 	
     /**
      * Removes an element from its index.

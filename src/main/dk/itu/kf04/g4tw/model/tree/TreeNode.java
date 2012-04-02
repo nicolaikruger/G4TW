@@ -1,6 +1,7 @@
 package dk.itu.kf04.g4tw.model.tree;
 
 import dk.itu.kf04.g4tw.model.Road;
+import dk.itu.kf04.g4tw.util.DynamicArray;
 
 import java.util.ArrayList;
 
@@ -88,33 +89,33 @@ public class TreeNode {
 	 * @param query  The rectangle we want to find roads inside.
 	 * @return A list of ids of the roads the intersects the given query-rectangle.
 	 */
-	public ArrayList<String> search(RoadRectangle query)
+	public DynamicArray<Road> search(RoadRectangle query)
 	{
 		// TODO: Create own dynamic array with no generic types!
-		ArrayList<String> returnList = new ArrayList<String>();
-		if(road.rect.intersects(query)) returnList.add(road.toXML());
+		DynamicArray<Road> returnList = new DynamicArray<Road>();
+		if(road.rect.intersects(query)) returnList.add(road);
 		
 		if(useX) {
 			if(road.rect.xMin >= query.xMax && leftTreeNode != null) // Search only in the TreeNodes to the left
-				returnList.addAll(leftTreeNode.search(query));
+				returnList.add(leftTreeNode.search(query));
 			else if(road.rect.xMax <= query.xMin && rightTreeNode != null) // Search only in the TreeNodes to the right
-				returnList.addAll(rightTreeNode.search(query));
+				returnList.add(rightTreeNode.search(query));
 			else {  // Search in the TreeNodes to the left and the right
 				if(leftTreeNode != null)
-					returnList.addAll(leftTreeNode.search(query));
+					returnList.add(leftTreeNode.search(query));
 				if(rightTreeNode != null)
-					returnList.addAll(rightTreeNode.search(query));
+					returnList.add(rightTreeNode.search(query));
 			}
 		} else {
 			if(road.rect.yMin >= query.yMax && leftTreeNode != null) // Search only in the TreeNodes to the left
-				returnList.addAll(leftTreeNode.search(query));
+				returnList.add(leftTreeNode.search(query));
 			else if(road.rect.yMax <= query.yMin && rightTreeNode != null) // Search only in the TreeNodes to the right
-				returnList.addAll(rightTreeNode.search(query));
+				returnList.add(rightTreeNode.search(query));
 			else {  // Search in the TreeNodes to the left and the right
 				if(leftTreeNode != null)
-					returnList.addAll(leftTreeNode.search(query));
+					returnList.add(leftTreeNode.search(query));
 				if(rightTreeNode != null)
-					returnList.addAll(rightTreeNode.search(query));
+					returnList.add(rightTreeNode.search(query));
 			}
 		}
 		return returnList;

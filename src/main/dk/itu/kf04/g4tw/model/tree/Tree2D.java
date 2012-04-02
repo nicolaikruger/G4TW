@@ -1,6 +1,7 @@
 package dk.itu.kf04.g4tw.model.tree;
 
 import dk.itu.kf04.g4tw.model.Road;
+import dk.itu.kf04.g4tw.util.DynamicArray;
 
 import java.util.ArrayList;
 
@@ -31,16 +32,8 @@ public class Tree2D {
 	 * @param xMax
 	 * @param yMax
 	 */
-	public String search(double xMin, double yMin, double xMax, double yMax)
-	{
-		ArrayList<String> resultList = root.search(new RoadRectangle(xMin, yMin, xMax, yMax));
-
-		String resultString = "";
-		for(String s : resultList)
-		{
-			resultString += s;
-		}
-		return resultString;
+	public DynamicArray<Road> search(double xMin, double yMin, double xMax, double yMax) {
+		return(root.search(new RoadRectangle(xMin, yMin, xMax, yMax)));
 	}
 
 }
