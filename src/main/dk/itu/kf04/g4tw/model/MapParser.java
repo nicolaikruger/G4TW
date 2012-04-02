@@ -6,14 +6,24 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * A parser for Krak map-data.
  */
 public class MapParser {
+
+    /**
+     * The logger for the class
+     */
+    static Logger Log = Logger.getLogger(MapParser.class.getName());
     
     /**
      * Initializes the MapParser and loads the map-data into the given model.
+     * 
+     * @param nodes  The file to load the Nodes from.
+     * @param edges  The file to load the edges from.
+     * @return  A Model containing the nodes and edges loaded.
      */
     public static MapModel load(File nodes, File edges) {
         // Create the model
@@ -23,7 +33,7 @@ public class MapParser {
             HashMap<Integer, Node> nodeMap = parseNodes(nodes);
             parseEdges(edges, model, nodeMap);
         } catch (FileNotFoundException e) {
-            System.out.println("Exception while processing map-data: " + e.getMessage());
+            Log.warning("Exception while processing map-data: " + e.getMessage() + ". Model may be empty.");
         }
 
         return model;
@@ -42,35 +52,34 @@ public class MapParser {
         Scanner scanner = new Scanner(new FileReader(file));
 
         // Fills in the data in the map
-        try {
-            scanner.nextLine();
-            while (scanner.hasNextLine()) {
-                String[] nextLine = scanner.nextLine().split(",");
-                String name = nextLine[6];
+        scanner.nextLine();
+        while (scanner.hasNextLine()) {
+            String[] nextLine = scanner.nextLine().split(",");
+            String name = nextLine[6];
 
-                int a = Integer.parseInt(nextLine[0]);
-                int b = Integer.parseInt(nextLine[1]);
+            int a = Integer.parseInt(nextLine[0]);
+            int b = Integer.parseInt(nextLine[1]);
 
-                Node nodeA = nodeMap.get(a);
-                Node nodeB = nodeMap.get(b);
+            Node nodeA = nodeMap.get(a);
+            Node nodeB = nodeMap.get(b);
 
-                Point2D.Double pointA = new Point2D.Double(nodeA.getX(),nodeA.getY());
-                Point2D.Double pointB = new Point2D.Double(nodeB.getX(),nodeB.getY());
+            Point2D.Double pointA = new Point2D.Double(nodeA.getX(),nodeA.getY());
+            Point2D.Double pointB = new Point2D.Double(nodeB.getX(),nodeB.getY());
 
-                int type = Integer.parseInt(nextLine[5]);
-                double speed = Double.parseDouble(nextLine[25]);
-                double length = Double.parseDouble(nextLine[2]);
+            int type = Integer.parseInt(nextLine[5]);
+            double speed = Double.parseDouble(nextLine[25]);
+            double length = Double.parseDouble(nextLine[2]);
 
-                nodeA.connect(b);
-                nodeB.connect(a);
-
-                Road tmp = new Road(name, pointA, pointB, type, speed, length);
-
-                model.addRoad(tmp);
-            }
-        } finally {
-            scanner.close();
+            nodeA.connect(b);
+            nodeB.connect(a);
+            Road tmp = new Road(name, pointA, pointB, type, speed, length);
+            model.addRoad(tmp);
         }
+        // Close the scanner
+        scanner.close();
+
+        // Log success
+        Log.fine("Successfully loaded Map edges into model.");
     }
 
     /**
@@ -87,24 +96,23 @@ public class MapParser {
         HashMap<Integer, Node> nodeMap = new HashMap<Integer, Node>();
         
         // Try to load the data
-        try {                                               
-            scanner.nextLine();
-            while(scanner.hasNextLine()) {
-                String[] nextLine = scanner.nextLine().split(",");
-                // Find the id and positions
-                int id = Integer.parseInt(nextLine[2]);
-                double xPos = Double.parseDouble(nextLine[3]);
-                double yPos = Double.parseDouble(nextLine[4]);
+        scanner.nextLine();
+        while(scanner.hasNextLine()) {
+            String[] nextLine = scanner.nextLine().split(",");
+            // Find the id and positions
+            int id = Integer.parseInt(nextLine[2]);
+            double xPos = Double.parseDouble(nextLine[3]);
+            double yPos = Double.parseDouble(nextLine[4]);
 
-                // Create the node
-                Node node = new Node(xPos, yPos);
+            // Create the node
+            Node node = new Node(xPos, yPos);
 
-                // Insert it into the map
-                nodeMap.put(id, node);
-            }
-        } finally {
-            scanner.close();
+            // Insert it into the map
+            nodeMap.put(id, node);
         }
+        scanner.close();
+
+        Log.fine("Successfully parsed Map nodes.");
         
         return nodeMap;
     }

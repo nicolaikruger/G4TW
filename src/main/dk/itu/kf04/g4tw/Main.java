@@ -1,6 +1,5 @@
 package dk.itu.kf04.g4tw;
 
-import dk.itu.kf04.g4tw.controller.MapArtist;
 import dk.itu.kf04.g4tw.controller.WebServer;
 import dk.itu.kf04.g4tw.model.MapModel;
 import dk.itu.kf04.g4tw.model.MapParser;
@@ -25,9 +24,6 @@ public class Main {
         MapModel model = MapParser.load(nodeFile, edgeFile);
 
         System.out.println("Done!");
-
-		// Init draw
-		MapArtist.initMapArtist();
 
         // Init server
         boolean success = WebServer.init();
