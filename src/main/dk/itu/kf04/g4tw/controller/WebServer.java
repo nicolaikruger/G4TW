@@ -129,13 +129,12 @@ public class WebServer implements HTTPConstants {
             }
         // SocketException
         } catch (SocketException e) {
-            System.out.println("SocketException");
-            e.printStackTrace();
+            Log.warning("SocketException while starting the server: " + e);
             isInitialized = false;
         // IOException
         } catch (IOException e) {
-            System.out.println("IOException: ");
-            e.printStackTrace();
+            Log.warning("IOException while starting the server: " + e);
+            isInitialized = false;
         }
 
         // Return success or failure
