@@ -88,8 +88,6 @@ public class WebServer implements HTTPConstants, Closeable {
             try {
                 // Set input stream via
                 input = RequestParser.parseToInputStream(fileRequest.substring(4, fileRequest.length()));
-
-                respond("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n", input, out);
             } catch (IllegalArgumentException e) {
                 Log.warning("Illegal argument: " + e.getMessage());
             } catch (UnsupportedEncodingException e) {
@@ -189,7 +187,7 @@ public class WebServer implements HTTPConstants, Closeable {
         os.println("Date: " + new Date());
         if (contentType != null) { os.println("Content-Type: " + contentType); }
         // Create a line between meta-content and content
-		os.println();
+        os.println();
 
         // Send object
         try {

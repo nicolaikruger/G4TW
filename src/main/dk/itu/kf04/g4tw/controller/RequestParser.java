@@ -59,7 +59,6 @@ public class RequestParser {
         }
         
         result += "</roadCollection>";
-        System.out.println(result);
 
         try {
             return new ByteArrayInputStream(result.getBytes("UTF-8"));
