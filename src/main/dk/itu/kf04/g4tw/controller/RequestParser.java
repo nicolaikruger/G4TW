@@ -52,13 +52,15 @@ public class RequestParser {
             }
         }
         
-        // magi!...
+        // Search the model and concatenate the results with the previous
         DynamicArray<Road> search = MapController.model.search(x1, y1, x2, y2, filter);
         for(int i = 0; i < search.length(); i++) {
-        	result += search.get(i).toXML() + "\n";
+        	result += search.get(i).toXML();
         }
         
         result += "</roadCollection>";
+
+        System.out.println(search.length());
 
         try {
             return new ByteArrayInputStream(result.getBytes("UTF-8"));

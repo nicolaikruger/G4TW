@@ -37,7 +37,7 @@ public class Main {
         // Import data
         MapModel model = MapParser.load(nodeFile, edgeFile);
         
-        Log.fine("Import of map-data done.");
+        Log.info("Import of map-data done. Starting server.");
 
         // Start the controller
         new MapController(model);

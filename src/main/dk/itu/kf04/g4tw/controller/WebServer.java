@@ -181,7 +181,7 @@ public class WebServer implements HTTPConstants, Closeable {
      * @param os  The output stream to the client
      */
     protected static void respond(String contentType, InputStream is, PrintStream os) {
-        // Print HTTP status code
+        // Print HTTP meta-content
         os.println("HTTP/1.1 200 OK");
         os.println("Server: KraXServer/1.0");
         os.println("Date: " + new Date());

@@ -39,7 +39,7 @@ public class MapModel {
      */
     public MapModel() {
 		// Added 0, 31, 95
-        loadTypeReference(HIGHWAY, 1, 21, 31, 41);
+        loadTypeReference(HIGHWAY,        1, 21, 31, 41);
         loadTypeReference(EXPRESSWAY,     2, 22, 32, 42);
         loadTypeReference(PRIMARY_ROAD,   3, 23, 33, 43);
         loadTypeReference(SECONDARY_ROAD, 4, 24, 34, 44, 95);
