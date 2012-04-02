@@ -7,26 +7,23 @@
 	//////////////////////////////////////
 -->
 <roadCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				xsi:noNamespaceSchemaLocation="http://online-sporstudstyr.dk/kraX.xsd" xmlns="http://www.w3schools.com"
-				xsi:schemaLocation="http://www.w3schools.com http://online-sporstudstyr.dk/kraX.xsd">
+                xsi:noNamespaceSchemaLocation="kraX.xsd">
 
-	<r>
-		<n>Kruger</n>
-		<l>1.25</l>
-		<s>130.0</s>
-		<fx>5.0</fx>
-		<fy>6.8</fy>
-		<tx>10.1</tx>
-		<ty>66.6</ty>
-	</r>
-	<r>
-		<n>Kruger2</n>
-		<l>1.25</l>
-		<s>30.0</s>
-		<fx>10.1</fx>
-		<fy>66.6</fy>
-		<tx>150</tx>
-		<ty>150</ty>
-	</r>
+    <r>
+        <n>Kruger</n>
+        <s>130.0</s>
+        <fx>5.0</fx>
+        <fy>6.8</fy>
+        <tx>10.1</tx>
+        <ty>66.6</ty>
+    </r>
+    <r>
+        <n>Kruger2</n>
+        <s>30.0</s>
+        <fx>10.1</fx>
+        <fy>66.6</fy>
+        <tx>150</tx>
+        <ty>150</ty>
+    </r>
 
 </roadCollection>
