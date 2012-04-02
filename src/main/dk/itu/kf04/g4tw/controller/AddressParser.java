@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * A parser that can parse a string-input to an Address.
  */
 public class AddressParser {
     /**
