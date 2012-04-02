@@ -1,6 +1,6 @@
 package dk.itu.kf04.g4tw.controller;
 
-import dk.itu.kf04.g4tw.model.map.MapModel;
+import dk.itu.kf04.g4tw.model.MapModel;
 
 /**
  * Created with IntelliJ IDEA.
