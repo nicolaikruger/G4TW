@@ -5,7 +5,7 @@ import dk.itu.kf04.g4tw.model.MapModel;
 import dk.itu.kf04.g4tw.model.MapParser;
 
 import java.io.File;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 /**
  * Main entry-point for the application.
@@ -19,9 +19,11 @@ public class Main {
      * @param args  The arguments to feed the application.
      */
     public static void main(String[] args) {
-        // Log start
-        Log.finest("Main starting up.");
+        Log.setLevel(Level.ALL);
         
+        // Log program start
+        Log.info("Main starting up.");
+
         // Find the files
         File nodeFile = new File("krak/kdv_node_unload.txt");
         File edgeFile = new File("krak/kdv_unload.txt");
