@@ -1,41 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-				<title>KF04 - Opg 4!</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>KF04 - Opg 4!</title>
 </head>
 
 <body>
-<canvas id="canvas" height="400" width="400"/>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $( "#zoom" ).slider({ orientation: 'vertical' });
+    });
+</script>
 <script type="text/javascript" src="Model.js"></script>
 <script type="text/javascript" src="View.js"></script>
 <script type="text/javascript">
 
-				var canvas = document.getElementById("canvas");
-				var c = canvas.getContext("2d");
-				var model; var view;
-				var xml;
-				var req = new XMLHttpRequest();
-				req.onreadystatechange = function(e) { // Function to be called when result arrives
-								if (req.readyState==4 && (req.status==0 || req.status==200)) {
-																//xml = req.responseXML;
+    var canvas = document.getElementById("canvas");
+    var c = canvas.getContext("2d");
+    var model; var view;
+    var xml;
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function(e) { // Function to be called when result arrives
+        if (req.readyState==4 && (req.status==0 || req.status==200)) {
+            //xml = req.responseXML;
 
-												var parser = new DOMParser();
+            var parser = new DOMParser();
 
+            //req.responseType = "application/xml";
 
-												//req.responseType = "application/xml";
+            xml = parser.parseFromString(String(req.response), "text/xml");
 
-												xml = parser.parseFromString(String(req.response), "text/xml");
+            console.log(xml);
 
-												console.log(xml);
+            model = new Model(xml);
+            view = new View(model, c);
+            view.draw();
+        }
+    };
 
-												model = new Model(xml);
-												view = new View(model, c);
-												view.draw();
-								}
-				};
-
-				req.open("GET", "kraX.xml", true);
-				req.send(null);
+    req.open("GET", "kraX.xml", true);
+    req.send(null);
 </script>
+
+<div id="all">
+    <div id="banner"></div>
+    <div id="left">
+        <h1>Menubar.exe</h1>
+        <fieldset id="filter">
+            <legend>Filter:</legend>
+            <input type="checkbox" id="highway" value="Highway" />
+            <label for="highway">Highway</label><br />
+            <input type="checkbox" id="expressway" value="Expressway" />
+            <label for="expressway">Expressway</label><br />
+            <input type="checkbox" id="primaryRoad" value="Primary Road" />
+            <label for="primaryRoad">Primary Road</label><br />
+            <input type="checkbox" id="secondaryRoad" value="Secondary Road" />
+            <label for="secondaryRoad">Secondary Road</label><br />
+            <input type="checkbox" id="minorRoad" value="Minor Road" />
+            <label for="minorRoad">Minor Road</label><br />
+            <input type="checkbox" id="path" value="Path" />
+            <label for="path">Path</label><br />
+            <input type="checkbox" id="seaway" value="Seaway" />
+            <label for="seaway">Seaway</label><br />
+            <input type="checkbox" id="location" value="Location" />
+            <label for="location">Location</label><br />
+        </fieldset>
+    </div> <!-- left ends here -->
+    <div id="right">
+        <canvas id="canvas" height="400" width="400"/><br />
+        <div id="zoom">ZOOM ZOOM</div>
+    </div> <!-- right ends here -->
+</div> <!-- all ends here -->
+
 </body>
 </html>
