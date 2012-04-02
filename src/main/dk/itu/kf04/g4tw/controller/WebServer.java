@@ -1,5 +1,7 @@
 package dk.itu.kf04.g4tw.controller;
 
+import sun.misc.IOUtils;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -112,8 +114,10 @@ public class WebServer implements HTTPConstants {
                         // Load file
                         input = new FileInputStream(new File(fileRequest));
                         // Set content-type
-                        contentType = URLConnection.guessContentTypeFromName(fileRequest);
-                    } catch (FileNotFoundException e) {
+						if(fileRequest.endsWith(".js"))			contentType = "text/javascript";
+						else if(fileRequest.endsWith(".xml"))	contentType = "text/xml";
+						else		                   			contentType = URLConnection.guessContentTypeFromName(fileRequest);
+					} catch (FileNotFoundException e) {
                         Log.warning("File " + fileRequest + " not found.");
                     }
                 }
