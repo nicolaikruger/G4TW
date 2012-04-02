@@ -1,4 +1,4 @@
-package dk.itu.kf04.g4tw.model.map.tree;
+package dk.itu.kf04.g4tw.model.tree;
 
 import java.awt.geom.Point2D;
 

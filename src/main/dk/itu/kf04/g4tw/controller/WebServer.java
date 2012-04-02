@@ -44,7 +44,7 @@ public class WebServer implements HTTPConstants {
         if (isInitialized) return false;
 
 		map = new MapController();
-		System.out.println(map.getXML(0,0,9999999, 9999999, 64, 128));
+
         // Try to initialize a ServerSocket
         try {
             ServerSocket server = new ServerSocket(port);
@@ -89,35 +89,7 @@ public class WebServer implements HTTPConstants {
                         input = RequestParser.parseToInputStream(fileRequest.substring(4, fileRequest.length()));
 
 						//String responsText =
-						respond("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
-								"\n" +
-								"<!--\n" +
-								"\t//////////////////////////////////////\n" +
-								"\t//\tkraX\t\t\t\t\t\t   \t//\n" +
-								"\t//\tCreated by G4tw on 2012-02-29. \t//\n" +
-								"\t//////////////////////////////////////\n" +
-								"-->\n" +
-								"<roadCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
-								"\txsi:noNamespaceSchemaLocation=\"http://online-sporstudstyr.dk/kraX.xsd\" xmlns=\"http://www.w3schools.com\">\n" +
-								"\t<r>\n" +
-								"\t\t<n>Kruger</n>\n" +
-								"\t\t<l>1.25</l>\n" +
-								"\t\t<s>130.0</s>\n" +
-								"\t\t<fx>5.0</fx>\n" +
-								"\t\t<fy>6.8</fy>\n" +
-								"\t\t<tx>10.1</tx>\n" +
-								"\t\t<ty>66.6</ty>\n" +
-								"\n" +
-								"\t\t<n>Kruger2</n>\n" +
-								"\t\t<l>1.25</l>\n" +
-								"\t\t<s>30.0</s>\n" +
-								"\t\t<fx>10.1</fx>\n" +
-								"\t\t<fy>66.6</fy>\n" +
-								"\t\t<tx>150</tx>\n" +
-								"\t\t<ty>150</ty>\n" +
-								"\t</r>\n" +
-								"\n" +
-								"</roadCollection>", input, pout);
+						respond("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n", input, pout);
                     } catch (IllegalArgumentException e) {
                         System.out.println("Illegal argument: " + e.getMessage());
                     } catch (UnsupportedEncodingException e) {

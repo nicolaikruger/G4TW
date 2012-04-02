@@ -56,7 +56,7 @@ public class Main {
 		} catch (Exception e) {
 			System.out.println("Fuuu! Program said:\n\t" + e);
 		}
-		
+
 		// Såfle!
 		//roads.shuffle();
 
@@ -163,7 +163,7 @@ public class Main {
 
 				Point2D.Double pointA = new Point2D.Double(nodeA.getX(),nodeA.getY());
 				Point2D.Double pointB = new Point2D.Double(nodeB.getX(),nodeB.getY());
-				
+
 				int type = Integer.parseInt(nextLine[5]);
 				double speed = Double.parseDouble(nextLine[25]);
 				double length = Double.parseDouble(nextLine[2]);
@@ -211,7 +211,7 @@ public class Main {
 		}
 		return hmap;
 	}
-	
+
 	/**
 	private static void assignRoadToNode() {
 		for (int i = 0; i<roads.length(); i++) {
