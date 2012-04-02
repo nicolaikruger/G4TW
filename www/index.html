@@ -1,32 +1,37 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>KF04 - Opg 4!</title>
-	</head>
+<head>
+				<title>KF04 - Opg 4!</title>
+</head>
 
-	<body>
-		<canvas id="canvas" height="400" width="400"/>
-        <script type="text/javascript" src="Model.js"></script>
-        <script type="text/javascript" src="View.js"></script>
-		<script type="text/javascript">
+<body>
+<canvas id="canvas" height="400" width="400"/>
+<script type="text/javascript" src="Model.js"></script>
+<script type="text/javascript" src="View.js"></script>
+<script type="text/javascript">
 
-			var canvas = document.getElementById("canvas");
-			var c = canvas.getContext("2d");
-            var model; var view;
-            var xml;
-			var req = new XMLHttpRequest();
-			req.onreadystatechange = function() { // Function to be called when result arrives
-				if (req.readyState==4 && (req.status==0 || req.status==200)) {
-											alert("hmm");
-                    xml = req.responseXML;
-                    model = new Model(xml);
-                    view = new View(model, c);
-                    view.draw();
-				}
-            };
+				var canvas = document.getElementById("canvas");
+				var c = canvas.getContext("2d");
+				var model; var view;
+				var xml;
+				var req = new XMLHttpRequest();
+				req.onreadystatechange = function() { // Function to be called when result arrives
+								if (req.readyState==4 && (req.status==0 || req.status==200)) {
 
-			req.open("GET", "kraX.xml", true);
-			req.send(null);
-		    </script>
-	    </body>
+												xml = req.responseXML;
+
+												var parser = new DOMParser();
+												//xml = parser.parseFromString(xml, "text/xml");
+
+												console.log(xml.type);
+												model = new Model(xml);
+												view = new View(model, c);
+												view.draw();
+								}
+				};
+
+				req.open("GET", "kraX.xml", true);
+				req.send();
+</script>
+</body>
 </html>
