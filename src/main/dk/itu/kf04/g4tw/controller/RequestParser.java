@@ -10,30 +10,39 @@ import java.util.Arrays;
 public class RequestParser {
     
     public static InputStream parseToInputStream(String input) throws IllegalArgumentException, UnsupportedEncodingException {
+    	// Variables for the request
+    	int x1 = 0, x2 = 0, y1 = 0, y2 = 0, filter = 0;
+    	
         // Decode the input and split it up
         String[] queries = URLDecoder.decode(input, "UTF-8").split("&");
+                
         String result = "";
 
-        if (queries.length == 0) {
-            throw new IllegalArgumentException("Must have more than zero queries.");
+        if (queries.length != 5) {
+            throw new IllegalArgumentException("Must have exactly 5 queries.");
         }
 
         // Iterate through the queries
         for(String query : queries) {
             String[] arr = query.split("=");
-
+            
             // Something is wrong if there are not exactly 2 values
             if (arr.length != 2) {
-                throw new IllegalArgumentException("Must have format name1=value1&name2=value2");
+                throw new IllegalArgumentException("Must have format xml?x1=lowValue&y1=lowValue&x2=highValue&y2=highValue&filter=[1-?]");
             } else {
-                String name = arr[0];
-                String value = arr[1];
-
-                if (name.equals("address")) {
-                    result = Arrays.toString(AddressParser.parseAddress(value));
-                } else if (name.equals("x")) {
-                    //  ...
-                }
+            	// Assign input to local variables
+                for(int i = 0; i < arr.length; i++) {
+					String name = arr[i];
+					String value = arr[++i];
+					switch(name) {
+						case "x1" : x1 = Integer.parseInt(value); break;
+						case "x2" : x2 = Integer.parseInt(value); break;
+						case "y1" : y1 = Integer.parseInt(value); break;
+						case "y2" : y2 = Integer.parseInt(value); break;
+						case "filter" : filter = Integer.parseInt(value); break;
+						default : throw new IllegalArgumentException("Must have format xml?x1=lowValue&y1=lowValue&x2=highValue&y2=highValue&filter=[1-?]");
+					}
+				}
             }
         }
         
