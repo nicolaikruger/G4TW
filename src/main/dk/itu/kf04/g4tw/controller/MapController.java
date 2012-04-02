@@ -5,11 +5,7 @@ import dk.itu.kf04.g4tw.model.MapModel;
 import java.util.logging.Logger;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Krüger-Pony  **mwuahahah**
- * Date: 01-04-12
- * Time: 12:15
- * To change this template use File | Settings | File Templates.
+ * The overall controller for the application.
  */
 public class MapController {
 
@@ -32,9 +28,9 @@ public class MapController {
         
         // Log status
         if (success) {
-            Log.info("Program initialized correct and web-server has been started.");
+            Log.info("Web-server has been started.");
         } else {
-            Log.warning("Program initialized correct but web-server failed to start.");
+            Log.warning("Web-server failed to start.");
         }
     }
 }
