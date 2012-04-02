@@ -22,10 +22,9 @@ public class RequestParser {
         // Decode the input and split it up
         String[] queries = URLDecoder.decode(input, "UTF-8").split("&");
                 
-        String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
-  				"<roadCollection xmlns=\"http://www.w3schools.com\"" +
-  				"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
-  				"xsi:noNamespaceSchemaLocation=\"localhost/kraX.xsd\">";
+        String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" +
+                "<roadCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
+                "xsi:noNamespaceSchemaLocation=\"kraX.xsd\">";
 
         if (queries.length != 5) {
             throw new IllegalArgumentException("Must have exactly 5 queries.");
@@ -55,12 +54,15 @@ public class RequestParser {
         // Search the model and concatenate the results with the previous
         DynamicArray<Road> search = MapController.model.search(x1, y1, x2, y2, filter);
         for(int i = 0; i < search.length(); i++) {
-        	result += search.get(i).toXML();
+            if(search.get(i).getLength() > 500) {
+                result += search.get(i).toXML();
+            }
         }
         
         result += "</roadCollection>";
 
         System.out.println(search.length());
+        //System.out.println(result);
 
         try {
             return new ByteArrayInputStream(result.getBytes("UTF-8"));

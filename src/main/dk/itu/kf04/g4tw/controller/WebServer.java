@@ -191,7 +191,7 @@ public class WebServer implements HTTPConstants, Closeable {
 
         // Send object
         try {
-            byte[] buffer = new byte[1000];
+            byte[] buffer = new byte[100000];
             while(is.available() > 0) {
                 os.write(buffer, 0, is.read(buffer));
             }

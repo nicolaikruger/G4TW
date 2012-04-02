@@ -1,47 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-        <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <title>KF04 - Opg 4!</title>
 </head>
 
 <body>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script type="text/javascript">
     $(function() {
         $( "#zoom" ).slider({ orientation: 'vertical' });
     });
-</script>
-<script type="text/javascript" src="Model.js"></script>
-<script type="text/javascript" src="View.js"></script>
-<script type="text/javascript">
-
-    var canvas = document.getElementById("canvas");
-    var c = canvas.getContext("2d");
-    var model; var view;
-    var xml;
-    var req = new XMLHttpRequest();
-    req.onreadystatechange = function(e) { // Function to be called when result arrives
-        if (req.readyState==4 && (req.status==0 || req.status==200)) {
-            //xml = req.responseXML;
-
-            var parser = new DOMParser();
-
-            //req.responseType = "application/xml";
-
-            xml = parser.parseFromString(String(req.response), "text/xml");
-
-            console.log(xml);
-
-            model = new Model(xml);
-            view = new View(model, c);
-            view.draw();
-        }
-    };
-
-    req.open("GET", "kraX.xml", true);
-    req.send(null);
-</script>
+</script> -->
 
 <div id="all">
     <div id="banner"></div>
@@ -68,7 +38,47 @@
         </fieldset>
     </div> <!-- left ends here -->
     <div id="right">
-        <canvas id="canvas" height="400" width="400"/><br />
+        <canvas id="canvas" height="500" width="550"/><br />
+
+        <script type="text/javascript" src="Model.js"></script>
+        <script type="text/javascript" src="View.js"></script>
+        <script type="text/javascript">
+
+            var canvas = document.getElementById("canvas");
+            var c = canvas.getContext("2d");
+            var model; var view;
+            var xml;
+            var req = new XMLHttpRequest();
+            var filter = 1;
+            req.onreadystatechange = function(e) { // Function to be called when result arrives
+                if (req.readyState==4 && (req.status==0 || req.status==200)) {
+                    //xml = req.responseXML;
+
+                    var parser = new DOMParser();
+
+                    //req.responseType = "application/xml";
+
+                    xml = parser.parseFromString(String(req.response), "text/xml");
+
+                    console.log(xml);
+
+                    model = new Model(xml);
+                    view = new View(model, c);
+                    view.draw();
+
+
+                    if(filter <= 32)
+                    {
+                        filter *= 2
+                        req.open("GET", "xml?x1=0&x2=999999999&y1=0&y2=999999999&filter=" + filter, true);
+                        req.send(null);
+                    }
+                }
+            };
+
+            req.open("GET", "xml?x1=0&x2=999999999&y1=0&y2=999999999&filter=1", true);
+            req.send(null);
+        </script>
         <div id="zoom">ZOOM ZOOM</div>
     </div> <!-- right ends here -->
 </div> <!-- all ends here -->
