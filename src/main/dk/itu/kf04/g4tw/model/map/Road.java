@@ -1,4 +1,6 @@
 package dk.itu.kf04.g4tw.model.map;
+import dk.itu.kf04.g4tw.model.map.tree.RoadRectangle;
+
 import java.awt.geom.Point2D;
 
 public class Road {
@@ -9,6 +11,11 @@ public class Road {
 	public final Point2D.Double to;
 	private double speed;
 	private double length;
+
+	/**
+	 * The rectangle enclosing this road.
+	 */
+	public final RoadRectangle rect;
 	
 	public Road(String name, Point2D.Double f, Point2D.Double t, int type, double speed, double length) {
 		this.name = name;
@@ -17,6 +24,8 @@ public class Road {
 		this.to = t;
 		this.speed = speed;
 		this.length = length;
+		
+		rect = new RoadRectangle(f, t);
 	}
 	
 	public String toString() {
@@ -34,6 +43,11 @@ public class Road {
 	public Point2D.Double getTo() {
 		return to;
 	}
+
+	public int getType() {
+		return type;
+	}
+
 	/**
 	public void assignNodes() {
 		getFrom().createRelation(this);
@@ -44,14 +58,14 @@ public class Road {
 	{
 		String returnString;
 
-		returnString = "<r><n>" + name;
-		returnString += "</n><l>" + length;
-		returnString += "</l><s>" + speed;
-		returnString += "</s><fx>" + from.x;
-		returnString += "</fx><fy>" + from.y;
-		returnString += "</fy><tx>" + to.x;
-		returnString += "</tx><ty>" + to.y;
-		returnString += "</ty></r>";
+		returnString = 	"<r><n>" + name +
+						"</n><l>" + length +
+						"</l><s>" + speed +
+						"</s><fx>" + from.x +
+						"</fx><fy>" + from.y +
+						"</fy><tx>" + to.x +
+						"</tx><ty>" + to.y +
+						 "</ty></r>";
 
 		return returnString;
 	}

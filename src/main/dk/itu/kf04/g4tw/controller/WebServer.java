@@ -32,7 +32,7 @@ public class WebServer implements HTTPConstants {
 	/**
 	 * Retrieves data from the Kraks data-set (XML).
 	 */
-	private static  MapController map = new MapController();
+	private static MapController map;
     
     /**
      * Initialize the server and prepare to respond on incoming requests.
@@ -43,6 +43,8 @@ public class WebServer implements HTTPConstants {
         // Return if webserver already has been started
         if (isInitialized) return false;
 
+		map = new MapController();
+		System.out.println(map.getXML(0,0,9999999, 9999999, 64, 128));
         // Try to initialize a ServerSocket
         try {
             ServerSocket server = new ServerSocket(port);
@@ -96,7 +98,7 @@ public class WebServer implements HTTPConstants {
 								"\t//////////////////////////////////////\n" +
 								"-->\n" +
 								"<roadCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
-								"\txsi:noNamespaceSchemaLocation=\"http://online-sporstudstyr.dk//kraX.xsd\" xmlns=\"http://www.w3schools.com\">\n" +
+								"\txsi:noNamespaceSchemaLocation=\"http://online-sporstudstyr.dk/kraX.xsd\" xmlns=\"http://www.w3schools.com\">\n" +
 								"\t<r>\n" +
 								"\t\t<n>Kruger</n>\n" +
 								"\t\t<l>1.25</l>\n" +
