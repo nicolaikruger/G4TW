@@ -1,9 +1,8 @@
 package dk.itu.kf04.g4tw.RoadKill;
 
-import dk.itu.kf04.g4tw.model.map.Node;
-import dk.itu.kf04.g4tw.model.map.Road;
-import dk.itu.kf04.g4tw.model.map.tree.RoadRectangle;
-import dk.itu.kf04.g4tw.model.map.tree.Tree2D;
+import dk.itu.kf04.g4tw.model.Node;
+import dk.itu.kf04.g4tw.model.Road;
+import dk.itu.kf04.g4tw.model.tree.Tree2D;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 
 import java.io.*;

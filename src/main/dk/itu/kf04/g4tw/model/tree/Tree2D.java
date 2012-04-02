@@ -1,8 +1,7 @@
-package dk.itu.kf04.g4tw.model.map.tree;
+package dk.itu.kf04.g4tw.model.tree;
 
-import dk.itu.kf04.g4tw.model.map.Road;
+import dk.itu.kf04.g4tw.model.Road;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**

@@ -1,5 +1,5 @@
-package dk.itu.kf04.g4tw.model.map;
-import dk.itu.kf04.g4tw.model.map.tree.RoadRectangle;
+package dk.itu.kf04.g4tw.model;
+import dk.itu.kf04.g4tw.model.tree.RoadRectangle;
 
 import java.awt.geom.Point2D;
 
