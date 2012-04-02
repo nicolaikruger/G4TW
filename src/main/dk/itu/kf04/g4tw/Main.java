@@ -13,7 +13,10 @@ import java.util.logging.*;
  */
 public class Main {
 
-    static Logger Log = Logger.getLogger(Main.class.getName());
+    /**
+     * The logging-util for the Main class.
+     */
+    protected static Logger Log = Logger.getLogger(Main.class.getName());
     
     /**
      * Starts the application by initializing data and then starting server.
