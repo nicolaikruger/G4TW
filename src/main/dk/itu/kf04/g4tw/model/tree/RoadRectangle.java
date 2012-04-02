@@ -71,11 +71,7 @@ public class RoadRectangle {
      * @return True if there is an intersection, false otherwise.
 	 */
 	public boolean intersects(RoadRectangle that) {
-		double xMin = that.getDimensionValue((byte) 1).doubleValue();
-		double yMin = that.getDimensionValue((byte) 2).doubleValue();
-		double xMax = that.getDimensionValue((byte) 3).doubleValue();
-		double yMax = that.getDimensionValue((byte) 4).doubleValue();
-		return (this.xMin < xMax || this.xMax > xMin || this.yMin < yMax || this.yMax > yMin);
+		return (this.xMin <= that.xMax && this.xMax >= that.xMin && this.yMin <= that.yMax && this.yMax >= that.yMin);
 	}
     
     @Override public String toString() {
