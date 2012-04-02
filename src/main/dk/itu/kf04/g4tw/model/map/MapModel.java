@@ -82,10 +82,7 @@ public class MapModel {
 
 	private void loadMapData()
 	{
-		File hmm = new File(".");
-		System.out.println("PATH = " + hmm.getAbsolutePath());
-
-		String folderPath = "src/main/dk/itu/kf04/g4tw/krakData/";
+		String folderPath = "krak/";
 		
 		try{
 			nodeMap = getNodes(folderPath + "kdv_node_unload.txt");
