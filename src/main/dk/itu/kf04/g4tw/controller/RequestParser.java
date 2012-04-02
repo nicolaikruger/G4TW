@@ -46,5 +46,11 @@ public class RequestParser {
             return null;
         }
     }
+
+
+    String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
+  				"<roadCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
+  				"xsi:noNamespaceSchemaLocation=\"localhost/kraX.xsd\"" +
+  				"xmlns=\"http://www.w3schools.com\">";
     
 }

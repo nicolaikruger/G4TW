@@ -1,4 +1,4 @@
-package dk.itu.kf04.g4tw.model;
+package dk.itu.kf04.g4tw.controller;
 
 /**
  * An interface implementing HTTP Constants representing the different states of an HTTP request.

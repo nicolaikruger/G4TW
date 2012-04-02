@@ -1,13 +1,12 @@
 package dk.itu.kf04.g4tw.controller;
 
-import dk.itu.kf04.g4tw.model.HTTPConstants;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URLConnection;
 import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,22 +16,22 @@ public class WebServer implements HTTPConstants {
     /**
      * Tests whether the server already has been started.
      */
-    private static boolean isInitialized = false;
+    protected static boolean isInitialized = false;
+
+    /**
+     * The log for this class.
+     */
+    protected static Logger Log = Logger.getLogger(WebServer.class.getName());
     
     /**
      * The port of the webserver.
      */
-    private static int port = 80;
+    protected static int port = 80;
 
     /**
      * The root directory of the www files.
      */
-    private static String webRoot = "www/";
-
-	/**
-	 * Retrieves data from the Kraks data-set (XML).
-	 */
-	private static MapController map;
+    protected static String webRoot = "www/";
     
     /**
      * Initialize the server and prepare to respond on incoming requests.
@@ -40,10 +39,8 @@ public class WebServer implements HTTPConstants {
      * @return  boolean  A boolean flag indicating success or failure
      */
     public static boolean init() {
-        // Return if webserver already has been started
+        // Return if web-server already has been started
         if (isInitialized) return false;
-
-		map = new MapController();
 
         // Try to initialize a ServerSocket
         try {
@@ -58,6 +55,7 @@ public class WebServer implements HTTPConstants {
                 // Read request from socket input stream
                 BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 String request = in.readLine();
+
                 // Ignore remaining input
                 s.shutdownInput();
 
@@ -71,7 +69,11 @@ public class WebServer implements HTTPConstants {
                     request.endsWith("HTTP/1.0") || // We do not accept 1.0
                     !request.endsWith("HTTP/1.1") ||
                     request.charAt(4) != '/') {
+
+                    // Print the bad request
                     pout.println("Bad request. The server could not understand your query: " + request);
+                    Log.info("Received bad request: " + request);
+
                     break;
                 }
 
@@ -88,12 +90,11 @@ public class WebServer implements HTTPConstants {
                         // Set input stream via
                         input = RequestParser.parseToInputStream(fileRequest.substring(4, fileRequest.length()));
 
-						//String responsText =
 						respond("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n", input, pout);
                     } catch (IllegalArgumentException e) {
-                        System.out.println("Illegal argument: " + e.getMessage());
+                        Log.warning("Illegal argument: " + e.getMessage());
                     } catch (UnsupportedEncodingException e) {
-                        System.out.println("Unsupported encoding: " + e.getMessage());
+                        Log.warning("Unsupported encoding: " + e.getMessage());
                     }
 
                     // Set the content type
@@ -113,7 +114,7 @@ public class WebServer implements HTTPConstants {
                         // Set content-type
                         contentType = URLConnection.guessContentTypeFromName(fileRequest);
                     } catch (FileNotFoundException e) {
-                        System.out.println("File " + fileRequest + " not found.");
+                        Log.warning("File " + fileRequest + " not found.");
                     }
                 }
 
@@ -121,20 +122,19 @@ public class WebServer implements HTTPConstants {
                 if (input != null) {
                     respond(contentType, input, pout);
                 }
-                
+
                 // Close down the output and the socket
                 s.shutdownOutput();
                 s.close();
             }
         // SocketException
         } catch (SocketException e) {
-            System.out.println("SocketException");
-            e.printStackTrace();
+            Log.warning("SocketException while starting the server: " + e);
             isInitialized = false;
         // IOException
         } catch (IOException e) {
-            System.out.println("IOException: ");
-            e.printStackTrace();
+            Log.warning("IOException while starting the server: " + e);
+            isInitialized = false;
         }
 
         // Return success or failure
@@ -149,17 +149,20 @@ public class WebServer implements HTTPConstants {
 
     /**
      * Respond the given input-stream to the given output-stream.
+     *
+     * @param contentType  The type of the content to respond
+     * @param is  The input stream of the response
+     * @param os  The output stream to the client
      */
-    private static void respond(String contentType, InputStream is, PrintStream os) {
+    protected static void respond(String contentType, InputStream is, PrintStream os) {
         // Print HTTP status code
         os.println("HTTP/1.1 200 OK");
         os.println("Server: KraXServer/1.0");
         os.println("Date: " + new Date());
-        //os.println(); // Create line between meta code and content
-        if (contentType != null) {
-            os.println("Content-Type: " + contentType);
-        }
+        if (contentType != null) { os.println("Content-Type: " + contentType); }
+        // Create a line between meta-content and content
 		os.println();
+
         // Send object
         try {
             byte[] buffer = new byte[1000];
@@ -167,8 +170,7 @@ public class WebServer implements HTTPConstants {
                 os.write(buffer, 0, is.read(buffer));
             }
         } catch (IOException e) { // IOException
-            System.out.println("IOException: ");
-            e.printStackTrace();
+            Log.warning("IOException while writing to client: " + e.getMessage());
         }
 
         // Flush the stream

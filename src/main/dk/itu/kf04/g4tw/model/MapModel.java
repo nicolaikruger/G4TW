@@ -1,6 +1,9 @@
 package dk.itu.kf04.g4tw.model;
 
+import dk.itu.kf04.g4tw.util.DynamicArray;
+
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A Model of the map-data. This class is responsible for 
@@ -36,8 +39,7 @@ public class MapModel {
      */
     public MapModel() {
 		// Added 0, 31, 95
-
-        loadTypeReference(HIGHWAY,        1, 21, 31, 41);
+        loadTypeReference(HIGHWAY, 1, 21, 31, 41);
         loadTypeReference(EXPRESSWAY,     2, 22, 32, 42);
         loadTypeReference(PRIMARY_ROAD,   3, 23, 33, 43);
         loadTypeReference(SECONDARY_ROAD, 4, 24, 34, 44, 95);
@@ -46,27 +48,36 @@ public class MapModel {
         loadTypeReference(SEAWAY,         80);
         loadTypeReference(LOCATION,       99);
     }
-	
-	public String getXML(double xMin, double yMin, double xMax, double yMax, int... type)
+
+    /**
+     * Searches through the model for roads.
+     * @param xMin
+     * @param yMin
+     * @param xMax
+     * @param yMax
+     * @param type
+     * @return
+     */
+	public DynamicArray<Road> search(double xMin, double yMin, double xMax, double yMax, int type)
 	{
-		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
-				"<roadCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
-				"xsi:noNamespaceSchemaLocation=\"localhost/kraX.xsd\"" +
-				"xmlns=\"http://www.w3schools.com\">";
-		for(Integer i : type)
-		{
-			RoadTypeTree tree = roadTrees.get(i);
-			String newXML = tree.search(xMin, yMin, xMax, yMax);
-			xmlData += newXML;
-		}
+        DynamicArray<Road> results = new DynamicArray<Road>();
+        for (Map.Entry<Integer, RoadTypeTree> entry : roadTrees.entrySet()) {
+            int key = entry.getKey();
+            // Test if the type contains the key-byte (bitwise AND)
+            if ((key & type) == key) {
+                DynamicArray<Road> roads = roadTrees.get(key).search(xMin, yMin, xMax, yMax);
+                results.add(roads);
+            }
+        }
 
-		xmlData += "</roadCollection>";
-
-		return xmlData;
+		return results;
 	}
 
-	public void addRoad(Road road)
-	{
+    /**
+     * Adds a road to the Model.
+     * @param road The road to add.
+     */
+	public void addRoad(Road road) {
 		int roadType = road.getType();
 		int treeType = mapTypeReference.get(roadType);
 		RoadTypeTree tree = roadTrees.get(treeType);

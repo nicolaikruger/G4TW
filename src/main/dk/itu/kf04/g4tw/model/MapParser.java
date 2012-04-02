@@ -33,7 +33,7 @@ public class MapParser {
             HashMap<Integer, Node> nodeMap = parseNodes(nodes);
             parseEdges(edges, model, nodeMap);
         } catch (FileNotFoundException e) {
-            Log.warning("Exception while processing map-data: " + e.getMessage() + ". Model may be empty.");
+            Log.warning("Exception while processiong map-data: " + e.getMessage() + ". Model may be empty.");
         }
 
         return model;
@@ -45,7 +45,7 @@ public class MapParser {
      * @param file  The file to parse the edges from
      * @param model  The model to insert the edges in
      * @param nodeMap  The nodeMap to receive the data from
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException If the given file could not be found
      */
     protected static void parseEdges(File file, MapModel model, HashMap<Integer, Node> nodeMap) throws FileNotFoundException {
         // Load the file
