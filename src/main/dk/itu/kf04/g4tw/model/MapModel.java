@@ -36,7 +36,6 @@ public class MapModel {
      */
     public MapModel() {
 		// Added 0, 31, 95
-
         loadTypeReference(HIGHWAY,        1, 21, 31, 41);
         loadTypeReference(EXPRESSWAY,     2, 22, 32, 42);
         loadTypeReference(PRIMARY_ROAD,   3, 23, 33, 43);
@@ -46,7 +45,16 @@ public class MapModel {
         loadTypeReference(SEAWAY,         80);
         loadTypeReference(LOCATION,       99);
     }
-	
+
+    /**
+     * Searches through the model for roads.
+     * @param xMin
+     * @param yMin
+     * @param xMax
+     * @param yMax
+     * @param type
+     * @return
+     */
 	public String getXML(double xMin, double yMin, double xMax, double yMax, int... type)
 	{
 		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
@@ -65,8 +73,11 @@ public class MapModel {
 		return xmlData;
 	}
 
-	public void addRoad(Road road)
-	{
+    /**
+     * Adds a road to the Model.
+     * @param road The road to add.
+     */
+	public void addRoad(Road road) {
 		int roadType = road.getType();
 		int treeType = mapTypeReference.get(roadType);
 		RoadTypeTree tree = roadTrees.get(treeType);
