@@ -22,10 +22,10 @@ public class RequestParser {
         // Decode the input and split it up
         String[] queries = URLDecoder.decode(input, "UTF-8").split("&");
                 
-        String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"+
+        String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
   				"<roadCollection xmlns=\"http://www.w3schools.com\"" +
-  				"\n\txmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
-  				"\n\txsi:noNamespaceSchemaLocation=\"localhost/kraX.xsd\">\n";
+  				"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
+  				"xsi:noNamespaceSchemaLocation=\"localhost/kraX.xsd\">";
 
         if (queries.length != 5) {
             throw new IllegalArgumentException("Must have exactly 5 queries.");
