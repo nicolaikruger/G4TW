@@ -15,23 +15,28 @@
 				var model; var view;
 				var xml;
 				var req = new XMLHttpRequest();
-				req.onreadystatechange = function() { // Function to be called when result arrives
+				req.onreadystatechange = function(e) { // Function to be called when result arrives
 								if (req.readyState==4 && (req.status==0 || req.status==200)) {
-
-												xml = req.responseXML;
+																//xml = req.responseXML;
 
 												var parser = new DOMParser();
-												//xml = parser.parseFromString(xml, "text/xml");
 
-												console.log(xml.type);
+
+												//req.responseType = "application/xml";
+
+												xml = parser.parseFromString(String(req.response), "text/xml");
+
+												console.log(xml);
+
 												model = new Model(xml);
 												view = new View(model, c);
 												view.draw();
+
 								}
 				};
 
 				req.open("GET", "kraX.xml", true);
-				req.send();
+				req.send(null);
 </script>
 </body>
 </html>
