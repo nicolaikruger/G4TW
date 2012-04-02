@@ -115,7 +115,7 @@ public class WebServer implements HTTPConstants {
                         input = new FileInputStream(new File(fileRequest));
                         // Set content-type
 						if(fileRequest.endsWith(".js"))			contentType = "text/javascript";
-						else if(fileRequest.endsWith(".xml"))	contentType = "text/xml";
+						//else if(fileRequest.endsWith(".xml"))	contentType = "text/xml";
 						else		                   			contentType = URLConnection.guessContentTypeFromName(fileRequest);
 					} catch (FileNotFoundException e) {
                         Log.warning("File " + fileRequest + " not found.");
