@@ -19,7 +19,6 @@ public class MapModel {
     public static final int SEAWAY         = 64;
     public static final int LOCATION       = 128;
 
-    private int i = 1;
 
     protected HashMap<Integer, Integer> mapTypeReference = new HashMap<Integer, Integer>();
     protected HashMap<Integer, RoadTypeTree> roadTrees = new HashMap<Integer, RoadTypeTree>();

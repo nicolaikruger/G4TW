@@ -103,13 +103,14 @@ public class MapParser {
             int id = Integer.parseInt(nextLine[2]);
             double xPos = Double.parseDouble(nextLine[3]);
             double yPos = Double.parseDouble(nextLine[4]);
-
+            
             // Create the node
             Node node = new Node(xPos, yPos);
 
             // Insert it into the map
             nodeMap.put(id, node);
         }
+
         scanner.close();
 
         Log.fine("Successfully parsed Map nodes.");
