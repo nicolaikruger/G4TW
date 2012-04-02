@@ -5,7 +5,7 @@ var Model = function(xml) {
 	var roads = [];
 
 	// parse XML til noget vi forstår...
-	var roadIterator = xml.evaluate("//road", xml, null, XPathResult.ANY_TYPE, null);
+	var roadIterator = xml.evaluate("//r", xml, null, XPathResult.ANY_TYPE, null);
 	var fx = xml.evaluate("//fx", xml, null, XPathResult.ANY_TYPE, null);
 	var ty = xml.evaluate("//ty", xml, null, XPathResult.ANY_TYPE, null);
 	var tx = xml.evaluate("//tx", xml, null, XPathResult.ANY_TYPE, null);
@@ -14,6 +14,8 @@ var Model = function(xml) {
 	var l = xml.evaluate("//l", xml, null, XPathResult.ANY_TYPE, null);
 	var road = roadIterator.iterateNext();
 	var i = 0;
+
+	console.log(roadIterator);
 
 	while (road) {
 		var f = road.getElementsByTagName("fNode")[0];
