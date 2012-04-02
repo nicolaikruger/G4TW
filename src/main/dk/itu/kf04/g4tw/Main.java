@@ -1,5 +1,6 @@
 package dk.itu.kf04.g4tw;
 
+import dk.itu.kf04.g4tw.controller.MapController;
 import dk.itu.kf04.g4tw.controller.WebServer;
 import dk.itu.kf04.g4tw.model.MapModel;
 import dk.itu.kf04.g4tw.model.MapParser;
@@ -28,22 +29,15 @@ public class Main {
         File nodeFile = new File("krak/kdv_node_unload.txt");
         File edgeFile = new File("krak/kdv_unload.txt");
 
-        Log.finest("Starting import of map-data.");
+        Log.fine("Starting import of map-data.");
         
         // Import data
-       // MapModel model = MapParser.load(nodeFile, edgeFile);
+        MapModel model = MapParser.load(nodeFile, edgeFile);
         
-        Log.finest("Import of map-data done.");
+        Log.fine("Import of map-data done.");
 
-        // Init server
-        boolean success = WebServer.init();
-
-        // Log statis
-        if (success) {
-            Log.info("Program initialized correct and web-server has been started.");
-        } else {
-            Log.warning("Program initialized correct but web-server failed to start.");
-        }
+        // Start the controller
+        new MapController(model);
     }
 
 }
