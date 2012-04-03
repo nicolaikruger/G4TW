@@ -7,32 +7,21 @@
 	//////////////////////////////////////
 -->
 <roadCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:noNamespaceSchemaLocation="kraX.xsd">
-	<road>
-			<name>Kruger</name>
-			<length>1.25</length>
-			<speed>130.0</speed>
-			<fNode id="1">
-				<xCoord>5.0</xCoord>
-				<yCoord>6.8</yCoord>
-			</fNode>
-			<tNode id="1">
-				<xCoord>10.1</xCoord>
-				<yCoord>66.6</yCoord>
-			</tNode>
-	</road>
-	
-	<road>
-			<name>Kruger2</name>
-			<length>1.25</length>
-			<speed>30.0</speed>
-			<fNode id="1">
-				<xCoord>10.1</xCoord>
-				<yCoord>66.6</yCoord>
-			</fNode>
-			<tNode id="1">
-				<xCoord>150</xCoord>
-				<yCoord>150</yCoord>
-			</tNode>
-	</road>
+                xsi:noNamespaceSchemaLocation="kraX.xsd">
+
+    <r>
+        <s>130.0</s>
+        <fx>5000000.0</fx>
+        <fy>6800000.0</fy>
+        <tx>10100000.0</tx>
+        <ty>66600000.0</ty>
+    </r>
+    <r>
+        <s>30.0</s>
+        <fx>10.1</fx>
+        <fy>66.6</fy>
+        <tx>150</tx>
+        <ty>150</ty>
+    </r>
+
 </roadCollection>

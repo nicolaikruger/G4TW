@@ -1,4 +1,27 @@
 body {
-    background-color: #aaa;
     font-family: helvetica, sans-serif;
+    background-color: #EEEEEE;
+}
+
+#all {
+    margin: auto;
+    width: 800px;
+}
+
+#left {
+    background-color: #BBBBBB;
+    color: white;
+    float: left;
+    padding: 4px;
+}
+
+#right {
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    float: right;
+}
+
+#zoom {
+    padding: 10px;
 }

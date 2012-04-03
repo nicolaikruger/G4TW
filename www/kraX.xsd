@@ -1,44 +1,44 @@
 <?xml version="1.0"?>
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-targetNamespace="http://www.w3schools.com"
-xmlns="http://www.w3schools.com"
-elementFormDefault="qualified">
+		   targetNamespace="http://www.w3schools.com"
+		   xmlns="http://www.w3schools.com"
+		   elementFormDefault="qualified">
 
-<!-- definition of simple elements -->
-<xs:element name="n" type="xs:string"/>
-<xs:element name="l" type="xs:decimal"/>
-<xs:element name="s" type="xs:decimal"/>
-<xs:element name="fx" type="xs:decimal"/>
-<xs:element name="fy" type="xs:decimal"/>
-<xs:element name="tx" type="xs:decimal"/>
-<xs:element name="ty" type="xs:decimal"/>
+	<!-- definition of simple elements -->
+	<xs:element name="n" type="xs:string"/>
+	<xs:element name="l" type="xs:decimal"/>
+	<xs:element name="s" type="xs:decimal"/>
+	<xs:element name="fx" type="xs:decimal"/>
+	<xs:element name="fy" type="xs:decimal"/>
+	<xs:element name="tx" type="xs:decimal"/>
+	<xs:element name="ty" type="xs:decimal"/>
 
-<!-- definition of attributes -->
-<xs:attribute name="id" type="xs:integer"/>
+	<!-- definition of attributes -->
+	<xs:attribute name="id" type="xs:integer"/>
 
-<!-- definition of complex elements -->
+	<!-- definition of complex elements -->
 
-<xs:element name="r">
-	<xs:complexType>
-		<xs:sequence>
-			<xs:element ref="n"/>
-			<xs:element ref="l"/>
-			<xs:element ref="s"/>
-			<xs:element ref="fx"/>
-			<xs:element ref="fy"/>
-			<xs:element ref="tx"/>
-			<xs:element ref="ty"/>
-		</xs:sequence>
-	</xs:complexType>
-</xs:element>
+	<xs:element name="r">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="n"/>
+				<xs:element ref="l"/>
+				<xs:element ref="s"/>
+				<xs:element ref="fx"/>
+				<xs:element ref="fy"/>
+				<xs:element ref="tx"/>
+				<xs:element ref="ty"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="roadCollection">
-	<xs:complexType>
-        <xs:sequence>
-            <xs:element ref="r"/>
-        </xs:sequence>
-	</xs:complexType>
-</xs:element>
+	<xs:element name="roadCollection">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="r"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
 </xs:schema>
