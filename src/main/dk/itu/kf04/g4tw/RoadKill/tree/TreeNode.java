@@ -9,6 +9,11 @@ import java.util.ArrayList;
 public class TreeNode {
 
 	/**
+	 * A boolean value indicating whether or not this TreeNode is the current root
+	 */
+	private  boolean  isRoot;
+
+	/**
 	 * A boolean value indicating whether we use the x-axis
 	 */
 	private boolean useX;
@@ -16,7 +21,7 @@ public class TreeNode {
 	/**
 	 * A boolean value indicating whether this is a "red" or a "black" node
 	 */
-	private boolean isRed;
+	private boolean isRed = true;
 
 	/**
 	 * The left TreeNode - if any.
@@ -39,30 +44,30 @@ public class TreeNode {
 	public final int id;
 
 	/**
-	 * Constructs a TreeNode
+	 * Constructs a TreeNode. This node is being set as the root.
 	 * @param useX  Whether or not to use the x-axis to compare other rectangles.
 	 * @param isRed Whether or not to this node has a "red" link to its parent
 	 * @param rect  The rectangle enclosing this road.
 	 * @param id  The id of this road.
 	 */
-	public TreeNode (boolean useX, boolean isRed, RoadRectangle rect, int id)
+	public TreeNode (RoadRectangle rect, int id)
 	{
-		this.useX = useX;
-		this.isRed = isRed;
+		this.isRoot = true;
+		this.useX = true;
 		this.rect = rect;
 		this.id = id;
 	}
 
 	/**
-	 * Constructs a TreeNode. The isRed boolean is being set to true;
+	 * Constructs a TreeNode.
 	 * @param useX  Whether or not to use the x-axis to compare other rectangles.
 	 * @param rect  The rectangle enclosing this road.
 	 * @param id  The id of this road.
 	 */
 	public TreeNode (boolean useX, RoadRectangle rect, int id)
 	{
+		this.isRoot = false;
 		this.useX = useX;
-		this.isRed = true;
 		this.rect = rect;
 		this.id = id;
 	}
@@ -105,59 +110,81 @@ public class TreeNode {
 		if(rect.intersects(query)) returnList.add(id);
 		
 		if(useX) {
-			if(this.rect.xMin >= query.xMax && leftTreeNode != null) // Search only in the TreeNodes to the left
-				returnList.addAll(leftTreeNode.search(query));
-			else if(this.rect.xMax <= query.xMin && rightTreeNode != null) // Search only in the TreeNodes to the right
-				returnList.addAll(rightTreeNode.search(query));
-			else {  // Search in the TreeNodes to the left and the right
-				if(leftTreeNode != null)
-					returnList.addAll(leftTreeNode.search(query));
-				if(rightTreeNode != null)
-					returnList.addAll(rightTreeNode.search(query));
-			}
+			returnList.addAll(search(this.rect.xMin, this.rect.xMax, query.xMin, query.xMax, query));
+//			if(this.rect.xMin >= query.xMax && leftTreeNode != null) // Search only in the TreeNodes to the left
+//				returnList.addAll(leftTreeNode.search(query));
+//			else if(this.rect.xMax <= query.xMin && rightTreeNode != null) // Search only in the TreeNodes to the right
+//				returnList.addAll(rightTreeNode.search(query));
+//			else {  // Search in the TreeNodes to the left and the right
+//				if(leftTreeNode != null)
+//					returnList.addAll(leftTreeNode.search(query));
+//				if(rightTreeNode != null)
+//					returnList.addAll(rightTreeNode.search(query));
+//			}
 		} else {
-			if(this.rect.yMin >= query.yMax && leftTreeNode != null) // Search only in the TreeNodes to the left
-				returnList.addAll(leftTreeNode.search(query));
-			else if(this.rect.yMax <= query.yMin && rightTreeNode != null) // Search only in the TreeNodes to the right
-				returnList.addAll(rightTreeNode.search(query));
-			else {  // Search in the TreeNodes to the left and the right
-				if(leftTreeNode != null)
-					returnList.addAll(leftTreeNode.search(query));
-				if(rightTreeNode != null)
-					returnList.addAll(rightTreeNode.search(query));
-			}
+			returnList.addAll(search(this.rect.yMin, this.rect.yMax, query.yMin, query.yMax, query));
+//			if(this.rect.yMin >= query.yMax && leftTreeNode != null) // Search only in the TreeNodes to the left
+//				returnList.addAll(leftTreeNode.search(query));
+//			else if(this.rect.yMax <= query.yMin && rightTreeNode != null) // Search only in the TreeNodes to the right
+//				returnList.addAll(rightTreeNode.search(query));
+//			else {  // Search in the TreeNodes to the left and the right
+//				if(leftTreeNode != null)
+//					returnList.addAll(leftTreeNode.search(query));
+//				if(rightTreeNode != null)
+//					returnList.addAll(rightTreeNode.search(query));
+//			}
 		}
 		return returnList;
 	}
-
-
-	private TreeNode rotateLeft(TreeNode h)
+	
+	private ArrayList<Integer> search(double thisMin, double thisMax, double queryMin, double queryMax, RoadRectangle query)
 	{
-		TreeNode x = h.rightTreeNode;
-		h.rightTreeNode = x.leftTreeNode;
-		x.leftTreeNode = h;
-		x.isRed = h.isRed;
-		h.isRed = true;
-		return x;
+		// TODO: Create own dynamic array with no generic types!
+		ArrayList<Integer> returnList = new ArrayList<Integer>();
 
+		if(thisMin >= queryMax && leftTreeNode != null) // Search only in the TreeNodes to the left
+			returnList.addAll(leftTreeNode.search(query));
+		else if(thisMax <= queryMin && rightTreeNode != null) // Search only in the TreeNodes to the right
+			returnList.addAll(rightTreeNode.search(query));
+		else {  // Search in the TreeNodes to the left and the right
+			if(leftTreeNode != null)
+				returnList.addAll(leftTreeNode.search(query));
+			if(rightTreeNode != null)
+				returnList.addAll(rightTreeNode.search(query));
+		}
+
+		return returnList;
 	}
 
-	private TreeNode rotateRight(TreeNode h)
-	{
-		TreeNode x = h.leftTreeNode;
-		h.leftTreeNode = x.rightTreeNode;
-		x.rightTreeNode = h;
-		x.isRed = h.isRed;
-		h.isRed = true;
-		return  x;
+	public boolean isUseX() {
+		return useX;
 	}
 
-	private void flipColors(TreeNode h)
-	{
-		h.isRed = true;
-		h.leftTreeNode.isRed = false;
-		h.rightTreeNode.isRed = false;
-		h.leftTreeNode.useX = !h.useX;
-		h.rightTreeNode.useX = !h.useX;
+	public boolean isRed() {
+		return isRed;
+	}
+
+	public TreeNode getLeftTreeNode() {
+		return leftTreeNode;
+	}
+
+	public TreeNode getRightTreeNode() {
+		return rightTreeNode;
+	}
+
+	public void setUseX(boolean useX) {
+		this.useX = useX;
+	}
+
+	public void setRed(boolean red) {
+		isRed = red;
+	}
+
+	public void setLeftTreeNode(TreeNode leftTreeNode) {
+		this.leftTreeNode = leftTreeNode;
+	}
+
+	public void setRightTreeNode(TreeNode rightTreeNode) {
+		this.rightTreeNode = rightTreeNode;
 	}
 }

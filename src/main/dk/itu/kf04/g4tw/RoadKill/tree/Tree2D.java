@@ -21,8 +21,37 @@ public class Tree2D {
 	public void addNode(Point2D.Double from, Point2D.Double to, int id)
 	{
 		RoadRectangle rect = new RoadRectangle(from.x, from.y, to.x, to.y);
-		if(root == null) 	root = new TreeNode(true, rect, id);
+		if(root == null) 	root = new TreeNode(rect, id);
 		else 				root.addTreeNode(rect, id);
+	}
+
+	private TreeNode rotateLeft(TreeNode h)
+	{
+		TreeNode x = h.getRightTreeNode();
+		h.setRightTreeNode(x.getLeftTreeNode());
+		x.setLeftTreeNode(h);
+		x.setRed(h.isRed());
+		h.setRed(true);
+		return x;
+	}
+
+	private TreeNode rotateRight(TreeNode h)
+	{
+		TreeNode x = h.getLeftTreeNode();
+		h.setLeftTreeNode(x.getRightTreeNode());
+		x.setRightTreeNode(h);
+		x.setRed(h.isRed());
+		h.setRed(true);
+		return  x;
+	}
+
+	private void flipColors(TreeNode h)
+	{
+		h.setRed(true);
+		h.getLeftTreeNode().setRed(false);
+		h.getRightTreeNode().setRed(false);
+		h.getLeftTreeNode().setUseX(!h.isUseX());
+		h.getRightTreeNode().setUseX(!h.isUseX());
 	}
 
 	/**
