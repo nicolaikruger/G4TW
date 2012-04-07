@@ -6,11 +6,11 @@ var Model = function(xml) {
 
 	// parse XML til noget vi forstår...
 	var roadIterator = xml.evaluate("//r", xml, null, XPathResult.ANY_TYPE, null);
-	var fx = xml.evaluate("//fx", xml, null, XPathResult.ANY_TYPE, null);
+    var s = xml.evaluate("//s", xml, null, XPathResult.ANY_TYPE, null);
+    var fx = xml.evaluate("//fx", xml, null, XPathResult.ANY_TYPE, null);
 	var fy = xml.evaluate("//fy", xml, null, XPathResult.ANY_TYPE, null);
 	var tx = xml.evaluate("//tx", xml, null, XPathResult.ANY_TYPE, null);
 	var ty = xml.evaluate("//ty", xml, null, XPathResult.ANY_TYPE, null);
-	var s = xml.evaluate("//s", xml, null, XPathResult.ANY_TYPE, null);
 	//var l = xml.evaluate("//l", xml, null, XPathResult.ANY_TYPE, null);
 	var road = roadIterator.iterateNext();
 
