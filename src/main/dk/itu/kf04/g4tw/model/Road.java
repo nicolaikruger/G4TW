@@ -58,9 +58,10 @@ public class Road {
 	{
 		String returnString;
 
-		returnString = 	"<r><n>" + name +
-						"</n><l>" + length +
-						"</l><s>" + speed +
+		returnString = 	"<r>"+//<n>" + name +
+						//"</n><l>" + length +
+						//"</l>" +
+                        "<s>" + speed +
 						"</s><fx>" + from.x +
 						"</fx><fy>" + from.y +
 						"</fy><tx>" + to.x +
