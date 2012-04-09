@@ -2,10 +2,16 @@ body {
     font-family: helvetica, sans-serif;
     background-color: #EEEEEE;
 }
+body, html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
 
 #all {
-    margin: auto;
-    width: 800px;
+    margin: 0;
+    height: 100%;
+    width: 100%;
 }
 
 #left {
