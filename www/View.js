@@ -60,6 +60,11 @@ var View = (function() {
             pan = pan.add(vector);
             this.draw();
         },
+        resize: function() {
+            canvas.width = screen.availWidth;
+            canvas.height = screen.availHeight;
+            console.log(screen)
+        },
         zoom: function(delta, point) {
             var point = point || Vector(canvas.width / 2, canvas.height / 2);
             if ((zoom > 0.001 || delta > 0) && (zoom < 3 || delta < 0)) {
