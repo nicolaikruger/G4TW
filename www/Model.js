@@ -37,8 +37,6 @@ var Model = (function () {
             //var l = xml.evaluate("//l", xml, null, XPathResult.ANY_TYPE, null);
             var road = roadIterator.iterateNext();
 
-            console.log(xml)
-
             while (road) {
                 function toNumber(e) {
                     return Number(e.iterateNext().childNodes[0].nodeValue);
