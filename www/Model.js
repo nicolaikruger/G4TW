@@ -70,30 +70,9 @@ var Model = (function() {
         setFilterLevel: function(newLevel) {
             console.log(newLevel);
 
-            function findPos(obj) {
-                var curleft = curtop = 0;
-                if (obj.offsetParent) {
-                    do {
-                        curleft += obj.offsetLeft;
-                        curtop += obj.offsetTop;
-                    } while (obj = obj.offsetParent)
-
-                    return Vector(curleft, curtop);
-                }
-            }
-            var v1 = findPos(canvas);
-            var newV1 = Vector(v1.x, v1.y * -1)
-            var v2 = Vector(newV1.x + 550, newV1.y - 500)
-            var it = new Transform().invert();
-            var tv1 = it.transformPoint(newV1);
-            var tv2 = it.transformPoint(v2);
-
             if (level != newLevel) {
                 // Set the level of the model.
                 level = newLevel;
-
-                // Create url
-                var url = "xml?x1=" +tv1.x+ "&x2=" +tv2.x+ "&y1=" +tv1.y+ "&y2=" +tv2.y+ "&filter=" + level;
 
                 // Define callback
                 function callback(e) {
@@ -122,6 +101,15 @@ var Model = (function() {
                         View.draw();
                     }
                 }
+
+                var tv = View.findPos(canvas);
+
+                var tv1 = tv.x;
+                var tv2 = tv.y;
+
+                // Create url
+                var url = "xml?x1=" +tv1.x+ "&x2=" +tv2.x+ "&y1=" +tv1.y+ "&y2=" +tv2.y+ "&filter=" + level;
+                console.log(url);
 
                 // Execute request
                 performRequest(url, callback);
