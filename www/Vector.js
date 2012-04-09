@@ -6,6 +6,7 @@ var Vector = function(x, y) {
 
     add: function(v)      { return Vector(x + v.x, y + v.y); },
     divide: function(d)   { return Vector(x / d, y / d); },
+    equals: function(v)   { return x == v.x && y == v.y; },
     length: function()    { return Math.sqrt(x * x + y * y); },
     multiply: function(s) { return Vector(x * s, y * s); },
     reverse: function()   { return Vector(-x, -y); },

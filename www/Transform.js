@@ -36,6 +36,10 @@ Transform.prototype.getScale = function() {
   return Math.sqrt((this.m[0] * this.m[0]) + (this.m[1] * this.m[1]));
 }
 
+Transform.prototype.getTranslation = function() {
+  return Vector(this.m[4], this.m[5]);
+}
+
 Transform.prototype.invert = function() {
   var d = 1 / (this.m[0] * this.m[3] - this.m[1] * this.m[2]);
   var m0 = this.m[3] * d;
