@@ -78,8 +78,7 @@ public class MapModel {
      */
 	public void addRoad(Road road) {
 		int roadType = road.getType();
-		int treeType = mapTypeReference.get(roadType);
-		RoadTypeTree tree = roadTrees.get(treeType);
+		RoadTypeTree tree = roadTrees.get(roadType);
 		tree.addNode(road);
 	}
 

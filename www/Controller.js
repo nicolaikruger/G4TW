@@ -43,10 +43,9 @@ var Controller = (function() {
         getLevel(View.getZoom());
     };
     // Resize
-    document.onresize = View.resize();
+    document.body.onresize = View.resize;
 
     var getLevel = function(zoom) {
-        console.log(zoom);
         // Set default value
         var filter = Model.HIGHWAY + Model.SEAWAY;
         switch (filter) {

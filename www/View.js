@@ -8,7 +8,6 @@ var View = (function() {
     // Create the transformation matrix
     var t    = new Transform();
     var pan  = Vector(-370.856257136847, 6462.1620226675);
-    //var pan  = Vector(0, 0);
     var zoom = 0.001;
 
     // Create returning object
@@ -31,6 +30,7 @@ var View = (function() {
             var roads = Model.getRoads();
             var divisor = 850;
             var offset = 425;
+            var bool = true;
             for (var i = 1; i < roads.length; i++) {
                 // Get the road
                 var r = roads[i];
@@ -41,11 +41,9 @@ var View = (function() {
                 var from = t.transformPoint(r.from);
                 var to = t.transformPoint(r.to);
 
-                if(i == 0) console.log(zoom, from.x, from.y)
-
                 c.moveTo(from.x, from.y);
                 c.lineTo(to.x, to.y);
-                c.lineWidth = 1;//r.width;
+                c.lineWidth = r.width;
                 c.strokeStyle = r.color;
                 c.closePath();
                 c.stroke();
@@ -63,15 +61,15 @@ var View = (function() {
         resize: function() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            View.draw();
         },
         zoom: function(delta, point) {
             var point = point || Vector(canvas.width / 2, canvas.height / 2);
-            if ((zoom > 0.001 || delta > 0) && (zoom < 3 || delta < 0)) {
-                var f = Math.pow(2, delta * 0.2);
+            if ((zoom > 0.0001 || delta > 0) && (zoom < 3 || delta < 0)) {
+                var f = Math.pow(2, delta * 0.5);
                 zoom *= f;
-                console.log(pan.x, pan.y, point.x, point.y)
                 pan = pan.subtract(point).multiply(f).add(point);
-                this.draw();
+                View.draw();
             }
         },
         findPos: function(obj) {
