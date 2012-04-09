@@ -71,7 +71,35 @@ public class MapParser {
             int type = Integer.parseInt(nextLine[5]);
             double speed = Double.parseDouble(nextLine[25]);
             double length = Double.parseDouble(nextLine[2]);
-            
+
+            switch (type)
+            {
+                case 1: case 21: case 31: case 41:
+                    type = 1;
+                    break;
+                case 2: case 22: case 32: case 42:
+                    type = 2;
+                    break;
+                case 3:case 23:case 33:case 43:
+                    type = 4;
+                    break;
+                case 4: case 24: case 34: case 44: case 95:
+                    type = 8;
+                    break;
+                case 0: case 5: case 6: case 25:case 26:case 35:case 45:case 46:
+                    type = 16;
+                    break;
+                case 8: case 10: case 11: case 28: case 48:
+                    type = 32;
+                    break;
+                case 80:
+                    type = 64;
+                    break;
+                case 99:
+                    type = 128;
+                    break;
+            }
+
             nodeA.connect(b);
             nodeB.connect(a);
             Road tmp = new Road(id, name, pointA, pointB, type, speed, length);

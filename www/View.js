@@ -43,7 +43,7 @@ var View = (function() {
 
                 c.moveTo(from.x, from.y);
                 c.lineTo(to.x, to.y);
-                c.lineWidth = 1;//r.width;
+                c.lineWidth = r.width;
                 c.strokeStyle = r.color;
                 c.closePath();
                 c.stroke();

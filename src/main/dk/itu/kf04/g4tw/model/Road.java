@@ -63,9 +63,9 @@ public class Road {
 		returnString = 	"<r>"+//<n>" + name +
 						//"</n><l>" + length +
 						//"</l>" +
-                        "<i>" + id + "</i>" +
-                        "<s>" + speed +
-						"</s><fx>" + from.x +
+                        "<i>" + id +
+                        "</i><t>" + type +
+                        "</t><fx>" + from.x +
 						"</fx><fy>" + from.y +
 						"</fy><tx>" + to.x +
 						"</tx><ty>" + to.y +
