@@ -54,9 +54,9 @@ public class RequestParser {
         // Search the model and concatenate the results with the previous
         DynamicArray<Road> search = MapController.model.search(x1, y1, x2, y2, filter);
         for(int i = 0; i < search.length(); i++) {
-            if(search.get(i).getLength() > 500) {
+           // if(search.get(i).getLength() > 500) {
                 result += search.get(i).toXML();
-            }
+           // }
         }
         
         result += "</roadCollection>";

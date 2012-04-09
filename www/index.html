@@ -38,7 +38,7 @@
         </fieldset>
     </div> <!-- left ends here -->
     <div id="right">
-        <canvas id="canvas" height="500" width="550"/><br />
+        <canvas id="canvas" height="500" width="550"></canvas>
 
         <script type="text/javascript" src="Model.js"></script>
         <script type="text/javascript" src="View.js"></script>
@@ -67,16 +67,16 @@
                     view.draw();
 
 
-                    if(filter <= 32)
+                    if(filter < 128)
                     {
                         filter *= 2
-                        req.open("GET", "xml?x1=0&x2=999999999&y1=0&y2=999999999&filter=" + filter, true);
+                        req.open("GET", "xml?x1=810000&x2=850000&y1=6150000&y2=6180000&filter=" + filter, true);
                         req.send(null);
                     }
                 }
             };
 
-            req.open("GET", "xml?x1=0&x2=999999999&y1=0&y2=999999999&filter=1", true);
+            req.open("GET", "xml?x1=0&x2=50000&y1=0&y2=999999999&filter=1", true);
             req.send(null);
         </script>
         <div id="zoom">ZOOM ZOOM</div>
