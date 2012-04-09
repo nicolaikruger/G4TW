@@ -103,11 +103,11 @@ Transform.prototype.translate = function(v) {
   this.m[5] += this.m[1] * v.x + this.m[3] * v.y;
 };
 
-Transform.prototype.scale = function(sx) {
+Transform.prototype.scale = function(sx, sy) {
   this.m[0] *= sx;
   this.m[1] *= sx;
-  this.m[2] *= sx;
-  this.m[3] *= sx;
+  this.m[2] *= sy;
+  this.m[3] *= sy;
 };
 
 Transform.prototype.transformPoint = function(v) {
