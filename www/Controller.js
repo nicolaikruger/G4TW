@@ -3,6 +3,7 @@ var Controller = (function() {
     var canvas = document.getElementById('canvas');
 
     Model.setFilterLevel(Model.HIGHWAY + Model.SEAWAY);
+    View.resize();
 
     var getCoordinates = function(e) {
         var x = 0;
