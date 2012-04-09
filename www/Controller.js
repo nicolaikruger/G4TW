@@ -7,8 +7,8 @@ var Controller = (function() {
         var y = 0;
         if (!e) e = window.event;
         if (e.pageX || e.pageY) 	{
-        x = e.pageX;
-        y = e.pageY;
+            x = e.pageX;
+            y = e.pageY;
         }
         else if (e.clientX || e.clientY) 	{
         x = e.clientX + document.body.scrollLeft
@@ -16,9 +16,10 @@ var Controller = (function() {
         y = e.clientY + document.body.scrollTop
           + document.documentElement.scrollTop;
         }
+
         // posx and posy contain the mouse position relative to the document
         // Do something with this information
-        return Vector(x, y - 150).round(3);
+        return Vector(x - 400, y - 50).round(3);
     };
 
     canvas.onmousedown = function(e) { isLeftMouseDown = true; startPoint = getCoordinates(e); };
