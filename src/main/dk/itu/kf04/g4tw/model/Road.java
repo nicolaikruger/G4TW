@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 public class Road {
 	
 	private String name;
+	private int id;
 	private int type;
 	public final Point2D.Double from;
 	public final Point2D.Double to;
@@ -17,7 +18,8 @@ public class Road {
 	 */
 	public final RoadRectangle rect;
 	
-	public Road(String name, Point2D.Double f, Point2D.Double t, int type, double speed, double length) {
+	public Road(int id, String name, Point2D.Double f, Point2D.Double t, int type, double speed, double length) {
+        this.id   = id;
 		this.name = name;
 		this.type = type;
 		this.from = f;
@@ -61,6 +63,7 @@ public class Road {
 		returnString = 	"<r>"+//<n>" + name +
 						//"</n><l>" + length +
 						//"</l>" +
+                        "<i>" + id + "</i>" +
                         "<s>" + speed +
 						"</s><fx>" + from.x +
 						"</fx><fy>" + from.y +
