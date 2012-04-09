@@ -89,6 +89,8 @@ var Model = (function () {
         setFilterLevel:function (newLevel) {
             console.log(newLevel)
             if (level != newLevel) {
+                var loader = document.getElementById("loading");
+                loader.style.display = "block";
                 // Set the level of the model.
                 level = newLevel;
 
@@ -122,6 +124,7 @@ var Model = (function () {
 
                         // Initiate the view
                         View.draw();
+                        loader.style.display = "none";
                     }
                 }
 
