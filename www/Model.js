@@ -14,8 +14,6 @@ var Model = function(xml) {
 	//var l = xml.evaluate("//l", xml, null, XPathResult.ANY_TYPE, null);
 	var road = roadIterator.iterateNext();
 
-	console.log(road);
-
 	while (road) {
 
 		function toNumber(e) {
@@ -32,11 +30,10 @@ var Model = function(xml) {
 		var c = "#" + (red < 16 ? 0 + red : red) + "2d4a"; // courtesy BBC
 		var w = 1 + spd * 0.05;
 
-		roads.push({speed: spd, from: {x:x1,y:y1}, to: {x:x2,y:y2}, color: c, width: w});
+		roads.push({speed: spd, from: Vector(x1,y1), to: Vector(x2,y2), color: c, width: w});
 
 		road = roadIterator.iterateNext();
 	}
-    console.log(roads)
 
 	// Create a method to retreive the roads from the Model
 	that.getRoads = function() {
