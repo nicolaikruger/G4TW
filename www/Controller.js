@@ -3,6 +3,7 @@ var Controller = (function() {
     var canvas = document.getElementById('canvas');
 
     Model.setFilterLevel(Model.HIGHWAY + Model.SEAWAY);
+    View.resize();
 
     var getCoordinates = function(e) {
         var x = 0;
@@ -21,7 +22,7 @@ var Controller = (function() {
 
         // posx and posy contain the mouse position relative to the document
         // Do something with this information
-        return Vector(x - 400, y - 50).round(3);
+        return Vector(x, y).round(3);
     };
 
     canvas.onmousedown = function(e) { isLeftMouseDown = true; startPoint = getCoordinates(e); };
@@ -41,6 +42,8 @@ var Controller = (function() {
 
         getLevel(View.getZoom());
     };
+    // Resize
+    document.onresize = View.resize();
 
     var getLevel = function(zoom) {
         console.log(zoom);
