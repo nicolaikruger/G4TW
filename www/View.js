@@ -61,9 +61,8 @@ var View = (function() {
             this.draw();
         },
         resize: function() {
-            canvas.width = screen.availWidth;
-            canvas.height = screen.availHeight;
-            console.log(screen)
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         },
         zoom: function(delta, point) {
             var point = point || Vector(canvas.width / 2, canvas.height / 2);
