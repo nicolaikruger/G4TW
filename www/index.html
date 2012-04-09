@@ -40,49 +40,11 @@
     <div id="right">
         <canvas id="canvas" height="500" width="550"/><br />
 
-        <script type="text/javascript" src="Controller.js"></script>
-        <script type="text/javascript" src="Model.js"></script>
-        <script type="text/javascript" src="View.js"></script>
-        <script type="text/javascript" src="Vector.js"></script>
         <script type="text/javascript" src="Transform.js"></script>
-
-        <script type="text/javascript">
-            // Initiate variables
-            var model, view, controller, xml;
-            // Get the canvas and the context
-            var canvas = document.getElementById("canvas");
-            // Initiate a XMLHttpRequest
-            var req = new XMLHttpRequest();
-            // Set the filter
-            var filter = 1;
-
-            // Defined the request callback-function
-            req.onreadystatechange = function(e) { // Function to be called when result arrives
-                if (req.readyState==4 && (req.status==0 || req.status==200)) {
-                    // Get the DOMParser and parse the response-string
-                    var parser = new DOMParser();
-                    xml = parser.parseFromString(String(req.response), "text/xml");
-
-                    // Set the model
-                    model = new Model(xml);
-                    // Initiate the view
-                    view = new View(model, canvas);
-                    view.draw();
-                    // Define the controller
-                    controller = Controller;
-
-                    /*if(filter <= 32)
-                    {
-                        filter *= 2
-                        req.open("GET", "xml?x1=0&x2=999999999&y1=0&y2=999999999&filter=" + filter, true);
-                        req.send(null);
-                    }*/
-                }
-            };
-
-            req.open("GET", "xml?x1=0&x2=999999999&y1=0&y2=999999999&filter=1", true);
-            req.send(null);
-        </script>
+        <script type="text/javascript" src="Vector.js"></script>
+        <script type="text/javascript" src="Model.js"></script>
+        <script type="text/javascript" src="Controller.js"></script>
+        <script type="text/javascript" src="View.js"></script>
         <div id="zoom">ZOOM ZOOM</div>
     </div> <!-- right ends here -->
 </div> <!-- all ends here -->

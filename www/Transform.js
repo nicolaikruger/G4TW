@@ -5,20 +5,7 @@
 // Free to use and distribute at will
 // So long as you are nice to people, etc
 
-// Simple class for keeping track of the current transformation matrix
-
-// For instance:
-//    var t = new Transform();
-//    t.rotate(5);
-//    var m = t.m;
-//    ctx.setTransform(m[0], m[1], m[2], m[3], m[4], m[5]);
-
-// Is equivalent to:
-//    ctx.rotate(5);
-
-// But now you can retrieve it :)
-
-// Remember that this does not account for any CSS transforms applied to the canvas
+// http://developer.apple.com/library/mac/#documentation/QuickTime/RM/MovieBasics/MTEditing/K-Chapter/11MatrixFunctions.html
 function Transform() {
   this.m = [1,0,0,1,0,0];
 }

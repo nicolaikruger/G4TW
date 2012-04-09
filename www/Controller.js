@@ -2,6 +2,8 @@ var Controller = (function() {
     var isLeftMouseDown, startPoint;
     var canvas = document.getElementById('canvas');
 
+    Model.setFilterLevel(Model.HIGHWAY + Model.SEAWAY);
+
     var getCoordinates = function(e) {
         var x = 0;
         var y = 0;
@@ -29,14 +31,30 @@ var Controller = (function() {
             var coord = getCoordinates(e);
             var v = startPoint.subtract(coord);
             startPoint = startPoint.subtract(v);
-            view.pan(v.reverse());
+            View.pan(v.reverse());
         }
     };
     // Zoom
     canvas.onmousewheel = function(e, d) {
         var coord = getCoordinates(e);
-        view.zoom(e.wheelDelta/120, coord);
+        View.zoom(e.wheelDelta/120, coord);
+
+        getLevel(View.getZoom());
     };
+
+    var getLevel = function(zoom) {
+        console.log(zoom);
+        // Set default value
+        var filter = Model.HIGHWAY + Model.SEAWAY;
+        switch (filter) {
+            case filter > 100:
+        }
+        if (zoom > 0.002) filter += Model.PRIMARY_ROAD + Model.EXPRESSWAY;
+        if (zoom > 0.004) filter += Model.SECONDARY_ROAD;
+        if (zoom > 0.01) filter += Model.MINOR_ROAD;
+
+        Model.setFilterLevel(filter);
+    }
 
     // Return empty object
     return {};

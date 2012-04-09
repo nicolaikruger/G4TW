@@ -1,12 +1,15 @@
-var View = function(model, canvas) {
+var View = (function() {
+    // Get the canvas
+    var canvas = document.getElementById('canvas');
+
     // Get the canvas context
     var c = canvas.getContext("2d");
 
     // Create the transformation matrix
     var t    = new Transform();
-    var pan  = Vector(-3224.856257136847, 31162.1620226675);
+    var pan  = Vector(-370.856257136847, 6462.1620226675);
     //var pan  = Vector(0, 0);
-    var zoom = 0.005;
+    var zoom = 0.001;
 
     // Create returning object
     return {
@@ -25,11 +28,15 @@ var View = function(model, canvas) {
             t.translate(pan);
             t.scale(zoom, -zoom);
 
-            var roads = model.getRoads();
+            var roads = Model.getRoads();
             var divisor = 850;
             var offset = 425;
-            for (var i = 0; i < roads.length; i++) {
+            for (var i = 1; i < roads.length; i++) {
+                // Get the road
                 var r = roads[i];
+
+                if (r == undefined) continue;
+
                 c.beginPath();
                 var from = t.transformPoint(r.from);
                 var to = t.transformPoint(r.to);
@@ -46,13 +53,16 @@ var View = function(model, canvas) {
 
             c.restore();
         },
+        getZoom: function() {
+            return zoom;
+        },
         pan: function(vector) {
             pan = pan.add(vector);
             this.draw();
         },
         zoom: function(delta, point) {
             var point = point || Vector(canvas.width / 2, canvas.height / 2);
-            if ((zoom > 0.0005 || delta > 0) && (zoom < 3 || delta < 0)) {
+            if ((zoom > 0.001 || delta > 0) && (zoom < 3 || delta < 0)) {
                 var f = Math.pow(2, delta * 0.2);
                 zoom *= f;
                 console.log(pan.x, pan.y, point.x, point.y)
@@ -61,4 +71,4 @@ var View = function(model, canvas) {
             }
         }
     }
-};
+}());

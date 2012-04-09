@@ -66,13 +66,15 @@ public class MapParser {
             Point2D.Double pointA = new Point2D.Double(nodeA.getX(),nodeA.getY());
             Point2D.Double pointB = new Point2D.Double(nodeB.getX(),nodeB.getY());
 
+            int id = Integer.parseInt(nextLine[3]); // DAV_DK-ID
+            int id2 = Integer.parseInt(nextLine[4]); // DAV_DK-ID
             int type = Integer.parseInt(nextLine[5]);
             double speed = Double.parseDouble(nextLine[25]);
             double length = Double.parseDouble(nextLine[2]);
-
+            
             nodeA.connect(b);
             nodeB.connect(a);
-            Road tmp = new Road(name, pointA, pointB, type, speed, length);
+            Road tmp = new Road(id, name, pointA, pointB, type, speed, length);
             model.addRoad(tmp);
         }
         // Close the scanner
