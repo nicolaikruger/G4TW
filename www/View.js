@@ -4,9 +4,9 @@ var View = function(model, canvas) {
 
     // Create the transformation matrix
     var t    = new Transform();
-    var pan  = Vector(-19750.8500543, -183901.14393240004);
+    var pan  = Vector(-3224.856257136847, 31162.1620226675);
     //var pan  = Vector(0, 0);
-    var zoom = 0.03;
+    var zoom = 0.005;
 
     // Create returning object
     return {
@@ -23,7 +23,7 @@ var View = function(model, canvas) {
             c.save();
             t.reset();
             t.translate(pan);
-            t.scale(zoom);
+            t.scale(zoom, -zoom);
 
             var roads = model.getRoads();
             var divisor = 850;
@@ -34,7 +34,7 @@ var View = function(model, canvas) {
                 var from = t.transformPoint(r.from);
                 var to = t.transformPoint(r.to);
 
-                if(i == 0) console.log(from.x, from.y)
+                if(i == 0) console.log(zoom, from.x, from.y)
 
                 c.moveTo(from.x, from.y);
                 c.lineTo(to.x, to.y);
@@ -52,9 +52,10 @@ var View = function(model, canvas) {
         },
         zoom: function(delta, point) {
             var point = point || Vector(canvas.width / 2, canvas.height / 2);
-            if ((zoom > 0.001 || delta > 0) && (zoom < 10 || delta < 0)) {
+            if ((zoom > 0.0005 || delta > 0) && (zoom < 3 || delta < 0)) {
                 var f = Math.pow(2, delta * 0.2);
                 zoom *= f;
+                console.log(pan.x, pan.y, point.x, point.y)
                 pan = pan.subtract(point).multiply(f).add(point);
                 this.draw();
             }
