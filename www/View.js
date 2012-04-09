@@ -4,9 +4,9 @@ var View = function(model, canvas) {
 
     // Create the transformation matrix
     var t    = new Transform();
-    //var pan  = Vector(-442254.35659, -6049914.43018);
-    var pan  = Vector(0, 0);
-    var zoom = 0.1;
+    var pan  = Vector(-19750.8500543, -183901.14393240004);
+    //var pan  = Vector(0, 0);
+    var zoom = 0.03;
 
     // Create returning object
     return {
@@ -33,7 +33,8 @@ var View = function(model, canvas) {
                 c.beginPath();
                 var from = t.transformPoint(r.from);
                 var to = t.transformPoint(r.to);
-                if (i == 0) console.log(from.x, from.y);
+
+                if(i == 0) console.log(from.x, from.y)
 
                 c.moveTo(from.x, from.y);
                 c.lineTo(to.x, to.y);
