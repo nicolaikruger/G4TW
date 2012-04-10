@@ -1,6 +1,9 @@
 var Model = (function() {
 	// The roads in the model.
-	var roads = [];
+	var redRoads = [];
+    var blueRoads = [];
+    var greenRoads = [];
+    var blackRoads = [];
 
     var level = 0;
 
@@ -51,39 +54,45 @@ var Model = (function() {
                 var y2 = toNumber(ty);
                 //var l = toNumber(l);
                 var type = toNumber(t);
-                var color;
-                var w
 
                 switch (type) {
                     case 1:
                     case 2:
-                        color = "#FF0000";
-                        w = 3;
+                        redRoads.push({from:Vector(x1, y1), to:Vector(x2, y2)});
                         break;
                     case 4:
                     case 8:
-                        color = "#0000FF";
-                        w = 1.5;
+                        blueRoads.push({from:Vector(x1, y1), to:Vector(x2, y2)});
                         break;
                     case 16:
                     case 32:
-                        color = "#00FF00";
-                        w = 1;
+                        greenRoads.push({from:Vector(x1, y1), to:Vector(x2, y2)});
                         break;
                     case 64:
                     case 128:
-                        color = "#000000";
-                        w = 2;
+                        blackRoads.push({from:Vector(x1, y1), to:Vector(x2, y2)});
                         break;
                 }
-
-                roads[id] = {from:Vector(x1, y1), to:Vector(x2, y2), color:color, width:w};
 
                 road = roadIterator.iterateNext();
             }
         },
         // Create a method to retreive the roads from the Model
-        getRoads: function() {
+        getRoads: function(color) {
+            switch (color) {
+                case "red":
+                    return redRoads;
+                    break;
+                case "blue":
+                    return blueRoads;
+                    break;
+                case "green":
+                    return greenRoads;
+                    break;
+                case "black":
+                    return blackRoads;
+                    break;
+            }
             return roads;
         },
         setFilterLevel: function(newLevel) {
