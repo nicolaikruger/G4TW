@@ -26,14 +26,16 @@ var Controller = (function() {
     };
 
     canvas.onmousedown = function(e) { isLeftMouseDown = true; startPoint = getCoordinates(e); };
-    canvas.onmouseup   =  function(e) { isLeftMouseDown = false; };
+    canvas.onmouseup   =  function(e) {
+        isLeftMouseDown = false;
+        getLevel(View.getZoom());
+    };
     canvas.onmousemove = function(e) {
         if (isLeftMouseDown) {
             var coord = getCoordinates(e);
             var v = startPoint.subtract(coord);
             startPoint = startPoint.subtract(v);
             View.pan(v.reverse());
-            getLevel(View.getZoom());
         }
     };
     // Zoom
@@ -54,6 +56,8 @@ var Controller = (function() {
         if (zoom > 0.002) filter += Model.PRIMARY_ROAD + Model.EXPRESSWAY;
         if (zoom > 0.004) filter += Model.SECONDARY_ROAD;
         if (zoom > 0.01) filter += Model.MINOR_ROAD;
+        if (zoom > 0.02) filter += Model.PATH;
+        if (zoom > 0.025) filter += Model.LOCATION;
 
         Model.setFilterLevel(filter);
     }

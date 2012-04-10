@@ -109,31 +109,28 @@ var Model = (function() {
             if (level != newLevel) {
                 // Set the level of the model.
                 level = newLevel;
+            }
 
-                // Define callback
-                function callback(e) {
+            // Define callback
+            function callback(e) {
 
-                    // Initiate variables
-                    var xml;
+                // Initiate variables
+                var xml;
 
-                    // Set the filter
-                    var filter = 1;
+                // Get the request-event
+                var req = e.currentTarget;
 
-                    // Get the request-event
-                    var req = e.currentTarget;
+                // Function to be called when result arrives
+                if (req.readyState == 4 && (req.status == 0 || req.status == 200)) {
+                    // Clear the model
+                    roads = [];
 
-                    // Function to be called when result arrives
-                    if (req.readyState == 4 && (req.status == 0 || req.status == 200)) {
-                        // Clear the model
-                        roads = [];
+                    // Get the DOMParser and parse the response-string
+                    var parser = new DOMParser();
+                    xml = parser.parseFromString(String(req.response), "text/xml");
 
-                        // Get the DOMParser and parse the response-string
-                        var parser = new DOMParser();
-                        xml = parser.parseFromString(String(req.response), "text/xml");
-
-                        // Add roads to the model
-                        Model.addRoads(xml);
-                    }
+                    // Add roads to the model
+                    Model.addRoads(xml);
                 }
             }
 

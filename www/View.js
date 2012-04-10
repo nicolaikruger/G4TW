@@ -72,9 +72,7 @@ var View = (function() {
             t.scale(zoom, -zoom);
             var it = t.invert();
             var tv1 = it.transformPoint(v1);
-            console.log("v1: " + v1.x, v1.y, tv1.x, tv1.y);
             var tv2 = it.transformPoint(v2);
-            console.log("v2: " + v2.x, v2.y, tv2.x, tv2.y);
 
             return Vector(tv1, tv2);
         }
