@@ -31,6 +31,12 @@ var Model = (function() {
         LOCATION:     128,
 
         addRoads: function(xml) {
+            //Clears the road arrays --> Just in case ;)
+            redRoads = [];
+            blueRoads = [];
+            greenRoads = [];
+            blackRoads = [];
+
             // parse XML til noget vi forstår...
             var roadIterator = xml.evaluate("//r", xml, null, XPathResult.ANY_TYPE, null);
             var i = xml.evaluate("//i", xml, null, XPathResult.ANY_TYPE, null);
