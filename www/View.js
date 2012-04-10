@@ -27,29 +27,13 @@ var View = (function() {
             t.translate(pan);
             t.scale(zoom, -zoom);
 
-            var roads = Model.getRoads();
-            var divisor = 850;
-            var offset = 425;
-            var bool = true;
-            for (var i = 1; i < roads.length; i++) {
-                // Get the road
-                var r = roads[i];
-
-                if (r == undefined) continue;
-
-                c.beginPath();
-                var from = t.transformPoint(r.from);
-                var to = t.transformPoint(r.to);
-
-                c.moveTo(from.x, from.y);
-                c.lineTo(to.x, to.y);
-                c.lineWidth = r.width;
-                c.strokeStyle = r.color;
-                c.closePath();
-                c.stroke();
-            }
+            drawFromArray(Model.getRoads("red"), "#FF0000", 3);
+            drawFromArray(Model.getRoads("blue"), "#0000FF", 1.5);
+            drawFromArray(Model.getRoads("green"), "#00FF00", 1);
+            drawFromArray(Model.getRoads("black"), "#000000", 2);
 
             c.restore();
+
         },
         getZoom: function() {
             return zoom;
@@ -94,5 +78,29 @@ var View = (function() {
 
             return Vector(tv1, tv2);
         }
+    }
+
+    function drawFromArray(roads, color, width)
+    {
+        c.beginPath();
+        for (var i = 1; i < roads.length; i++) {
+            // Get the road
+            var r = roads[i];
+
+            if (r == undefined) continue;
+
+
+            var from = t.transformPoint(r.from);
+            var to = t.transformPoint(r.to);
+
+            c.moveTo(from.x, from.y);
+            c.lineTo(to.x, to.y);
+
+        }
+
+        c.lineWidth = width;
+        c.strokeStyle = color;
+        c.closePath();
+        c.stroke();
     }
 }());
