@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  *
  */
-public class WebServer implements HTTPConstants, Closeable {
+public class WebServer implements Closeable {
 
     /**
      * Tests whether the server already has been started.

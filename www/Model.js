@@ -105,6 +105,7 @@ var Model = (function() {
             console.log(newLevel);
 
             if (level != newLevel) {
+                // Shows the loading.gif
                 var loader = document.getElementById("loading");
                 loader.style.display = "block";
                 // Set the level of the model.
@@ -124,8 +125,6 @@ var Model = (function() {
 
                     // Function to be called when result arrives
                     if (req.readyState == 4 && (req.status == 0 || req.status == 200)) {
-                        // Clear the model
-                        roads = [];
 
                         // Get the DOMParser and parse the response-string
                         var parser = new DOMParser();
@@ -136,6 +135,8 @@ var Model = (function() {
 
                         // Initiate the view
                         View.draw();
+
+                        // Hide the loader.gif
                         loader.style.display = "none";
                     }
                 }
