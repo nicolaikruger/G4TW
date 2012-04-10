@@ -1,6 +1,8 @@
 var View = (function() {
     // Get the canvas
     var canvas = document.getElementById('canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     // Get the canvas context
     var c = canvas.getContext("2d");
@@ -67,6 +69,8 @@ var View = (function() {
 
             var v1 = Vector(curleft, curtop);
             var v2 = Vector(v1.x + canvas.width, v1.y + canvas.height);
+            console.log("V1: " + v1 + " x: " + v1.x + " y: " + v1.y + "  V2: " + v2 + " x: " + v2.x + " y: " + v2.y);
+
             t.reset();
             t.translate(pan);
             t.scale(zoom, -zoom);
