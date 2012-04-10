@@ -55,9 +55,9 @@ var Controller = (function() {
         // Increase spectrum of roads
         if (zoom > 0.002) filter += Model.PRIMARY_ROAD + Model.EXPRESSWAY;
         if (zoom > 0.004) filter += Model.SECONDARY_ROAD;
-        if (zoom > 0.01) filter += Model.MINOR_ROAD;
-        if (zoom > 0.02) filter += Model.PATH;
-        if (zoom > 0.025) filter += Model.LOCATION;
+        if (zoom > 0.008) filter += Model.MINOR_ROAD;
+        if (zoom > 0.012) filter += Model.PATH;
+        if (zoom > 0.013) filter += Model.LOCATION;
 
         Model.setFilterLevel(filter);
     }
