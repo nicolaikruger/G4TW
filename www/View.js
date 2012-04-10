@@ -29,10 +29,10 @@ var View = (function() {
             t.translate(pan);
             t.scale(zoom, -zoom);
 
-            drawFromArray(Model.getRoads("red"), "#FF0000", 3);
-            drawFromArray(Model.getRoads("blue"), "#0000FF", 1.5);
-            drawFromArray(Model.getRoads("green"), "#00FF00", 1);
-            drawFromArray(Model.getRoads("black"), "#000000", 2);
+            drawFromArray(Model.getRoads("red"), "#003300", 4);
+            drawFromArray(Model.getRoads("blue"), "#663300", 3);
+            drawFromArray(Model.getRoads("green"), "#FFCCCC", 1);
+            drawFromArray(Model.getRoads("black"), "#CCCCCC", 2);
 
             c.restore();
 

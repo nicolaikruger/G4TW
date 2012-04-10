@@ -1,6 +1,6 @@
 body {
     font-family: helvetica, sans-serif;
-    background-color: #EEEEEE;
+    background-color: #FFF;
 }
 body, html {
     height: 100%;
@@ -16,7 +16,7 @@ body, html {
 }
 
 #left {
-    background-color: #BBBBBB;
+    background-color: #FFF;
     color: white;
     float: left;
     padding: 4px;
