@@ -2,8 +2,8 @@ var Controller = (function() {
     var isLeftMouseDown, startPoint;
     var canvas = document.getElementById('canvas');
 
-    Model.setFilterLevel(Model.HIGHWAY + Model.SEAWAY);
     View.resize();
+    Model.setFilterLevel(Model.HIGHWAY + Model.SEAWAY);
 
     var getCoordinates = function(e) {
         var x = 0;
@@ -33,6 +33,7 @@ var Controller = (function() {
             var v = startPoint.subtract(coord);
             startPoint = startPoint.subtract(v);
             View.pan(v.reverse());
+            getLevel(View.getZoom());
         }
     };
     // Zoom
@@ -48,9 +49,8 @@ var Controller = (function() {
     var getLevel = function(zoom) {
         // Set default value
         var filter = Model.HIGHWAY + Model.SEAWAY;
-        switch (filter) {
-            case filter > 100:
-        }
+
+        // Increase spectrum of roads
         if (zoom > 0.002) filter += Model.PRIMARY_ROAD + Model.EXPRESSWAY;
         if (zoom > 0.004) filter += Model.SECONDARY_ROAD;
         if (zoom > 0.01) filter += Model.MINOR_ROAD;

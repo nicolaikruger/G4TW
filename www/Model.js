@@ -88,10 +88,10 @@ var Model = (function() {
         },
         setFilterLevel: function(newLevel) {
             console.log(newLevel);
+            var loader = document.getElementById("loading");
+            loader.style.display = "block";
 
             if (level != newLevel) {
-                var loader = document.getElementById("loading");
-                loader.style.display = "block";
                 // Set the level of the model.
                 level = newLevel;
 
@@ -118,25 +118,25 @@ var Model = (function() {
 
                         // Add roads to the model
                         Model.addRoads(xml);
-
-                        // Initiate the view
-                        View.draw();
-                        loader.style.display = "none";
                     }
                 }
-
-                var tv = View.findPos(canvas);
-
-                var tv1 = tv.x;
-                var tv2 = tv.y;
-
-                // Create url
-                var url = "xml?x1=" +tv1.x+ "&x2=" +tv2.x+ "&y1=" +tv1.y+ "&y2=" +tv2.y+ "&filter=" + level;
-                console.log(url);
-
-                // Execute request
-                performRequest(url, callback);
             }
+
+            // Initiate the view
+            View.draw();
+            loader.style.display = "none";
+
+            var tv = View.findPos(canvas);
+
+            var tv1 = tv.x;
+            var tv2 = tv.y;
+
+            // Create url
+            var url = "xml?x1=" +tv1.x+ "&x2=" +tv2.x+ "&y1=" +tv1.y+ "&y2=" +tv2.y+ "&filter=" + level;
+            console.log(url);
+
+            // Execute request
+            performRequest(url, callback);
         }
     }
 }());
