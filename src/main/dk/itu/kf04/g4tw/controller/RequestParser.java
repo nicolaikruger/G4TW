@@ -8,20 +8,25 @@ import java.util.Arrays;
 
 import dk.itu.kf04.g4tw.model.Road;
 import dk.itu.kf04.g4tw.util.DynamicArray;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.xml.transform.TransformerException;
 
 /**
  *
  */
 public class RequestParser {
     
-    public static InputStream parseToInputStream(String input) throws IllegalArgumentException, UnsupportedEncodingException {
+    public static InputStream parseToInputStream(String input) throws IllegalArgumentException, UnsupportedEncodingException, TransformerException {
     	// Variables for the request
     	double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
     	int filter = 0;
-    	
+    	XMLDocumentParser xmlParser = new XMLDocumentParser();
+
         // Decode the input and split it up
         String[] queries = URLDecoder.decode(input, "UTF-8").split("&");
-                
+
         String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" +
                 "<roadCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
                 "xsi:noNamespaceSchemaLocation=\"kraX.xsd\">";
@@ -53,11 +58,14 @@ public class RequestParser {
         
         // Search the model and concatenate the results with the previous
         DynamicArray<Road> search = MapController.model.search(x1, y1, x2, y2, filter);
-        for(int i = 0; i < search.length(); i++) {
-          //if(search.get(i).getLength() > 500) {
-            result += search.get(i).toXML();
-          //}
-        }
+        Document docXML = xmlParser.createDocument();
+		for(int i = 0; i < search.length(); i++) {
+			docXML.appendChild(search.get(i).toXML(docXML));
+			result += xmlParser.createXMLString(docXML);
+			docXML = xmlParser.createDocument();
+		}
+
+		try {result += xmlParser.createXMLString(docXML);} catch (TransformerException e) {e.printStackTrace();}
         
         result += "</roadCollection>";
 

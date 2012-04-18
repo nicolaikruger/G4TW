@@ -1,6 +1,11 @@
 package dk.itu.kf04.g4tw.model;
+import dk.itu.kf04.g4tw.controller.XMLDocumentParser;
 import dk.itu.kf04.g4tw.model.tree.RoadRectangle;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
+import javax.xml.transform.TransformerException;
 import java.awt.geom.Point2D;
 
 public class Road {
@@ -56,21 +61,43 @@ public class Road {
 		getTo().createRelation(this);
 	}*/
 	
-	public String toXML()
+	public Element toXML(Document doc)
 	{
-		String returnString;
+		Element road = doc.createElement("r");
 
-		returnString = 	"<r>"+//<n>" + name +
-						//"</n><l>" + length +
-						//"</l>" +
-                        "<i>" + id +
-                        "</i><t>" + type +
-                        "</t><fx>" + from.x +
-						"</fx><fy>" + from.y +
-						"</fy><tx>" + to.x +
-						"</tx><ty>" + to.y +
-						 "</ty></r>";
+		Element idElement = doc.createElement("i");
+		idElement.appendChild(doc.createTextNode("" + id));
+		road.appendChild(idElement);
 
-		return returnString;
+		Element typeElement = doc.createElement("t");
+		typeElement.appendChild(doc.createTextNode("" + type));
+		road.appendChild(typeElement);
+
+		Element fxElement = doc.createElement("fx");
+		fxElement.appendChild(doc.createTextNode("" + from.x));
+		road.appendChild(fxElement);
+
+		Element fyElement = doc.createElement("fy");
+		fyElement.appendChild(doc.createTextNode("" + from.y));
+		road.appendChild(fyElement);
+
+		Element txElement = doc.createElement("tx");
+		txElement.appendChild(doc.createTextNode("" + to.x));
+		road.appendChild(txElement);
+
+		Element tyElement = doc.createElement("ty");
+		tyElement.appendChild(doc.createTextNode("" + to.y));
+		road.appendChild(tyElement);
+
+//
+//		returnString = 	"<r>" +
+//                        "<i>" + id +
+//                        "</i><t>" + type +
+//                        "</t><fx>" + from.x +
+//						"</fx><fy>" + from.y +
+//						"</fy><tx>" + to.x +
+//						"</tx><ty>" + to.y +
+//						 "</ty></r>";
+		return road;
 	}
 }

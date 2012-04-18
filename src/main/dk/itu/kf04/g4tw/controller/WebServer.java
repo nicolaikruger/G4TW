@@ -1,5 +1,6 @@
 package dk.itu.kf04.g4tw.controller;
 
+import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -92,9 +93,11 @@ public class WebServer implements Closeable {
                 Log.warning("Illegal argument: " + e.getMessage());
             } catch (UnsupportedEncodingException e) {
                 Log.warning("Unsupported encoding: " + e.getMessage());
-            }
+            } catch (TransformerException e) {
+				e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+			}
 
-            // Set the content type
+			// Set the content type
             if (input != null) {
                 contentType = "text/xml";
             }
