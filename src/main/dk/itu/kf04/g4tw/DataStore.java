@@ -62,6 +62,7 @@ public class DataStore {
         HashMap<Integer, RoadTypeTree> roads = new HashMap<Integer, RoadTypeTree>();
 
         int numberOfRoads = 0;
+        long time = System.currentTimeMillis();
 
         try {
             DataInputStream is  = new DataInputStream(new FileInputStream(file));
@@ -78,7 +79,7 @@ public class DataStore {
             }
         } catch (IOException e) {} // Expected
 
-        System.out.println("Import done. Read " + numberOfRoads + " roads.");
+        System.out.println("Import done in " + ((System.currentTimeMillis() - time) / 1000) + " seconds. Read " + numberOfRoads + " roads.");
         return new MapModel(roads);
     }
 
