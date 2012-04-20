@@ -1,9 +1,10 @@
 package dk.itu.kf04.g4tw.model;
 import dk.itu.kf04.g4tw.model.tree.RoadRectangle;
+import dk.itu.kf04.g4tw.util.DynamicArray;
 
 import java.awt.geom.Point2D;
 
-public class Road {
+public class Road extends DijkstraEdge{
 	
 	private String name;
 	private int id;
