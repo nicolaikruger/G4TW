@@ -5,14 +5,14 @@ import dk.itu.kf04.g4tw.util.DynamicArray;
 import java.awt.geom.Point2D;
 
 public class Road extends DijkstraEdge{
-	
-	private String name;
-	private int id;
-	private int type;
-	public final Point2D.Double from;
-	public final Point2D.Double to;
-	private double speed;
-	private double length;
+
+    public final Point2D.Double from;
+    public final int id;
+    private double length;
+    public final String name;
+    public final double speed;
+    public final Point2D.Double to;
+    public final int type;
 
 	/**
 	 * The rectangle enclosing this road.
@@ -38,19 +38,6 @@ public class Road extends DijkstraEdge{
 	public double getLength() {
 		return length;
 	}
-	
-	public Point2D.Double getFrom() {
-		return from;
-	}
-	
-	public Point2D.Double getTo() {
-		return to;
-	}
-
-	public int getType() {
-		return type;
-	}
-
 	/**
 	public void assignNodes() {
 		getFrom().createRelation(this);
