@@ -1,7 +1,6 @@
 package dk.itu.kf04.g4tw.model;
 
 import dk.itu.kf04.g4tw.util.DynamicArray;
-import dk.itu.kf04.g4tw.util.MinPQ;
 
 import java.util.Iterator;
 import java.util.PriorityQueue;
