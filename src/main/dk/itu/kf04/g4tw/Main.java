@@ -1,9 +1,7 @@
 package dk.itu.kf04.g4tw;
 
 import dk.itu.kf04.g4tw.controller.MapController;
-import dk.itu.kf04.g4tw.controller.XMLDocumentParser;
 import dk.itu.kf04.g4tw.model.MapModel;
-import dk.itu.kf04.g4tw.model.MapParser;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -24,23 +22,15 @@ public class Main {
      * @param args  The arguments to feed the application.
      */
     public static void main(String[] args) {
-        new XMLDocumentParser();
-
-		Log.setLevel(Level.ALL);
+        Log.setLevel(Level.ALL);
         
         // Log program start
-        Log.info("Main starting up.");
-
-        // Find the files
-        File nodeFile = new File("krak/kdv_node_unload.txt");
-        File edgeFile = new File("krak/kdv_unload.txt");
-
-        Log.fine("Starting import of map-data.");
+        Log.info("Main starting up. Importing map-data...");
         
         // Import data
-        MapModel model = MapParser.load(nodeFile, edgeFile);
+        MapModel model = DataStore.loadRoads();
         
-        Log.info("Import of map-data done. Starting server.");
+        Log.info("Import of map-data done. Starting server...");
 
         // Start the controller
         new MapController(model);
