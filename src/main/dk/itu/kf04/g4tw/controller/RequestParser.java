@@ -55,22 +55,30 @@ public class RequestParser {
 				}
             }
         }
-        
+
+		// Time when the search starts
+        long startTime = System.currentTimeMillis();
+
         // Search the model and concatenate the results with the previous
         DynamicArray<Road> search = MapController.model.search(x1, y1, x2, y2, filter);
-        Document docXML = xmlParser.createDocument();
-		for(int i = 0; i < search.length(); i++) {
-			docXML.appendChild(search.get(i).toXML(docXML));
-			result += xmlParser.createXMLString(docXML);
-			docXML = xmlParser.createDocument();
-		}
 
-		try {result += xmlParser.createXMLString(docXML);} catch (TransformerException e) {e.printStackTrace();}
-        
+		// Creates an XML document
+		Document docXML = xmlParser.createDocument();
+		// Creates a root element for the document, and appends it, making it possible
+		// to add more elements to the document.
+		Element root = docXML.createElement("root");
+		docXML.appendChild(root);
+		// Iterates through the search array, appending the XML element of the current
+		// road to the root element. This is creating the XML document.
+		for(int i = 0; i < search.length(); i++) {root.appendChild(search.get(i).toXML(docXML));}
+		// Parsing the java object to clean-text.
+		result += xmlParser.createXMLString(docXML);
         result += "</roadCollection>";
 
+		// calculates and prints the time taken.
+		long endTime = System.currentTimeMillis()-startTime;
+		System.out.println("time taken: " + endTime + "ms");
         System.out.println(search.length());
-        //System.out.println(result);
 
         try {
             return new ByteArrayInputStream(result.getBytes("UTF-8"));

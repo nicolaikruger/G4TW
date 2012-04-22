@@ -60,7 +60,14 @@ public class Road {
 		getFrom().createRelation(this);
 		getTo().createRelation(this);
 	}*/
-	
+
+	/**
+	 * This method converts a road into an XML element. The XML element can be inserted into a document
+	 * making searching and printing faster.
+	 *
+	 * @param doc The document used to create the elements
+	 * @return The road converted to an XML element.
+	 */
 	public Element toXML(Document doc)
 	{
 		Element road = doc.createElement("r");
@@ -89,15 +96,6 @@ public class Road {
 		tyElement.appendChild(doc.createTextNode("" + to.y));
 		road.appendChild(tyElement);
 
-//
-//		returnString = 	"<r>" +
-//                        "<i>" + id +
-//                        "</i><t>" + type +
-//                        "</t><fx>" + from.x +
-//						"</fx><fy>" + from.y +
-//						"</fy><tx>" + to.x +
-//						"</tx><ty>" + to.y +
-//						 "</ty></r>";
 		return road;
 	}
 }
