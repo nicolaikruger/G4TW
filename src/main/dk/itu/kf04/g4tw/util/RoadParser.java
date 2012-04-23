@@ -67,8 +67,8 @@ public class RoadParser {
             Node nodeA = nodeMap.get(a);
             Node nodeB = nodeMap.get(b);
 
-            Point2D.Double pointA = new Point2D.Double(nodeA.getX(),nodeA.getY());
-            Point2D.Double pointB = new Point2D.Double(nodeB.getX(),nodeB.getY());
+            Point2D.Double pointA = new Point2D.Double(nodeA.x,nodeA.y);
+            Point2D.Double pointB = new Point2D.Double(nodeB.x,nodeB.y);
 
             int id = Integer.parseInt(nextLine[3]); // DAV_DK-ID
             //int id2 = Integer.parseInt(nextLine[4]); // DAV_DK-ID
