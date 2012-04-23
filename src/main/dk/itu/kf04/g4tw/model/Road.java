@@ -15,7 +15,7 @@ public class Road extends DijkstraEdge {
 	public final int type;
 	public final Point2D.Double from;
 	public final Point2D.Double to;
-	private double speed;
+	public double speed;
 	private double length;
 
 	/**
