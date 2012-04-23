@@ -32,8 +32,8 @@ public class DijkstraSP {
     {
         init();
 
-        jackPot = to.getId();
-        distTo[from.getId()] = 0;
+        jackPot = to.id;
+        distTo[from.id] = 0;
 
         visit(from);
         return edgeTo;
@@ -84,7 +84,6 @@ public class DijkstraSP {
         visited = new boolean[N];
 
         queue = new PriorityQueue<DijkstraEdge>(N, new Comparator<DijkstraEdge>() {
-            @Override
             public int compare(DijkstraEdge o1, DijkstraEdge o2) {
                 if(o1.getLength() < o2.getLength()) return 1;
                 if(o1.getLength() == o2.getLength()) return 0;
@@ -108,7 +107,6 @@ public class DijkstraSP {
         visited[from.getId()] = true;
 
         PriorityQueue<DijkstraEdge> Q = new PriorityQueue<DijkstraEdge>(N, new Comparator<DijkstraEdge>() {
-            @Override
             public int compare(DijkstraEdge o1, DijkstraEdge o2) {
                 double dist1 = dist[o1.getId()];
                 double dist2 = dist[o2.getId()];

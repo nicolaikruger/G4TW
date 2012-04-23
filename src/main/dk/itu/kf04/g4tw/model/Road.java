@@ -8,11 +8,11 @@ import org.w3c.dom.Text;
 import javax.xml.transform.TransformerException;
 import java.awt.geom.Point2D;
 
-public class Road {
+public class Road extends DijkstraEdge {
 
-	private String name;
-	private int id;
-	private int type;
+	public final String name;
+	public final int id;
+	public final int type;
 	public final Point2D.Double from;
 	public final Point2D.Double to;
 	private double speed;
@@ -35,25 +35,13 @@ public class Road {
 		rect = new RoadRectangle(f, t);
 	}
 	
-	public String toString() {
-		return ("Name: "+name + "; From: ("+from.getX()+","+from.getY()+")" + " To: ("+to.getX()+","+to.getY()+")" + "; Type: "+type + "; Speed: "+speed + "; Length: "+length + ";");
-	}
-	
-	public double getLength() {
-		return length;
-	}
+    public int getId() { return id; }
+    
+	public double getLength() { return length; }
 
-	public Point2D.Double getFrom() {
-		return from;
-	}
-
-	public Point2D.Double getTo() {
-		return to;
-	}
-
-	public int getType() {
-		return type;
-	}
+    public String toString() {
+        return ("Name: "+name + "; From: ("+from.getX()+","+from.getY()+")" + " To: ("+to.getX()+","+to.getY()+")" + "; Type: "+type + "; Speed: "+speed + "; Length: "+length + ";");
+    }
 
 	/**
 	public void assignNodes() {
