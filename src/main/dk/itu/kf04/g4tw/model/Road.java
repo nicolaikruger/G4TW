@@ -1,18 +1,22 @@
 package dk.itu.kf04.g4tw.model;
+import dk.itu.kf04.g4tw.controller.XMLDocumentParser;
 import dk.itu.kf04.g4tw.model.tree.RoadRectangle;
-import dk.itu.kf04.g4tw.util.DynamicArray;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
+import javax.xml.transform.TransformerException;
 import java.awt.geom.Point2D;
 
-public class Road extends DijkstraEdge{
+public class Road {
 
-    public final Point2D.Double from;
-    public final int id;
-    private double length;
-    public final String name;
-    public final double speed;
-    public final Point2D.Double to;
-    public final int type;
+	private String name;
+	private int id;
+	private int type;
+	public final Point2D.Double from;
+	public final Point2D.Double to;
+	private double speed;
+	private double length;
 
 	/**
 	 * The rectangle enclosing this road.
@@ -32,38 +36,66 @@ public class Road extends DijkstraEdge{
 	}
 	
 	public String toString() {
-		return ("Name: "+name);
+		return ("Name: "+name + "; From: ("+from.getX()+","+from.getY()+")" + " To: ("+to.getX()+","+to.getY()+")" + "; Type: "+type + "; Speed: "+speed + "; Length: "+length + ";");
 	}
 	
 	public double getLength() {
 		return length;
 	}
 
-    public int getId() {
-        return id;
-    }
+	public Point2D.Double getFrom() {
+		return from;
+	}
 
-    /**
+	public Point2D.Double getTo() {
+		return to;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	/**
 	public void assignNodes() {
 		getFrom().createRelation(this);
 		getTo().createRelation(this);
 	}*/
-	
-	public String toXML()
+
+	/**
+	 * This method converts a road into an XML element. The XML element can be inserted into a document
+	 * making searching and printing faster.
+	 *
+	 * @param doc The document used to create the elements
+	 * @return The road converted to an XML element.
+	 */
+	public Element toXML(Document doc)
 	{
-		String returnString;
+		Element road = doc.createElement("r");
 
-		returnString = 	"<r>"+//<n>" + name +
-						//"</n><l>" + length +
-						//"</l>" +
-                        "<i>" + id +
-                        "</i><t>" + type +
-                        "</t><fx>" + from.x +
-						"</fx><fy>" + from.y +
-						"</fy><tx>" + to.x +
-						"</tx><ty>" + to.y +
-						 "</ty></r>";
+		Element idElement = doc.createElement("i");
+		idElement.appendChild(doc.createTextNode("" + id));
+		road.appendChild(idElement);
 
-		return returnString;
+		Element typeElement = doc.createElement("t");
+		typeElement.appendChild(doc.createTextNode("" + type));
+		road.appendChild(typeElement);
+
+		Element fxElement = doc.createElement("fx");
+		fxElement.appendChild(doc.createTextNode("" + from.x));
+		road.appendChild(fxElement);
+
+		Element fyElement = doc.createElement("fy");
+		fyElement.appendChild(doc.createTextNode("" + from.y));
+		road.appendChild(fyElement);
+
+		Element txElement = doc.createElement("tx");
+		txElement.appendChild(doc.createTextNode("" + to.x));
+		road.appendChild(txElement);
+
+		Element tyElement = doc.createElement("ty");
+		tyElement.appendChild(doc.createTextNode("" + to.y));
+		road.appendChild(tyElement);
+
+		return road;
 	}
 }
