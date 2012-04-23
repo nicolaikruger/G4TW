@@ -1,11 +1,7 @@
 package dk.itu.kf04.g4tw.model;
-import dk.itu.kf04.g4tw.controller.XMLDocumentParser;
 import dk.itu.kf04.g4tw.model.tree.RoadRectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Text;
-
-import javax.xml.transform.TransformerException;
 import java.awt.geom.Point2D;
 
 public class Road extends DijkstraEdge {
@@ -42,12 +38,6 @@ public class Road extends DijkstraEdge {
     public String toString() {
         return ("Name: "+name + "; From: ("+from.getX()+","+from.getY()+")" + " To: ("+to.getX()+","+to.getY()+")" + "; Type: "+type + "; Speed: "+speed + "; Length: "+length + ";");
     }
-
-	/**
-	public void assignNodes() {
-		getFrom().createRelation(this);
-		getTo().createRelation(this);
-	}*/
 
 	/**
 	 * This method converts a road into an XML element. The XML element can be inserted into a document

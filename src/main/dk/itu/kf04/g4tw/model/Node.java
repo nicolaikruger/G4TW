@@ -43,40 +43,6 @@ public class Node {
 		this.x = x;
 		this.y = y;
 	}
-	
-    /**
-     * Connect this node to another Node.
-     * @param id the ID of the other node
-     */
-	public void connect(int id) {
-		connections.add(id);
-	}
-	
-	/**
-	 * Replace an ID with a new one
-     * @param oldId  The old identifier
-     * @param newId  The new identifier to insert
-	 */
-	public boolean replace(int oldId, int newId)
-	{
-        return connections.replace(oldId, newId);
-	}
-	
-    /**
-     * Returns the number of the connections.
-     */
-	public int getConnectionsLength() {
-		return connections.length();
-	}
-	
-    /**
-     * Return the connection of the given index, if it exists.
-     * @param index  The index of the connection to retrieve (handy for iterations).
-     */
-	public int getConnection(int index)
-	{
-		return connections.get(index);
-	}
     
 	public void createRelation(Road r) {
 		for(int i = 0; i < roads.length(); i++)
@@ -86,11 +52,5 @@ public class Node {
 
         roads.add(r);
 	}
-	
-	// Krüger //
-	public void addRoadID(int ID)
-	{
-		roadsArray.add(ID);
-	}
-	// Krüger end //
+
 }
