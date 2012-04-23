@@ -79,7 +79,12 @@ public class Node {
 	}
     
 	public void createRelation(Road r) {
-		roads.add(r);
+		for(int i = 0; i < roads.length(); i++)
+        {
+            roads.get(i).addEdge(r);
+        }
+
+        roads.add(r);
 	}
 	
 	// Krüger //

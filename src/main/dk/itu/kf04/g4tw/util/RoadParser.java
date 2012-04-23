@@ -78,11 +78,13 @@ public class RoadParser {
 
             type = MapModel.getRoadTypeFromId(type);
 
-            nodeA.connect(b);
-            nodeB.connect(a);
             Road tmp = new Road(id, name, pointA, pointB, type, speed, length);
+            nodeA.createRelation(tmp);
+            nodeB.createRelation(tmp);
             roads.add(tmp);
         }
+
+
         // Close the scanner
         scanner.close();
 
