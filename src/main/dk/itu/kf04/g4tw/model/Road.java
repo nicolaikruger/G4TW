@@ -32,13 +32,18 @@ public class Road extends DijkstraEdge{
 	}
 	
 	public String toString() {
-		return ("Name: "+name + "; From: ("+from.getX()+","+from.getY()+")" + " To: ("+to.getX()+","+to.getY()+")" + "; Type: "+type + "; Speed: "+speed + "; Length: "+length + ";");
+		return ("Name: "+name);
 	}
 	
 	public double getLength() {
 		return length;
 	}
-	/**
+
+    public int getId() {
+        return id;
+    }
+
+    /**
 	public void assignNodes() {
 		getFrom().createRelation(this);
 		getTo().createRelation(this);

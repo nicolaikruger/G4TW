@@ -11,6 +11,8 @@ public abstract class DijkstraEdge implements Iterable<DijkstraEdge>, Comparable
 
     public abstract double getLength();
 
+    public abstract int getId();
+
     private DynamicArray<DijkstraEdge> edges = new DynamicArray<DijkstraEdge>();
 
     public void addEdge(DijkstraEdge e){
@@ -25,7 +27,7 @@ public abstract class DijkstraEdge implements Iterable<DijkstraEdge>, Comparable
         return new Iterator<DijkstraEdge>() {
             private int n = 0;
             public boolean hasNext() {
-                return n < edges.length() - 1;
+                return n < edges.length();
             }
 
             public DijkstraEdge next() {
