@@ -60,7 +60,7 @@ public class DataStore {
     
     public static MapModel loadRoads() {
         HashMap<Integer, RoadTypeTree> roads = new HashMap<Integer, RoadTypeTree>();
-        HashMap<Integer, DynamicArray<Road>> nodeRoadPair = new HashMap<Integer, DynamicArray<Road>>();
+        HashMap<Point2D.Double, DynamicArray<Road>> nodeRoadPair = new HashMap<Point2D.Double, DynamicArray<Road>>();
 
         int numberOfRoads = 0;
         long time = System.currentTimeMillis();
@@ -75,7 +75,32 @@ public class DataStore {
                 int type            = is.readInt();
                 double speed        = is.readDouble();
                 double length       = is.readDouble();
-                addRoad(roads, new Road(id, name, from, to, type, speed, length));
+                Road road = new Road(id, name, from, to, type, speed, length);
+
+                // If the points are not yet in the hashmap, add them.
+                if(!nodeRoadPair.containsKey(from)) nodeRoadPair.put(from, new DynamicArray<Road>());
+                if(!nodeRoadPair.containsKey(to)) nodeRoadPair.put(to, new DynamicArray<Road>());
+
+                // Add the new road as an edge to all other roads that shares the same points
+                // Add all other roads with same points to the new road
+                // --> Creates an UNDIRECTED graph!
+                for(int i = 0; i < nodeRoadPair.get(from).length(); i++)
+                {
+                    nodeRoadPair.get(from).get(i).addEdge(road);
+                    road.addEdge(nodeRoadPair.get(from).get(i));
+                }
+
+                for(int i = 0; i < nodeRoadPair.get(to).length(); i++)
+                {
+                    nodeRoadPair.get(to).get(i).addEdge(road);
+                    road.addEdge(nodeRoadPair.get(to).get(i));
+                }
+
+                // Add the new road to the hashmap
+                nodeRoadPair.get(from).add(road);
+                nodeRoadPair.get(to).add(road);
+
+                addRoad(roads, road);
                 numberOfRoads++;
             }
         } catch (IOException e) {} // Expected
