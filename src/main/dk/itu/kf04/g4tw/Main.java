@@ -32,8 +32,8 @@ public class Main {
         Log.info("Main starting up.");
 
         // Find the files
-        File nodeFile = new File("krak/kdv_node_unload.txt");
-        File edgeFile = new File("krak/kdv_unload.txt");
+        File nodeFile = new File("kdv_node_unload.txt");
+        File edgeFile = new File("kdv_unload.txt");
 
         Log.fine("Starting import of map-data.");
         
