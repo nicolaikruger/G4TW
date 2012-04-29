@@ -1,17 +1,16 @@
 package dk.itu.kf04.g4tw.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Arrays;
-
+import dk.itu.kf04.g4tw.model.MapModel;
 import dk.itu.kf04.g4tw.model.Road;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.transform.TransformerException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  *
@@ -60,7 +59,7 @@ public class RequestParser {
         long startTime = System.currentTimeMillis();
 
         // Search the model and concatenate the results with the previous
-        DynamicArray<Road> search = MapController.model.search(x1, y1, x2, y2, filter);
+        DynamicArray<Road> search = MapModel.search(x1, y1, x2, y2, filter);
 
 		// Creates an XML document
 		Document docXML = xmlParser.createDocument();

@@ -17,11 +17,6 @@ public class TreeNode {
 	private boolean useX;
 
 	/**
-	 * A boolean value indicating whether this is a "red" or a "black" node
-	 */
-	private boolean isRed;
-
-	/**
 	 * The left TreeNode - if any.
 	 */
 	private TreeNode leftTreeNode = null;
@@ -39,24 +34,11 @@ public class TreeNode {
 	/**
 	 * Constructs a TreeNode
 	 * @param useX  Whether or not to use the x-axis to compare other rectangles.
-	 * @param isRed Whether or not to this node has a "red" link to its parent
-	 * @param road  This road.
-	 */
-	public TreeNode (boolean useX, boolean isRed, Road road)
-	{
-		this.useX = useX;
-		this.isRed = isRed;
-		this.road = road;
-	}
-
-	/**
-	 * Constructs a TreeNode. The isRed boolean is being set to true;
 	 * @param road  This road.
 	 */
 	public TreeNode (boolean useX, Road road)
 	{
 		this.useX = useX;
-		this.isRed = true;
 		this.road = road;
 	}
 

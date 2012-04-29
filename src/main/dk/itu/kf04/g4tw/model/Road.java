@@ -1,21 +1,17 @@
 package dk.itu.kf04.g4tw.model;
-import dk.itu.kf04.g4tw.controller.XMLDocumentParser;
 import dk.itu.kf04.g4tw.model.tree.RoadRectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Text;
-
-import javax.xml.transform.TransformerException;
 import java.awt.geom.Point2D;
 
-public class Road {
-	
-	private String name;
-	private int id;
-	private int type;
+public class Road extends DijkstraEdge {
+
+	public final String name;
+	public final int id;
+	public final int type;
 	public final Point2D.Double from;
 	public final Point2D.Double to;
-	private double speed;
+	public double speed;
 	private double length;
 
 	/**
@@ -35,31 +31,13 @@ public class Road {
 		rect = new RoadRectangle(f, t);
 	}
 	
-	public String toString() {
-		return ("Name: "+name + "; From: ("+from.getX()+","+from.getY()+")" + " To: ("+to.getX()+","+to.getY()+")" + "; Type: "+type + "; Speed: "+speed + "; Length: "+length + ";");
-	}
-	
-	public double getLength() {
-		return length;
-	}
-	
-	public Point2D.Double getFrom() {
-		return from;
-	}
-	
-	public Point2D.Double getTo() {
-		return to;
-	}
+    public int getId() { return id; }
+    
+	public double getLength() { return length; }
 
-	public int getType() {
-		return type;
-	}
-
-	/**
-	public void assignNodes() {
-		getFrom().createRelation(this);
-		getTo().createRelation(this);
-	}*/
+    public String toString() {
+        return ("Name: "+name + "; From: ("+from.getX()+","+from.getY()+")" + " To: ("+to.getX()+","+to.getY()+")" + "; Type: "+type + "; Speed: "+speed + "; Length: "+length + ";");
+    }
 
 	/**
 	 * This method converts a road into an XML element. The XML element can be inserted into a document

@@ -94,10 +94,10 @@ public class WebServer implements Closeable {
             } catch (UnsupportedEncodingException e) {
                 Log.warning("Unsupported encoding: " + e.getMessage());
             } catch (TransformerException e) {
-				e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-			}
+                Log.warning("Transformer exception: " + e.getMessage());
+            }
 
-			// Set the content type
+            // Set the content type
             if (input != null) {
                 contentType = "text/xml";
             }
