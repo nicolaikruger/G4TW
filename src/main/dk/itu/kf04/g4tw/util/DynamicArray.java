@@ -41,9 +41,14 @@ public class DynamicArray<Item> {
 		if(isEmpty())
 			throw new RuntimeException("The array is empty! FFS... -.-''");
 		
-		a[index] = a[N];
-		a[N] = null;
-		N--;
+		//a[index] = a[N];
+
+        // Moves all elements after the index one spot to the left;
+        for(int i = index+1; i < N-1; i++)
+        {
+            a[i] = a[i+1];
+        }
+        a[--N] = null;
 		
 		if(N > 0 && N == a.length/4)
 			resize(a.length/2);
