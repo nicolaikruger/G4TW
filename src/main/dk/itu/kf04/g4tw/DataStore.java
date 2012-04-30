@@ -1,15 +1,15 @@
 package dk.itu.kf04.g4tw;
 
-import dk.itu.kf04.g4tw.model.MapModel;
-import dk.itu.kf04.g4tw.model.Road;
-import dk.itu.kf04.g4tw.model.RoadTypeTree;
+import dk.itu.kf04.g4tw.model.*;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 import dk.itu.kf04.g4tw.util.RoadParser;
-import sun.rmi.runtime.Log;
 
 import java.awt.geom.Point2D;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 /**
@@ -32,11 +32,11 @@ public class DataStore {
         try {
             // Create the output stream
             DataOutputStream os = new DataOutputStream(new FileOutputStream(file));
-            
+
             // Iterate over the roads
             for (int i = 0; i < roads.length(); i++) {
                 Road road = roads.get(i);
-                os.writeInt(i);
+                os.writeInt(road.id);
                 os.writeUTF(road.name);
                 os.writeDouble(road.from.getX()); // From
                 os.writeDouble(road.from.getY());
@@ -61,8 +61,15 @@ public class DataStore {
     public static MapModel loadRoads() {
         HashMap<Integer, RoadTypeTree> roads = new HashMap<Integer, RoadTypeTree>();
 
+        // TODO: Find et dynamisk fix til at sætte størrelse
+        Road[] edges = new Road[812302];
+        HashMap<Point2D.Double, ArrayList<Integer>> nodeRoadPair = new HashMap<Point2D.Double, ArrayList<Integer>>();
+
         int numberOfRoads = 0;
         long time = System.currentTimeMillis();
+
+        Road r1 = null;
+        Road r2 = null;
 
         try {
             DataInputStream is  = new DataInputStream(new FileInputStream(file));
@@ -74,12 +81,65 @@ public class DataStore {
                 int type            = is.readInt();
                 double speed        = is.readDouble();
                 double length       = is.readDouble();
-                addRoad(roads, new Road(id, name, from, to, type, speed, length));
+                Road road = new Road(id, name, from, to, type, speed, length);
+
+                // If the points are not yet in the hashmap, add them.
+                if(!nodeRoadPair.containsKey(from)) nodeRoadPair.put(from, new ArrayList<Integer>());
+                if(!nodeRoadPair.containsKey(to)) nodeRoadPair.put(to, new ArrayList<Integer>());
+
+                // Add the new road as an edge to all other roads that shares the same points
+                // Add all other roads with same points to the new road
+                // --> Creates a UNDIRECTED graph!
+                for(int i : nodeRoadPair.get(from))
+                {
+                    edges[i].addEdge(road);
+                    road.addEdge(edges[i]);
+                }
+
+                for(int i : nodeRoadPair.get(to))
+                {
+                    edges[i].addEdge(road);
+                    road.addEdge(edges[i]);
+                }
+
+                // Add the new roads ID to the hashmap
+                nodeRoadPair.get(from).add(id);
+                nodeRoadPair.get(to).add(id);
+
+                // Add the road to the edges collection
+                edges[id] = road;
+
+                //addRoad(roads, road);
                 numberOfRoads++;
+                if(r1 == null && r2 != null) r1 = road;
+                if(r2 == null) r2 = road;
             }
         } catch (IOException e) {} // Expected
 
+        edges = trim(edges);
+        for(Road road : edges)
+        {
+            if(road != null)
+                addRoad(roads, road);
+        }
+
         System.out.println("Import done in " + ((System.currentTimeMillis() - time) / 1000) + " seconds. Read " + numberOfRoads + " roads.");
+
+        System.out.println("Road 1: " + r1);
+        System.out.println("Road 2: " + r2);
+
+        DijkstraEdge[] arr = DijkstraSP.onLiner(numberOfRoads, r1, r2);
+        //DijkstraEdge[] arr = DSP.findPath(AB, CD);
+        int prev = r2.getId();
+        if(arr == null) System.out.println("THERE IS NO PATH!");
+        else {
+            while(arr[prev] != null)
+            {
+                System.out.println(arr[prev] + "-->");
+                prev = arr[prev].getId();
+            }
+        }
+
         return new MapModel(roads);
     }
 
@@ -94,4 +154,36 @@ public class DataStore {
         // Insert
 		roads.get(road.type).addNode(road);
 	}
+
+    protected static Road[] trim(Road[] arr)
+    {
+        Scanner scanner = null;
+
+        try {
+            scanner = new Scanner(new FileReader("turn.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        scanner.nextLine();
+        while(scanner.hasNextLine())
+        {
+            String[] nextLine = scanner.nextLine().split(",");
+            int fID = Integer.parseInt(nextLine[2]);
+            int tID = Integer.parseInt(nextLine[3]);
+
+
+            // Make the graph directed
+            Iterator<DijkstraEdge> it = arr[fID].iterator();
+            while(it.hasNext())
+            {
+                if(it.next().getId() == tID) {
+                    it.remove();
+                    break;
+                }
+            }
+        }
+
+        return arr;
+    }
 }

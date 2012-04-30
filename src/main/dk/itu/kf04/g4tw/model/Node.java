@@ -13,7 +13,7 @@ public class Node {
     /**
      * The roads connected to this Node in the graph.
      */
-	private DynamicArray<Integer> edges = new DynamicArray<Integer>();
+	private DynamicArray<Road> edges = new DynamicArray<Road>();
 	
     /**
      * The x coordinate of the Node.
@@ -35,7 +35,7 @@ public class Node {
 		this.y = y;
 	}
     
-	public void createRelation(DynamicArray<Road> roads, int x) {
+	public void createRelation(DynamicArray<Road> roads, Road x) {
 		for(int i = 0; i < roads.length(); i++) {
             roads.get(i).addEdge(x);
         }

@@ -80,8 +80,8 @@ public class RoadParser {
 
             Road tmp = new Road(id, name, pointA, pointB, type, speed, length);
             roads.add(tmp);
-            nodeA.createRelation(roads, roads.length() - 1);
-            nodeB.createRelation(roads, roads.length() - 1);
+            nodeA.createRelation(roads, tmp);
+            nodeB.createRelation(roads, tmp);
         }
 
 

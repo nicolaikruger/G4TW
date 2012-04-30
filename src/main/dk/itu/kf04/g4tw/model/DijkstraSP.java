@@ -1,9 +1,5 @@
 package dk.itu.kf04.g4tw.model;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-import dk.itu.kf04.g4tw.util.DynamicArray;
-
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -104,7 +100,6 @@ public class DijkstraSP {
         Arrays.fill(visited, false);
 
         dist[from.getId()] = 0;
-        visited[from.getId()] = true;
 
         PriorityQueue<DijkstraEdge> Q = new PriorityQueue<DijkstraEdge>(N, new Comparator<DijkstraEdge>() {
             public int compare(DijkstraEdge o1, DijkstraEdge o2) {
@@ -152,7 +147,7 @@ public class DijkstraSP {
         return previous;
     }
 
-    /*public static void main(String[] args)
+    public static void main(String[] args)
     {
         DijkstraSP DSP = new DijkstraSP(4);
         Point2D.Double p = new Point2D.Double(2.0, 2.0);
@@ -209,6 +204,6 @@ public class DijkstraSP {
         //System.out.println(arr[HI.getId()].toString());
         //System.out.println(Arrays.toString(DijkstraSP.onLiner(4, AB, CD)));
         //System.out.println(DSP.getDist());
-    }*/
+    }
 
 }
