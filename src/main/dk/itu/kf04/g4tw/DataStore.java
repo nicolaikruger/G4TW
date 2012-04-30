@@ -1,123 +1,137 @@
 package dk.itu.kf04.g4tw;
 
+import dk.itu.kf04.g4tw.model.DijkstraEdge;
 import dk.itu.kf04.g4tw.model.MapModel;
 import dk.itu.kf04.g4tw.model.Road;
-import dk.itu.kf04.g4tw.model.RoadTypeTree;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 import dk.itu.kf04.g4tw.util.RoadParser;
-import sun.rmi.runtime.Log;
 
 import java.awt.geom.Point2D;
 import java.io.*;
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
- *
+ * The DataStore can store already parsed map-data loaded from the {@link RoadParser}
+ * and retrieve it for later use. It significantly reduces load-time.
  */
 public class DataStore {
-    
-    protected static String file = "data.bin";
+
+    protected static final String roadFile = "roads.bin";
+    protected static final String edgeFile = "edges.bin";
     
     public static Logger Log = Logger.getLogger(DataStore.class.getName());
-    
+
+    /**
+     * Retrieves the data from the krak data-files and stores them in two binary files - roads.bin for
+     * roads and edges.bin for edges.
+     * @param args  The arguments for the run method.
+     */
     public static void main(String[] args) {
-        // Find the files
-        File nodeFile = new File("kdv_node_unload.txt");
-        File edgeFile = new File("kdv_unload.txt");
-        
         // Load the roads
-        DynamicArray<Road> roads = RoadParser.load(nodeFile, edgeFile);
+        DynamicArray<Road> roads = RoadParser.load(new File("kdv_node_unload.txt"), new File("kdv_unload.txt"));
 
         try {
-            // Create the output stream
-            DataOutputStream os = new DataOutputStream(new FileOutputStream(file));
+            // Create the output streams
+            DataOutputStream ros = new DataOutputStream(new FileOutputStream(roadFile));
+            DataOutputStream eos = new DataOutputStream(new FileOutputStream(edgeFile));
+
+            // Log status
+            Log.info("Starting import...");
+            
+            // Write the number of roads
+            ros.writeInt(roads.length());
             
             // Iterate over the roads
             for (int i = 0; i < roads.length(); i++) {
                 Road road = roads.get(i);
-                os.writeInt(road.id);
-                os.writeUTF(road.name);
-                os.writeDouble(road.from.getX()); // From
-                os.writeDouble(road.from.getY());
-                os.writeDouble(road.to.getX()); // To
-                os.writeDouble(road.to.getY());
-                os.writeInt(road.type);
-                os.writeDouble(road.speed);
-                os.writeDouble(road.getLength());
+                ros.writeUTF(road.name);
+                ros.writeDouble(road.from.getX()); // From
+                ros.writeDouble(road.from.getY());
+                ros.writeDouble(road.to.getX()); // To
+                ros.writeDouble(road.to.getY());
+                ros.writeInt(road.type);
+                ros.writeDouble(road.speed);
+                ros.writeDouble(road.getLength());
+                
+                // Iterate the edges in the road
+                for (DijkstraEdge d : road) {
+                    eos.writeInt(road.getId());
+                    eos.writeInt(d.getId());
+                }
+                
+                if (i != 0 && i % 100000 == 0) Log.info("Status: Successfully stored " + i + " roads and edges.");
             }
             
             // Flush!
-            os.flush();
+            ros.flush();
+            eos.flush();
             
             // Log success.
-            Log.info("Successfully wrote to file.");
+            Log.info("Successfully wrote roads and edges to file.");
+        } catch (FileNotFoundException e) {
+            Log.severe("Error storing map-data. Could not find file: " + e.getMessage());
         } catch (IOException e) {
             Log.warning("Failure while writing roads to disk.");
             e.printStackTrace();
         }
     }
-    
-    public static MapModel loadRoads() {
-        HashMap<Integer, RoadTypeTree> roads = new HashMap<Integer, RoadTypeTree>();
-        HashMap<Point2D.Double, DynamicArray<Road>> nodeRoadPair = new HashMap<Point2D.Double, DynamicArray<Road>>();
-
-        int numberOfRoads = 0;
-        long time = System.currentTimeMillis();
-
-        try {
-            DataInputStream is  = new DataInputStream(new FileInputStream(file));
-            while (true) {
-                int id              = is.readInt();
-                String name         = is.readUTF();
-                Point2D.Double from = new Point2D.Double(is.readDouble(), is.readDouble());
-                Point2D.Double to   = new Point2D.Double(is.readDouble(), is.readDouble());
-                int type            = is.readInt();
-                double speed        = is.readDouble();
-                double length       = is.readDouble();
-                Road road = new Road(id, name, from, to, type, speed, length);
-
-                // If the points are not yet in the hashmap, add them.
-                if(!nodeRoadPair.containsKey(from)) nodeRoadPair.put(from, new DynamicArray<Road>());
-                if(!nodeRoadPair.containsKey(to)) nodeRoadPair.put(to, new DynamicArray<Road>());
-
-                // Add the new road as an edge to all other roads that shares the same points
-                // Add all other roads with same points to the new road
-                // --> Creates an UNDIRECTED graph!
-                for(int i = 0; i < nodeRoadPair.get(from).length(); i++)
-                {
-                    nodeRoadPair.get(from).get(i).addEdge(road);
-                    road.addEdge(nodeRoadPair.get(from).get(i));
-                }
-
-                for(int i = 0; i < nodeRoadPair.get(to).length(); i++)
-                {
-                    nodeRoadPair.get(to).get(i).addEdge(road);
-                    road.addEdge(nodeRoadPair.get(to).get(i));
-                }
-
-                // Add the new road to the hashmap
-                nodeRoadPair.get(from).add(road);
-                nodeRoadPair.get(to).add(road);
-
-                addRoad(roads, road);
-                numberOfRoads++;
-            }
-        } catch (IOException e) {} // Expected
-
-        System.out.println("Import done in " + ((System.currentTimeMillis() - time) / 1000) + " seconds. Read " + numberOfRoads + " roads.");
-        return new MapModel(roads);
-    }
 
     /**
-     * Adds a road to the Model.
-     * @param road The road to add.
+     * This method loads the roads and edges from the data-files generated in the main method above
+     * and adds them to the {@link MapModel}.
      */
-	protected static void addRoad(HashMap<Integer, RoadTypeTree> roads, Road road) {
-        // Construct the tree if it does not exist
-        if (!roads.containsKey(road.type)) roads.put(road.type, new RoadTypeTree(road.type));
+    public static void loadRoads() {
+        DataInputStream is;
+        DynamicArray<Road> roads;
+        long time = System.currentTimeMillis();
         
-        // Insert
-		roads.get(road.type).addNode(road);
-	}
+        // Load roads and edges
+        try {
+            is  = new DataInputStream(new FileInputStream(roadFile)); 
+            
+            // Read the number of roads
+            int numberOfRoads = is.readInt();
+            roads = new DynamicArray<Road>(numberOfRoads);
+            
+            // Find roads
+            try {
+                while (true) {
+                    String name         = is.readUTF();
+                    Point2D.Double from = new Point2D.Double(is.readDouble(), is.readDouble());
+                    Point2D.Double to   = new Point2D.Double(is.readDouble(), is.readDouble());
+                    int type            = is.readInt();
+                    double speed        = is.readDouble();
+                    double length       = is.readDouble();
+                    Road road = new Road(roads.length(), name, from, to, type, speed, length);
+
+                    MapModel.addRoad(road);
+                    roads.add(road);
+                }
+            } catch (IOException e) {} // Expected 
+            
+            // Close stream
+            is.close();
+            
+            // Load edges
+            is  = new DataInputStream(new FileInputStream(edgeFile));
+            try {
+                while (true) {
+                    int from = is.readInt();
+                    int to   = is.readInt();
+                    roads.get(from).addEdge(roads.get(to));
+                }
+            } catch (IOException e) {} // Expected
+
+            // Close the stream
+            is.close();
+            
+            // Log success!
+            Log.info("Import done in " + ((System.currentTimeMillis() - time) / 1000) + " seconds. Read " + roads.length() + " roads.");
+            
+        } catch (FileNotFoundException e) {
+            Log.severe("Error loading data. Could not locate file: " + e.getMessage());
+        } catch (IOException e) {
+            Log.severe("Error loading data: Bad format. Please recompile.");
+        }
+    }
 }

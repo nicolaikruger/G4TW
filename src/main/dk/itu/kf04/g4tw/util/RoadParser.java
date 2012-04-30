@@ -70,7 +70,9 @@ public class RoadParser {
             Point2D.Double pointA = new Point2D.Double(nodeA.x,nodeA.y);
             Point2D.Double pointB = new Point2D.Double(nodeB.x,nodeB.y);
 
-            int id = Integer.parseInt(nextLine[3]); // DAV_DK-ID
+            // Use the id's of the dynamic array so we promise consistency
+            int id = roads.length();
+            //int id = Integer.parseInt(nextLine[3]); // DAV_DK-ID
             //int id2 = Integer.parseInt(nextLine[4]); // DAV_DK-ID
             int type = Integer.parseInt(nextLine[5]);
             double speed = Double.parseDouble(nextLine[25]);

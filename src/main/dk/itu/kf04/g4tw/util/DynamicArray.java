@@ -8,8 +8,19 @@ import java.util.Random;
  */
 public class DynamicArray<Item> {
 
-	private Item[] a = (Item[]) new Object[1];
+	private Item[] a;
 	private int N = 0;
+
+    /**
+     * Creates a new DynamicArray of size 1.
+     */
+    public DynamicArray() { a = (Item[]) new Object[1]; }
+
+    /**
+     * Creates a new DynamicArray with a given size.
+     * @param size The size of the elements to store.
+     */
+    public DynamicArray(int size) { a = (Item[]) new Object[size]; }
 	
     /**
      * Adds an element to the array.

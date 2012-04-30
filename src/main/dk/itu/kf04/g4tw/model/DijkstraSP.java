@@ -1,9 +1,5 @@
 package dk.itu.kf04.g4tw.model;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-import dk.itu.kf04.g4tw.util.DynamicArray;
-
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.Comparator;

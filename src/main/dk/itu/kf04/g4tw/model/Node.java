@@ -2,8 +2,6 @@ package dk.itu.kf04.g4tw.model;
 
 import dk.itu.kf04.g4tw.util.DynamicArray;
 
-import java.util.ArrayList;
-
 /**
  * A node that contains information about a point in a 2-dimensional space 
  * and its connections to roads - i. e. edges.
