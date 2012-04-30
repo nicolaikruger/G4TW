@@ -1,11 +1,8 @@
 package dk.itu.kf04.g4tw;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-import com.sun.xml.internal.bind.v2.TODO;
 import dk.itu.kf04.g4tw.model.*;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 import dk.itu.kf04.g4tw.util.RoadParser;
-import sun.rmi.runtime.Log;
 
 import java.awt.geom.Point2D;
 import java.io.*;
