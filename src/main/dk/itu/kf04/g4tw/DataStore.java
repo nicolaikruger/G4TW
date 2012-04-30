@@ -36,7 +36,7 @@ public class DataStore {
             // Iterate over the roads
             for (int i = 0; i < roads.length(); i++) {
                 Road road = roads.get(i);
-                os.writeInt(road.id);
+                os.writeInt(i);
                 os.writeUTF(road.name);
                 os.writeDouble(road.from.getX()); // From
                 os.writeDouble(road.from.getY());
@@ -60,7 +60,6 @@ public class DataStore {
     
     public static MapModel loadRoads() {
         HashMap<Integer, RoadTypeTree> roads = new HashMap<Integer, RoadTypeTree>();
-        HashMap<Integer, DynamicArray<Road>> nodeRoadPair = new HashMap<Integer, DynamicArray<Road>>();
 
         int numberOfRoads = 0;
         long time = System.currentTimeMillis();

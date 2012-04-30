@@ -79,9 +79,9 @@ public class RoadParser {
             type = MapModel.getRoadTypeFromId(type);
 
             Road tmp = new Road(id, name, pointA, pointB, type, speed, length);
-            nodeA.createRelation(tmp);
-            nodeB.createRelation(tmp);
             roads.add(tmp);
+            nodeA.createRelation(roads, roads.length() - 1);
+            nodeB.createRelation(roads, roads.length() - 1);
         }
 
 

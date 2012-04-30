@@ -31,7 +31,9 @@ public class Road extends DijkstraEdge {
 		rect = new RoadRectangle(f, t);
 	}
 	
-    public int getId() { return id; }
+    public Road getEdge(int x ) { return MapModel.getRoad(x); }
+    
+    public int getId()        { return id; }
     
 	public double getLength() { return length; }
 

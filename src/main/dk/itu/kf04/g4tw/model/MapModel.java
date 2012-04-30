@@ -28,6 +28,8 @@ public class MapModel {
      * Contains a map between the different road-types and the corresponding Search-Trees.
      */
     protected final HashMap<Integer, RoadTypeTree> roadTrees;
+    
+    protected static final DynamicArray<Road> roads = new DynamicArray<Road>();
 
     // Add road-type references
     static {
@@ -48,6 +50,11 @@ public class MapModel {
     public MapModel(HashMap<Integer, RoadTypeTree> trees) {
         roadTrees = trees;
     }
+
+    /**
+     * Get road from id.
+     */
+    public static Road getRoad(int x) { return roads.get(x); }
 
     /**
      * Insert a map from a set of given road-ids to a road-type.

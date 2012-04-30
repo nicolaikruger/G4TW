@@ -152,7 +152,7 @@ public class DijkstraSP {
         return previous;
     }
 
-    public static void main(String[] args)
+    /*public static void main(String[] args)
     {
         DijkstraSP DSP = new DijkstraSP(4);
         Point2D.Double p = new Point2D.Double(2.0, 2.0);
@@ -209,6 +209,6 @@ public class DijkstraSP {
         //System.out.println(arr[HI.getId()].toString());
         //System.out.println(Arrays.toString(DijkstraSP.onLiner(4, AB, CD)));
         //System.out.println(DSP.getDist());
-    }
+    }*/
 
 }
