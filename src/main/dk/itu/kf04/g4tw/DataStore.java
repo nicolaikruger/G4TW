@@ -122,8 +122,7 @@ public class DataStore {
         edges = trim(edges);
         for(Road road : edges)
         {
-            if(road != null)
-                addRoad(roads, road);
+            addRoad(roads, road);
         }
 
         System.out.println("Import done in " + ((System.currentTimeMillis() - time) / 1000) + " seconds. Read " + numberOfRoads + " roads.");

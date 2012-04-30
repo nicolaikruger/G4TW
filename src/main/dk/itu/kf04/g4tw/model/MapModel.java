@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A Model of the map-data. The model is currently split into 8 different {@link RoadTypeTree}s to easen
- * the search of particular road-types.
+ * A Model of the map-data. This class is responsible for 
  */
 public class MapModel {
 
@@ -28,7 +27,7 @@ public class MapModel {
     /**
      * Contains a map between the different road-types and the corresponding Search-Trees.
      */
-    protected static final HashMap<Integer, RoadTypeTree> roadTrees = new HashMap<Integer, RoadTypeTree>();
+    protected final HashMap<Integer, RoadTypeTree> roadTrees;
 
     // Add road-type references
     static {
@@ -43,16 +42,12 @@ public class MapModel {
     }
 
     /**
-     * Adds a road to the Model.
-     * @param road The road to add.
+     * Creates a Model from a given set of search-trees.
+     * @param trees A map between the different road-types and their corresponding search-trees.
      */
-	public static void addRoad(Road road) {
-        // Construct the tree if it does not exist
-        if (!roadTrees.containsKey(road.type)) roadTrees.put(road.type, new RoadTypeTree(road.type));
-        
-        // Insert
-        roadTrees.get(road.type).addNode(road);
-	}
+    public MapModel(HashMap<Integer, RoadTypeTree> trees) {
+        roadTrees = trees;
+    }
 
     /**
      * Insert a map from a set of given road-ids to a road-type.
@@ -84,7 +79,7 @@ public class MapModel {
      * @param type
      * @return
      */
-	public static DynamicArray<Road> search(double xMin, double yMin, double xMax, double yMax, int type)
+	public DynamicArray<Road> search(double xMin, double yMin, double xMax, double yMax, int type)
 	{
         DynamicArray<Road> results = new DynamicArray<Road>();
         for (Map.Entry<Integer, RoadTypeTree> entry : roadTrees.entrySet()) {

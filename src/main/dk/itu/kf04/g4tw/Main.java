@@ -1,7 +1,9 @@
 package dk.itu.kf04.g4tw;
 
 import dk.itu.kf04.g4tw.controller.MapController;
+import dk.itu.kf04.g4tw.model.MapModel;
 
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,12 +28,12 @@ public class Main {
         Log.info("Main starting up. Importing map-data...");
         
         // Import data
-        DataStore.loadRoads();
+        MapModel model = DataStore.loadRoads();
         
         Log.info("Import of map-data done. Starting server...");
 
         // Start the controller
-        new MapController();
+        new MapController(model);
     }
 
 }
