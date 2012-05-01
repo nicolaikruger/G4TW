@@ -60,6 +60,7 @@ public class DataStore {
     
     public static MapModel loadRoads() {
         HashMap<Integer, RoadTypeTree> roads = new HashMap<Integer, RoadTypeTree>();
+        HashMap<String, DynamicArray<Road>> namedRoads = new HashMap<String, DynamicArray<Road>>();
 
         // TODO: Find et dynamisk fix til at sætte størrelse
         Road[] edges = new Road[812302];
@@ -83,7 +84,18 @@ public class DataStore {
                 double length       = is.readDouble();
                 Road road = new Road(id, name, from, to, type, speed, length);
 
-                // If the points are not yet in the hashmap, add them.
+                // If the road has a name
+                if(name.length() > 2) {
+                    // If the road-name is not yet in the namesRoads-hashmap, add it
+                    if(!namedRoads.containsKey(name))
+                        namedRoads.put(name, new DynamicArray<Road>());
+
+                    // Add the road to the corresponding collection
+                    namedRoads.get(name).add(road);
+                }
+
+
+                // If the points are not yet in the nodeRoadPair-hashmap, add them.
                 if(!nodeRoadPair.containsKey(from)) nodeRoadPair.put(from, new ArrayList<Integer>());
                 if(!nodeRoadPair.containsKey(to)) nodeRoadPair.put(to, new ArrayList<Integer>());
 
@@ -109,12 +121,14 @@ public class DataStore {
                 // Add the road to the edges collection
                 edges[id] = road;
 
-                //addRoad(roads, road);
                 numberOfRoads++;
                 if(r1 == null && r2 != null) r1 = road;
                 if(r2 == null) r2 = road;
             }
         } catch (IOException e) {} // Expected
+
+        // Set the namesRoads hashmap in MapModel
+        AdressParser.setNamedRoads(namedRoads);
 
         edges = trim(edges);
         for(Road road : edges)
