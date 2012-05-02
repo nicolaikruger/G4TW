@@ -6,6 +6,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -63,7 +65,7 @@ public class WebServer implements Closeable {
      * @param out  The output stream to output content to
      */
     protected static void handleRequest(String request, PrintStream out) {
-    
+
         // Turn down bad requests
         if (request == null ||
             !request.startsWith("GET") ||
@@ -80,8 +82,8 @@ public class WebServer implements Closeable {
         // Find the request for a file by omitting "GET /" and "HTTP/1.1"
         String fileRequest = request.substring(5, request.length() - 9);
 
-        // Set the input stream and content-type
-        InputStream input = null;
+        // Set the byte-stream and content-type
+        byte[] input = null;
         String contentType = null;
 
         // Match for map requests
@@ -110,13 +112,13 @@ public class WebServer implements Closeable {
 
             try {
                 // Load file
-                input = new FileInputStream(new File(fileRequest));
+                input = Files.readAllBytes(Paths.get(fileRequest));
                 // Set content-type
                 if(fileRequest.endsWith(".js"))			contentType = "text/javascript";
                 else if(fileRequest.endsWith(".xml"))	contentType = "text/xml";
                 else		                   			contentType = URLConnection.guessContentTypeFromName(fileRequest);
-            } catch (FileNotFoundException e) {
-                Log.warning("File " + fileRequest + " not found.");
+            } catch (IOException e) {
+                Log.warning("Exception while handling " + fileRequest + ": " + e.getMessage());
             }
         }
 
@@ -183,7 +185,7 @@ public class WebServer implements Closeable {
      * @param is  The input stream of the response
      * @param os  The output stream to the client
      */
-    protected static void respond(String contentType, InputStream is, PrintStream os) {
+    protected static void respond(String contentType, byte[] is, PrintStream os) {
         // Print HTTP meta-content
         os.println("HTTP/1.1 200 OK");
         os.println("Server: KraXServer/1.0");
@@ -194,13 +196,11 @@ public class WebServer implements Closeable {
 
         // Send object
         try {
-            byte[] buffer = new byte[100000];
-            while(is.available() > 0) {
-                os.write(buffer, 0, is.read(buffer));
-            }
+            os.write(is);
         } catch (IOException e) { // IOException
             Log.warning("IOException while writing to client: " + e.getMessage());
         }
+
 
         // Flush the stream
         os.flush();
