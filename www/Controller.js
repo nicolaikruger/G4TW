@@ -62,6 +62,14 @@ var Controller = (function() {
         Model.setFilterLevel(filter);
     }
 
+    var findViewDifference = function() {
+        var previousView = View.getViewRect();
+        var newView = new Vector();
+        newView.x = previousView.x.add(View.getPan());
+        newView.y = previousView.y.add(View.getPan());
+
+    }
+
     // Return empty object
     return {};
 }());
