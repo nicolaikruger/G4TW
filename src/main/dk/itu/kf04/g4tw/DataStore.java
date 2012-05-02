@@ -62,8 +62,6 @@ public class DataStore {
      * and adds them to the {@link MapModel}.
      */
     public static void loadRoads() {
-        DataInputStream is;
-        DynamicArray<Road> roads;
         long time = System.currentTimeMillis();
         
         // Log status
@@ -72,7 +70,7 @@ public class DataStore {
         // Load roads and edges
         try {
             // Create the stream from the data file
-            ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+            ObjectInputStream is = new ObjectInputStream(new FileInputStream(dataFile));
                         
             // Read the roads
             Object roads = is.readObject();

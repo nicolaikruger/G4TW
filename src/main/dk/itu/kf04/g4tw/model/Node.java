@@ -40,11 +40,11 @@ public class Node {
      * @param r  The road to connect the already connected roads to.
      */
 	public void connectTo(Road r) {
-		for(int i = 0; i < roads.length(); i++) {
-            roads.get(i).addEdge(r);
+		for(int i = 0; i < edges.length(); i++) {
+            edges.get(i).addEdge(r);
         }
 
-        edges.add(x);
+        edges.add(r);
 	}
 
 }
