@@ -1,10 +1,13 @@
 package dk.itu.kf04.g4tw.model;
+
 import dk.itu.kf04.g4tw.model.tree.RoadRectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import java.awt.geom.Point2D;
 
-public class Road extends DijkstraEdge {
+import java.awt.geom.Point2D;
+import java.io.Serializable;
+
+public class Road extends DijkstraEdge implements Serializable {
 
 	public final String name;
 	public final int id;
@@ -30,8 +33,8 @@ public class Road extends DijkstraEdge {
 		
 		rect = new RoadRectangle(f, t);
 	}
-	
-    public int getId() { return id; }
+    
+    public int getId()        { return id; }
     
 	public double getLength() { return length; }
 

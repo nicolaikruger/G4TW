@@ -15,8 +15,8 @@ public abstract class DijkstraEdge implements Iterable<DijkstraEdge>, Comparable
 
     private DynamicArray<DijkstraEdge> edges = new DynamicArray<DijkstraEdge>();
 
-    public void addEdge(DijkstraEdge e) {
-        edges.add(e);
+    public void addEdge(DijkstraEdge e){
+           edges.add(e);
     }
 
     public int compareTo(DijkstraEdge o) {
@@ -35,7 +35,7 @@ public abstract class DijkstraEdge implements Iterable<DijkstraEdge>, Comparable
             }
 
             public void remove() {
-                throw new UnsupportedOperationException("Deletion not permitted");
+                edges.remove(--n);
             }
         };
     }

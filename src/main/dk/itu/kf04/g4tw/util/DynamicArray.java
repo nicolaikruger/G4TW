@@ -8,19 +8,8 @@ import java.util.Random;
  */
 public class DynamicArray<Item> {
 
-	private Item[] a;
+	private Item[] a = (Item[]) new Object[1];
 	private int N = 0;
-
-    /**
-     * Creates a new DynamicArray of size 1.
-     */
-    public DynamicArray() { a = (Item[]) new Object[1]; }
-
-    /**
-     * Creates a new DynamicArray with a given size.
-     * @param size The size of the elements to store.
-     */
-    public DynamicArray(int size) { a = (Item[]) new Object[size]; }
 	
     /**
      * Adds an element to the array.
@@ -52,9 +41,14 @@ public class DynamicArray<Item> {
 		if(isEmpty())
 			throw new RuntimeException("The array is empty! FFS... -.-''");
 		
-		a[index] = a[N];
-		a[N] = null;
-		N--;
+		//a[index] = a[N];
+
+        // Moves all elements after the index one spot to the left;
+        for(int i = index+1; i < N-1; i++)
+        {
+            a[i] = a[i+1];
+        }
+        a[--N] = null;
 		
 		if(N > 0 && N == a.length/4)
 			resize(a.length/2);

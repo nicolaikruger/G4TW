@@ -3,13 +3,13 @@ package dk.itu.kf04.g4tw.model.tree;
 import dk.itu.kf04.g4tw.model.Road;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * A TreeNode containing information about the geometric properties of the road (RoadRectangle) and the
  * id of the road.
  */
-public class TreeNode {
+public class TreeNode implements Serializable {
 
 	/**
 	 * A boolean value indicating whether we use the x-axis
@@ -68,38 +68,37 @@ public class TreeNode {
 	
 	/**
 	 *Searches for nodes that intersects the given RoadRectangle.
+     * @param arr  The array to insert the search-result in
 	 * @param query  The rectangle we want to find roads inside.
-	 * @return A list of ids of the roads the intersects the given query-rectangle.
+	 * @return The previous search plus the roads in the node that intersects the given query-rectangle.
 	 */
-	public DynamicArray<Road> search(RoadRectangle query)
+	public DynamicArray<Road> search(DynamicArray<Road> arr, RoadRectangle query)
 	{
-		// TODO: Create own dynamic array with no generic types!
-		DynamicArray<Road> returnList = new DynamicArray<Road>();
-		if(road.rect.intersects(query)) returnList.add(road);
+		if(road.rect.intersects(query)) arr.add(road);
 		
 		if(useX) {
 			if(road.rect.xMin >= query.xMax && leftTreeNode != null) // Search only in the TreeNodes to the left
-				returnList.add(leftTreeNode.search(query));
+				leftTreeNode.search(arr, query);
 			else if(road.rect.xMax <= query.xMin && rightTreeNode != null) // Search only in the TreeNodes to the right
-				returnList.add(rightTreeNode.search(query));
+				rightTreeNode.search(arr, query);
 			else {  // Search in the TreeNodes to the left and the right
 				if(leftTreeNode != null)
-					returnList.add(leftTreeNode.search(query));
+					leftTreeNode.search(arr, query);
 				if(rightTreeNode != null)
-					returnList.add(rightTreeNode.search(query));
+					rightTreeNode.search(arr, query);
 			}
 		} else {
 			if(road.rect.yMin >= query.yMax && leftTreeNode != null) // Search only in the TreeNodes to the left
-				returnList.add(leftTreeNode.search(query));
+				leftTreeNode.search(arr, query);
 			else if(road.rect.yMax <= query.yMin && rightTreeNode != null) // Search only in the TreeNodes to the right
-				returnList.add(rightTreeNode.search(query));
+				rightTreeNode.search(arr, query);
 			else {  // Search in the TreeNodes to the left and the right
 				if(leftTreeNode != null)
-					returnList.add(leftTreeNode.search(query));
+					leftTreeNode.search(arr, query);
 				if(rightTreeNode != null)
-					returnList.add(rightTreeNode.search(query));
+					rightTreeNode.search(arr, query);
 			}
 		}
-		return returnList;
+		return arr;
 	}
 }

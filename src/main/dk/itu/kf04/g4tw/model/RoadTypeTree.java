@@ -2,10 +2,12 @@ package dk.itu.kf04.g4tw.model;
 
 import dk.itu.kf04.g4tw.model.tree.Tree2D;
 
+import java.io.Serializable;
+
 /**
  * A part of a larger map containing only the specified entity-types.
  */
-public class RoadTypeTree extends Tree2D {
+public class RoadTypeTree extends Tree2D implements Serializable {
 
     public final int type;
 

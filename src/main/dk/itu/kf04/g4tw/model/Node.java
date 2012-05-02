@@ -11,7 +11,7 @@ public class Node {
     /**
      * The roads connected to this Node in the graph.
      */
-	private DynamicArray<Road> roads = new DynamicArray<Road>();
+	private DynamicArray<Road> edges = new DynamicArray<Road>();
 	
     /**
      * The x coordinate of the Node.
@@ -32,14 +32,19 @@ public class Node {
 		this.x = x;
 		this.y = y;
 	}
-    
-	public void createRelation(Road r) {
-		for(int i = 0; i < roads.length(); i++)
-        {
-            roads.get(i).addEdge(r);
+
+    /**
+     * Connects all the roads attached to this node to the given Road, treated as an edge in
+     * a Dijkstra graph. In other words we iterate over all the roads currently connected to
+     * this node and adds the road as an "edge" in a graph.
+     * @param r  The road to connect the already connected roads to.
+     */
+	public void connectTo(Road r) {
+		for(int i = 0; i < edges.length(); i++) {
+            edges.get(i).addEdge(r);
         }
 
-        roads.add(r);
+        edges.add(r);
 	}
 
 }

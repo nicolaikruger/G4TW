@@ -100,7 +100,6 @@ public class DijkstraSP {
         Arrays.fill(visited, false);
 
         dist[from.getId()] = 0;
-        visited[from.getId()] = true;
 
         PriorityQueue<DijkstraEdge> Q = new PriorityQueue<DijkstraEdge>(N, new Comparator<DijkstraEdge>() {
             public int compare(DijkstraEdge o1, DijkstraEdge o2) {
