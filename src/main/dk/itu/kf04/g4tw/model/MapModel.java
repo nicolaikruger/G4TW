@@ -23,12 +23,12 @@ public class MapModel {
     /**
      * Maps relationships between road-ids given by the input-file and road-types given as static fields in the MapModel.
      */
-    protected static final HashMap<Integer, Integer> roadTypeMap = new HashMap<Integer, Integer>();
+    protected static HashMap<Integer, Integer> roadTypeMap = new HashMap<Integer, Integer>();
 
     /**
      * Contains a map between the different road-types and the corresponding Search-Trees.
      */
-    protected static final HashMap<Integer, RoadTypeTree> roadTrees = new HashMap<Integer, RoadTypeTree>();
+    protected static HashMap<Integer, RoadTypeTree> roadTrees = new HashMap<Integer, RoadTypeTree>();
 
     // Add road-type references
     static {
@@ -55,6 +55,11 @@ public class MapModel {
 	}
 
     /**
+     * Replaces the road-map with the given input.
+     */
+    public static void setRoads(HashMap<Integer, RoadTypeTree> map) { roadTrees = map; }
+
+    /**
      * Insert a map from a set of given road-ids to a road-type.
      * @param type  The type of the road, given in MapModel
      * @param values The set of road-ids to map.
@@ -65,6 +70,12 @@ public class MapModel {
             roadTypeMap.put(values[i], type);
         }
     }
+
+    /**
+     * Retrieves the entire data-structure for the model.
+     * @return A hash map containing the integer-types and the roads mapped to the types.
+     */
+    public static HashMap<Integer, RoadTypeTree> getRoads() { return roadTrees; }
 
     /**
      * Retrieves the road-type from the given id.

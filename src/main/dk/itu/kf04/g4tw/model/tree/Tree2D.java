@@ -3,8 +3,6 @@ package dk.itu.kf04.g4tw.model.tree;
 import dk.itu.kf04.g4tw.model.Road;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 
-import java.util.ArrayList;
-
 /**
  * A 2-dimensional binary tree storing roads.
  */
@@ -33,7 +31,7 @@ public class Tree2D {
 	 * @param yMax
 	 */
 	public DynamicArray<Road> search(double xMin, double yMin, double xMax, double yMax) {
-		return(root.search(new RoadRectangle(xMin, yMin, xMax, yMax)));
+		return(root.search(new DynamicArray<Road>(), new RoadRectangle(xMin, yMin, xMax, yMax)));
 	}
 
 }

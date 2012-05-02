@@ -23,20 +23,20 @@ public class RoadParser {
     static Logger Log = Logger.getLogger(RoadParser.class.getName());
     
     /**
-     * Initializes the RoadParser and loads the map-data into the given model.
+     * Initializes the RoadParser and loads the map-data into the MapModel.
      * 
      * @param nodes  The file to load the Nodes from.
      * @param edges  The file to load the edges from.
-     * @return  A Model containing the nodes and edges loaded.
+     * @see MapModel
+     * @see RoadParser
      */
-    public static DynamicArray<Road> load(File nodes, File edges) {
+    public static void load(File nodes, File edges) {
         try {
             HashMap<Integer, Node> nodeMap = parseNodes(nodes);
-            return parseEdges(edges, nodeMap);
+            parseEdges(edges, nodeMap);
         } catch (FileNotFoundException e) {
             Log.warning("Exception while processing map-data: ");
             e.printStackTrace();
-            return null;
         }
     }
     
@@ -45,12 +45,11 @@ public class RoadParser {
      *
      * @param file  The file to parse the edges from
      * @param nodeMap  The nodeMap to receive the data from
-     * @return  An array containing the roads found.
      * @throws FileNotFoundException If the given file could not be found
      */
-    protected static DynamicArray<Road> parseEdges(File file, HashMap<Integer, Node> nodeMap) throws FileNotFoundException {
-        // Create the array
-        DynamicArray<Road> roads = new DynamicArray<Road>();
+    protected static void parseEdges(File file, HashMap<Integer, Node> nodeMap) throws FileNotFoundException {
+        // Start the id-counter
+        int id = 0;
 
         // Load the file
         Scanner scanner = new Scanner(new FileReader(file));
@@ -71,7 +70,6 @@ public class RoadParser {
             Point2D.Double pointB = new Point2D.Double(nodeB.x,nodeB.y);
 
             // Use the id's of the dynamic array so we promise consistency
-            int id = roads.length();
             //int id = Integer.parseInt(nextLine[3]); // DAV_DK-ID
             //int id2 = Integer.parseInt(nextLine[4]); // DAV_DK-ID
             int type = Integer.parseInt(nextLine[5]);
@@ -80,21 +78,18 @@ public class RoadParser {
 
             type = MapModel.getRoadTypeFromId(type);
 
-            Road tmp = new Road(id, name, pointA, pointB, type, speed, length);
-            nodeA.createRelation(tmp);
-            nodeB.createRelation(tmp);
-            roads.add(tmp);
+            // Create the road and setup connections/edges
+            Road tmp = new Road(id++, name, pointA, pointB, type, speed, length);
+            nodeA.connectTo(tmp);
+            nodeB.connectTo(tmp);
+            MapModel.addRoad(tmp);
         }
-
 
         // Close the scanner
         scanner.close();
 
         // Log success
         Log.fine("Successfully loaded Map edges into model.");
-
-        // Return
-        return roads;
     }
 
     /**

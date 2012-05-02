@@ -1,6 +1,6 @@
 var Model = (function() {
 	// The roads in the model.
-	var redRoads = [];
+	  var redRoads = [];
     var blueRoads = [];
     var greenRoads = [];
     var blackRoads = [];
