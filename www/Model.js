@@ -129,36 +129,43 @@ var Model = (function() {
           var url = "xml?x1=" +v1.x+ "&x2=" +v2.x+ "&y1=" +v1.y+ "&y2=" +v2.y;
 
           // Create one request per filter-level
-          for (var i = 1; i <= filter; i *= 2) if ((i & filter) == i) {
-            // Define callback
-            function callback(e) {
+          for (var i = 1; i < filter; i *= 2) if ((i & filter) == i) {
+          // We wrap the code itself inside a function to avoid future tampering with
+          // the local variable n - which we needs!
+            (function() {
+              // Store i before it increments
+              var n = i;
 
-              // Initiate variables
-              var xml;
+              // Define callback
+              function callback(e) {
 
-              // Get the request-event
-              var req = e.currentTarget;
+                // Initiate variables
+                var xml;
 
-              // Function to be called when result arrives
-              if (req.readyState == 4 && (req.status == 0 || req.status == 200)) {
+                // Get the request-event
+                var req = e.currentTarget;
 
-                // Get the DOMParser and parse the response-string
-                var parser = new DOMParser();
-                xml = parser.parseFromString(String(req.response), "text/xml");
+                // Function to be called when result arrives
+                if (req.readyState == 4 && (req.status == 0 || req.status == 200)) {
 
-                // Add roads to the model
-                Model.addRoads(xml, getArrayFromFilter(i));
+                  // Get the DOMParser and parse the response-string
+                  var parser = new DOMParser();
+                  xml = parser.parseFromString(String(req.response), "text/xml");
 
-                // Initiate the view
-                View.draw();
+                  // Add roads to the model
+                  Model.addRoads(xml, getArrayFromFilter(n));
 
-                // Hide the loader.gif
-                loader.style.display = "none";
+                  // Initiate the view
+                  View.draw();
+
+                  // Hide the loader.gif
+                  loader.style.display = "none";
+                }
               }
-            }
 
-            // Execute request
-            performRequest(url + "&filter=" + i, callback);
+              // Execute request with the callback
+              performRequest(url + "&filter=" + n, callback);
+            }());
           }
         },
         setFilterLevel: function(newLevel) {

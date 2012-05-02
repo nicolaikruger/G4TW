@@ -74,11 +74,6 @@ public class RequestParser {
 
 		// Creates an XML document
 		Document docXML = xmlParser.createDocument();
-
-		// Creates a root element for the document, and appends it, making it possible
-		// to add more elements to the document.
-		//Element root = docXML.createElement("root");
-		//docXML.appendChild(root);
         
         // Creates a roadCollection element inside the root and add namespaces
         Element roads = docXML.createElement("roadCollection");
