@@ -11,7 +11,7 @@ public class Node {
     /**
      * The roads connected to this Node in the graph.
      */
-	private DynamicArray<Road> roads = new DynamicArray<Road>();
+	private DynamicArray<Road> edges = new DynamicArray<Road>();
 	
     /**
      * The x coordinate of the Node.
@@ -44,7 +44,7 @@ public class Node {
             roads.get(i).addEdge(r);
         }
 
-        roads.add(r);
+        edges.add(x);
 	}
 
 }

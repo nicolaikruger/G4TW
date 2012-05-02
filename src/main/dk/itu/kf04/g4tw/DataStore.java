@@ -62,16 +62,8 @@ public class DataStore {
      * and adds them to the {@link MapModel}.
      */
     public static void loadRoads() {
-        // Create the file
-        File file = new File(dataFile);
-        
-        // Test if the data file exists
-        if (!file.exists()) {
-            Log.warning("Unable to find the data-file. Re-compiling file.");
-            main(new String[0]);
-        }
-        
-        // Store time
+        DataInputStream is;
+        DynamicArray<Road> roads;
         long time = System.currentTimeMillis();
         
         // Log status

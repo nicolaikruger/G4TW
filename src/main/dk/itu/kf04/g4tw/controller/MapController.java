@@ -1,5 +1,7 @@
 package dk.itu.kf04.g4tw.controller;
 
+import dk.itu.kf04.g4tw.model.MapModel;
+
 import java.util.logging.Logger;
 
 /**
@@ -10,9 +12,16 @@ public class MapController {
     protected static Logger Log = Logger.getLogger(MapController.class.getName());
 
     /**
-     * Creates a new controller.
+     * The model containing the Map-data.
      */
-	public MapController() {
+    static MapModel model;
+
+    /**
+     * Creates a new controller with the information stored in the model,
+     * @param model  The model containing the map-data.
+     */
+	public MapController(MapModel model) {
+        MapController.model = model;
 
         // Init server
         boolean success = WebServer.init();
