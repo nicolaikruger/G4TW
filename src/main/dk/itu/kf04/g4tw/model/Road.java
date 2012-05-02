@@ -33,8 +33,6 @@ public class Road extends DijkstraEdge implements Serializable {
 		
 		rect = new RoadRectangle(f, t);
 	}
-	
-    public Road getEdge(int x ) { return MapModel.getRoad(x); }
     
     public int getId()        { return id; }
     
