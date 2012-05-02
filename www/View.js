@@ -59,25 +59,38 @@ var View = (function() {
             }
         },
         findPos: function(obj) {
+            // Creates 2 new variables.
             var curleft = curtop = 0;
+            // Checks if the current object has a parent.
             if (obj.offsetParent) {
+                // Will continue to increment the offset with the offset
+                // of the parent objects, until the offset has been summed up.
+                // Then the loop breaks.
                 do {
                     curleft += obj.offsetLeft;
                     curtop += obj.offsetTop;
                 } while (obj = obj.offsetParent)
             }
 
+            // Creates 2 vectors to define the boundaries of the canvas.
+            // v1 is the start point, v2 is the end point (start point + canvas dimensions).
             var v1 = Vector(curleft, curtop);
             var v2 = Vector(v1.x + canvas.width, v1.y + canvas.height);
             console.log("V1: " + v1 + " x: " + v1.x + " y: " + v1.y + "  V2: " + v2 + " x: " + v2.x + " y: " + v2.y);
 
+            // Sets up the transformation matrix.
+            // The transformation matrix can translate map coordinates to screen coordinates.
             t.reset();
             t.translate(pan);
             t.scale(zoom, -zoom);
+            // Creates an inverted transformation matrix.
+            // The inverted transformation matrix can translate coordinates back to map coordinates.
             var it = t.invert();
+            // Transforms the vectors to map vectors.
             var tv1 = it.transformPoint(v1);
             var tv2 = it.transformPoint(v2);
 
+            // Returns a vector containing the two vectors.
             return Vector(tv1, tv2);
         }
     }

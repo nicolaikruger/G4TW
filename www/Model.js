@@ -137,9 +137,12 @@ var Model = (function() {
                         loader.style.display = "none";
                     }
                 }
-
+                // Creates a vector from the findPos function.
+                // The vector will contain vectors for x and y values.
                 var tv = View.findPos(canvas);
 
+                // Creates 2 new vectors from the previous vector.
+                // This is the start and end coordinates for the window.
                 var tv1 = tv.x;
                 var tv2 = tv.y;
 
