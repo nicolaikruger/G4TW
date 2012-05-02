@@ -71,7 +71,7 @@ var Controller = (function() {
         var newView = new Vector();
         newView.x = previousView.x.add(View.getPan());
         newView.y = previousView.y.add(View.getPan());
-        
+
     }
 
     // Return empty object
