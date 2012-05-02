@@ -78,9 +78,6 @@ public class WebServer implements Closeable {
             Log.info("Received bad request: " + request);
             return;
         }
-        
-        // Log request
-        Log.info("Received well-formed request: " + request);
 
         // Find the request for a file by omitting "GET /" and "HTTP/1.1"
         String fileRequest = request.substring(5, request.length() - 9);
