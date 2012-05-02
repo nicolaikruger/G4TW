@@ -5,7 +5,7 @@ var View = (function() {
     canvas.height = window.innerHeight;
 
     // Create view rectangle var
-//    var viewRect = View.findPos(canvas);
+    var viewRect;
 
     // Get the canvas context
     var c = canvas.getContext("2d");
@@ -42,6 +42,9 @@ var View = (function() {
         },
         getViewRect: function() {
             return viewRect;
+        },
+        setViewRect: function() {
+            viewRect = findPos(canvas);
         },
         getPan: function() {
             return pan;

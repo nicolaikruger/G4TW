@@ -25,7 +25,11 @@ var Controller = (function() {
         return Vector(x, y).round(3);
     };
 
-    canvas.onmousedown = function(e) { isLeftMouseDown = true; startPoint = getCoordinates(e); };
+    canvas.onmousedown = function(e) {
+        isLeftMouseDown = true;
+        startPoint = getCoordinates(e);
+        View.setViewRect();
+    };
     canvas.onmouseup   =  function(e) {
         isLeftMouseDown = false;
         getLevel(View.getZoom());
@@ -67,7 +71,7 @@ var Controller = (function() {
         var newView = new Vector();
         newView.x = previousView.x.add(View.getPan());
         newView.y = previousView.y.add(View.getPan());
-
+        
     }
 
     // Return empty object
