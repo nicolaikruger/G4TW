@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AdressParser {
+public class AddressParser {
 
     /**
      * Named roads, all road segments with the same name is grouped

@@ -1,14 +1,14 @@
 package dk.itu.kf04.g4tw.util;
 
-import dk.itu.kf04.g4tw.model.MapModel;
-import dk.itu.kf04.g4tw.model.Node;
-import dk.itu.kf04.g4tw.model.Road;
+import dk.itu.kf04.g4tw.model.*;
 
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -54,6 +54,13 @@ public class RoadParser {
         // Load the file
         Scanner scanner = new Scanner(new FileReader(file));
 
+        // Hashmap of the roads with a name
+        HashMap<String, DynamicArray<Road>> namedRoads = new HashMap<String, DynamicArray<Road>>();
+
+        // TODO: Find et dynamisk fix til at sætte størrelse
+        Road[] edges = new Road[812302];
+        HashMap<Point2D.Double, ArrayList<Integer>> nodeRoadPair = new HashMap<Point2D.Double, ArrayList<Integer>>();
+
         // Fills in the data in the map
         scanner.nextLine();
         while (scanner.hasNextLine()) {
@@ -80,16 +87,96 @@ public class RoadParser {
 
             // Create the road and setup connections/edges
             Road tmp = new Road(id++, name, pointA, pointB, type, speed, length);
+
+            // TODO: Bruges de to næste linjer til noget!?
             nodeA.connectTo(tmp);
             nodeB.connectTo(tmp);
-            MapModel.addRoad(tmp);
-        }
 
+            // If the road has a name
+            if(name.length() > 2) {
+                // If the road-name is not yet in the namesRoads-hashmap, add it
+                if(!namedRoads.containsKey(name))
+                    namedRoads.put(name, new DynamicArray<Road>());
+
+                // Add the road to the corresponding collection
+                namedRoads.get(name).add(tmp);
+            }
+
+            // If the points are not yet in the nodeRoadPair-hashmap, add them.
+            if(!nodeRoadPair.containsKey(pointA)) nodeRoadPair.put(pointA, new ArrayList<Integer>());
+            if(!nodeRoadPair.containsKey(pointB)) nodeRoadPair.put(pointB, new ArrayList<Integer>());
+
+            // Add the new road as an edge to all other roads that shares the same points
+            // Add all other roads with same points to the new road
+            // --> Creates a UNDIRECTED graph!
+            for(int i : nodeRoadPair.get(pointA)) {
+                edges[i].addEdge(tmp);
+                tmp.addEdge(edges[i]);
+            }
+
+            for(int i : nodeRoadPair.get(pointB)) {
+                edges[i].addEdge(tmp);
+                tmp.addEdge(edges[i]);
+            }
+
+            // Add the new roads ID to the hashmap
+            nodeRoadPair.get(pointA).add(id);
+            nodeRoadPair.get(pointB).add(id);
+
+            // Add the road to the edges collection
+            edges[id] = tmp;
+        }
         // Close the scanner
         scanner.close();
 
+        // Directs the graph
+        edges = trim(edges);
+
+        // Set the namedRoads hashmap in AddressParser
+        AddressParser.setNamedRoads(namedRoads);
+
+        // Add the road to the MapModel
+        for(Road road : edges)
+            if(road != null)
+                MapModel.addRoad(road);
+
         // Log success
         Log.fine("Successfully loaded Map edges into model.");
+    }
+
+    /**
+     * Directs the graph, by following the turn.txt file
+     * @param arr Array of the roads (the undirected graph)
+     * @return Array of the roads (now as an directed graph)
+     */
+    protected static Road[] trim(Road[] arr)
+    {
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new FileReader("turn.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        scanner.nextLine();
+        while(scanner.hasNextLine())
+        {
+            String[] nextLine = scanner.nextLine().split(",");
+            int fID = Integer.parseInt(nextLine[2]);
+            int tID = Integer.parseInt(nextLine[3]);
+
+            // Make the graph directed
+            Iterator<DijkstraEdge> it = arr[fID].iterator();
+            while(it.hasNext())
+            {
+                if(it.next().getId() == tID) {
+                    it.remove();
+                    break;
+                }
+            }
+        }
+        scanner.close();
+        return arr;
     }
 
     /**
@@ -120,12 +207,10 @@ public class RoadParser {
             // Insert it into the map
             nodeMap.put(id, node);
         }
-
         scanner.close();
 
         Log.fine("Successfully parsed Map nodes.");
         
         return nodeMap;
     }
-    
 }
