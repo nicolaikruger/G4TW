@@ -98,14 +98,14 @@ public class RequestParser {
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer    = factory.newTransformer();
 
-        // Transform the xml to the byte array format
+        // Transform the xml
         transformer.transform(source, result);
         
 		// calculates and prints the time taken.
 		long endTime = System.currentTimeMillis() - startTime;
 		Log.info("Found and wrote " + search.length() + " roads in : " + endTime + "ms");
 
-        // Return the byte-array
+        // Return the result-stream as a byte-array
         return os.toByteArray();
     }
 }
