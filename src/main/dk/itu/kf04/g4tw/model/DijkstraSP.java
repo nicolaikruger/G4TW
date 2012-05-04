@@ -11,83 +11,9 @@ import java.util.PriorityQueue;
  */
 public class DijkstraSP {
 
-    private DijkstraEdge[] edgeTo;
-    private double[] distTo;
-    private boolean[] visited;
-    private PriorityQueue<DijkstraEdge> queue;
-
-    private int jackPot;
-    private int N;
-
-    
-    public DijkstraSP(int N) {
-        this.N = N;
-    }
-
-    public DijkstraEdge[] findPath (Road from, Road to)
+    public static DijkstraEdge[] shortestPath(DijkstraEdge from, DijkstraEdge to)
     {
-        init();
-
-        jackPot = to.id;
-        distTo[from.id] = 0;
-
-        visit(from);
-        return edgeTo;
-    }
-
-    private void visit(DijkstraEdge e)
-    {
-        Iterator<DijkstraEdge> it = e.iterator();
-        while(it.hasNext())
-        {
-            queue.add(it.next());
-        }
-
-        while(!queue.isEmpty())
-        {
-            DijkstraEdge current = queue.poll();
-            if(current == null) {System.out.println("Current == null!"); return; }
-
-            if(!visited[current.getId()])
-            {
-                visited[current.getId()] = true;
-                if(distTo[e.getId()] == Double.POSITIVE_INFINITY) { System.out.println("Dist == INFINITY (and beyond)!"); return; }
-                double length = distTo[e.getId()] + current.getLength();
-
-                if(distTo[current.getId()] > length)
-                {
-                    distTo[current.getId()] = length;
-                    edgeTo[current.getId()] = e;
-                }
-
-                if(current.getId() == jackPot) {System.out.println("DISCO! The length is: " + distTo[jackPot]);}
-
-                visit(current);
-            }
-        }
-    }
-
-    public double getDist()
-    {
-        if(distTo[jackPot] < Double.POSITIVE_INFINITY) return distTo[jackPot];
-        else return -1;
-    }
-
-    private void init()
-    {
-        edgeTo = new DijkstraEdge[N];
-        distTo = new double[N];
-        visited = new boolean[N];
-
-        queue = new PriorityQueue<DijkstraEdge>(N, new Comparator<DijkstraEdge>() {
-            public int compare(DijkstraEdge o1, DijkstraEdge o2) {
-                if(o1.getLength() < o2.getLength()) return 1;
-                if(o1.getLength() == o2.getLength()) return 0;
-                else return -1;
-            }
-        });
-
-        Arrays.fill(distTo, Double.POSITIVE_INFINITY);
+        return onLiner(812302, from, to);
     }
 
     public static DijkstraEdge[] onLiner(int N, DijkstraEdge from, DijkstraEdge to)
@@ -149,22 +75,21 @@ public class DijkstraSP {
 
     public static void main(String[] args)
     {
-        DijkstraSP DSP = new DijkstraSP(4);
         Point2D.Double p = new Point2D.Double(2.0, 2.0);
 
-        Road AB = new Road(0, "AB",p,p,2,2.0,1);
-        Road AC = new Road(1, "AC",p,p,2,2.0,2);
-        Road AD = new Road(2, "AD",p,p,2,2.0,1);
-        Road BD = new Road(3, "BD",p,p,2,2.0,2);
-        Road BE = new Road(4, "BE",p,p,2,2.0,3);
-        Road CF = new Road(5, "CF",p,p,2,2.0,1);
-        Road DG = new Road(6, "DG",p,p,2,2.0,2);
-        Road EF = new Road(7, "EF",p,p,2,2.0,1);
-        Road EG = new Road(8, "EG",p,p,2,2.0,4);
-        Road FH = new Road(9, "FH",p,p,2,2.0,4);
-        Road GH = new Road(10, "GH",p,p,2,2.0,1);
-        Road GI = new Road(11, "GI",p,p,2,2.0,3);
-        Road HI = new Road(12, "HI",p,p,2,2.0,1);
+        Road AB = new Road(0, "AB",p,p,2,2.0,1, 1, 2, "a", "b");
+        Road AC = new Road(1, "AC",p,p,2,2.0,2, 1, 2, "a", "b");
+        Road AD = new Road(2, "AD",p,p,2,2.0,1, 1, 2, "a", "b");
+        Road BD = new Road(3, "BD",p,p,2,2.0,2, 1, 2, "a", "b");
+        Road BE = new Road(4, "BE",p,p,2,2.0,3, 1, 2, "a", "b");
+        Road CF = new Road(5, "CF",p,p,2,2.0,1, 1, 2, "a", "b");
+        Road DG = new Road(6, "DG",p,p,2,2.0,2, 1, 2, "a", "b");
+        Road EF = new Road(7, "EF",p,p,2,2.0,1, 1, 2, "a", "b");
+        Road EG = new Road(8, "EG",p,p,2,2.0,4, 1, 2, "a", "b");
+        Road FH = new Road(9, "FH",p,p,2,2.0,4, 1, 2, "a", "b");
+        Road GH = new Road(10, "GH",p,p,2,2.0,1, 1, 2, "a", "b");
+        Road GI = new Road(11, "GI",p,p,2,2.0,3, 1, 2, "a", "b");
+        Road HI = new Road(12, "HI",p,p,2,2.0,1, 1, 2, "a", "b");
 
         AB.addEdge(AC);        AB.addEdge(AD);        AB.addEdge(BD);        AB.addEdge(BD);
 
@@ -193,17 +118,12 @@ public class DijkstraSP {
         HI.addEdge(FH);        HI.addEdge(GH);        HI.addEdge(GI);
 
         DijkstraEdge[] arr = DijkstraSP.onLiner(13, AB, HI);
-        //DijkstraEdge[] arr = DSP.findPath(AB, CD);
         int prev = HI.getId();
         while(arr[prev] != null)
         {
             System.out.println(arr[prev] + "-->");
             prev = arr[prev].getId();
         }
-
-        //System.out.println(arr[HI.getId()].toString());
-        //System.out.println(Arrays.toString(DijkstraSP.onLiner(4, AB, CD)));
-        //System.out.println(DSP.getDist());
     }
 
 }

@@ -22,6 +22,7 @@ public class Main {
      * @param args  The arguments to feed the application.
      */
     public static void main(String[] args) {
+        System.setProperty("file.encoding", "ISO8859_1");
         Log.setLevel(Level.ALL);
         
         // Log program start

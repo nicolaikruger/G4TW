@@ -4,6 +4,7 @@ import dk.itu.kf04.g4tw.model.*;
 
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class RoadParser {
         int id = 0;
 
         // Load the file
-        Scanner scanner = new Scanner(new FileReader(file));
+        Scanner scanner = new Scanner(new FileInputStream(file), "ISO8859_1");
 
         // Hashmap of the roads with a name
         HashMap<String, DynamicArray<Road>> namedRoads = new HashMap<String, DynamicArray<Road>>();
@@ -66,6 +67,8 @@ public class RoadParser {
         while (scanner.hasNextLine()) {
             String[] nextLine = scanner.nextLine().split(",");
             String name = nextLine[6];
+            // removes ' at the beginning and the end of the name
+            name = name.replace("'", "");
 
             int a = Integer.parseInt(nextLine[0]);
             int b = Integer.parseInt(nextLine[1]);
@@ -83,10 +86,47 @@ public class RoadParser {
             double speed = Double.parseDouble(nextLine[25]);
             double length = Double.parseDouble(nextLine[2]);
 
+            int startNumber = 0;
+                int left = Integer.parseInt(nextLine[7]);
+                int right = Integer.parseInt(nextLine[9]);
+                if(left > 0) {
+                    if(right > 0) {
+                        if(left < right) startNumber = left;
+                        else startNumber = right;
+                    } else startNumber = left;
+                } else if(right > 0) startNumber = right;
+
+            int endNumber = 0;
+                left = Integer.parseInt(nextLine[8]);
+                right = Integer.parseInt(nextLine[9]);
+                if(left > 0) {
+                    if(right > 0) {
+                        if(left > right) endNumber = left;
+                        else endNumber = right;
+                    } else endNumber = left;
+                } else if(right > 0) endNumber = right;
+
+            String startLetter = null;
+                if(!nextLine[11].equals("''")) {
+                    if(!nextLine[13].equals("''")) {
+                        if(nextLine[11].compareTo(nextLine[13]) < 0) startLetter = nextLine[11];
+                        else startLetter = nextLine[13];
+                    } else startLetter = nextLine[11];
+                } else if (!nextLine[13].equals("''")) startLetter = nextLine[13];
+
+            String endLetter = null;
+                if(!nextLine[12].equals("''")) {
+                    if(!nextLine[14].equals("''")) {
+                        if(nextLine[12].compareTo(nextLine[14]) > 0) endLetter = nextLine[12];
+                        else endLetter = nextLine[14];
+                    } else endLetter = nextLine[12];
+                } else if(!nextLine[14].equals("''")) endLetter = nextLine[14];
+
+
             type = MapModel.getRoadTypeFromId(type);
 
             // Create the road and setup connections/edges
-            Road tmp = new Road(id++, name, pointA, pointB, type, speed, length);
+            Road tmp = new Road(id++, name, pointA, pointB, type, speed, length, startNumber, endNumber, startLetter, endLetter);
 
             // TODO: Bruges de to næste linjer til noget!?
             nodeA.connectTo(tmp);

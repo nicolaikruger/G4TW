@@ -12,10 +12,10 @@ public class AddressParser {
     /**
      * Named roads, all road segments with the same name is grouped
      */
-    private static HashMap<String, DynamicArray<Road>> namedRoads;
+    private static HashMap<String, DynamicArray<Road>> namedRoads = null;
 
-    static String sal = "(s|S)(a|A)(l|L)";
-    static String bs = "[a-zæøåüöéA-ZÆØÅÜÖÉ]";
+    private static String sal = "(s|S)(a|A)(l|L)";
+    private static String bs = "[a-zæøåüöéA-ZÆØÅÜÖÉ]";
 
     static String[] patterns = new String[] {
             /* Street Name */				"((?<=\\s|^)(?!"+sal+")"+bs+"{3,}\\s?)+",
@@ -25,7 +25,12 @@ public class AddressParser {
             /* Postal Code */				"\\d{4}\\s?",
             /* City */						"(?<=\\s|^)(?!"+sal+")("+bs+"{3,}\\s?)+\\s"+bs+"+"};
 
-    public static Road getRoad(String adress)
+    /**
+     *
+     * @param address The adress to search for
+     * @return return an DynamicArray of Road with all the hits
+     */
+    public static DynamicArray<Road> getRoad(String address)
     {
         /**
          * index 0 = street name
@@ -35,29 +40,58 @@ public class AddressParser {
          * index 4 = postal code
          * index 5 = city
          */
-        String[] adressInfo = parseAddress(adress);
+        String[] addressInfo = parseAddress(address);
 
-        return null;
+        DynamicArray<Road> hits = namedRoads.get(addressInfo[0]);
+
+        if(!addressInfo[2].equals("") && hits.length() > 1) {
+            hits = sortByLetter(hits, addressInfo[2]);
+        }
+
+        if(!addressInfo[1].equals("")  && hits.length() > 1) {
+            hits = sortByNumber(hits, Integer.parseInt(addressInfo[1]));
+        }
+
+        return hits;
     }
 
-    public static void setNamedRoads(HashMap<String, DynamicArray<Road>> map)
+    private static DynamicArray<Road> sortByLetter(DynamicArray<Road> arr, String letter)
     {
-        namedRoads = map;
+        DynamicArray<Road> returnArr = new DynamicArray<Road>();
+
+        for(int i = 0; i < arr.length(); i++){
+            Road r = arr.get(i);
+            if(r.getStartLetter() != null) {
+                if(r.getEndLetter() != null) {
+                    if(letter.compareTo(r.getStartLetter()) >= 0 && letter.compareTo(r.getEndLetter()) <= 0) {
+                        returnArr.add(r);
+                    }
+                } else if(letter.compareTo(r.getStartLetter()) >= 0) {
+                    returnArr.add(r);
+                }
+            } else if(r.getEndLetter() != null && letter.compareTo(r.getEndLetter()) <= 0) {
+                returnArr.add(r);
+            }
+        }
+        return returnArr;
     }
 
-    private static DynamicArray<Road> sortByLetter(DynamicArray<Road> arr)
+    private static DynamicArray<Road> sortByNumber(DynamicArray<Road> arr, int num)
     {
-        return null;
-    }
+        DynamicArray<Road> returnArr = new DynamicArray<Road>();
 
-    private static DynamicArray<Road> sortByNumber(DynamicArray<Road> arr)
-    {
-        return null;
-    }
-
-    private static DynamicArray<Road> sortByCity(DynamicArray<Road> arr)
-    {
-        return null;
+        for(int i = 0; i < arr.length(); i++){
+            Road r = arr.get(i);
+            if(r.getStartNumber() > 0) {
+                if(r.getEndNumber() > 0) {
+                    if(num >= r.getStartNumber() && num <= r.getEndNumber())
+                        returnArr.add(arr.get(i));
+                } else if(num >= r.getStartNumber())
+                    returnArr.add(arr.get(i));
+            } else if(r.getEndNumber() > 0 && num <= r.getEndNumber())
+                returnArr.add(arr.get(i));
+        }
+        return returnArr;
     }
 
     private static String[] parseAddress(String s) throws IllegalArgumentException {
@@ -83,5 +117,35 @@ public class AddressParser {
         }
 
         return address;
+    }
+
+    public static void setNamedRoads(HashMap<String, DynamicArray<Road>> map)
+    {
+        namedRoads = map;
+        System.out.println("Got the map!");
+
+        /*Road r1 = null;
+        Road r2 = null;
+
+        //System.out.println(getRoad("Strøget 2 A").length());
+
+        DynamicArray<Road> da1 = getRoad("Bispevej 37 R");
+        DynamicArray<Road> da2 = getRoad("Bispevej 37 B");
+
+        if(da1.length() == 1)
+            r1 = da1.get(0);
+
+        if(da2.length() == 1)
+            r2 = da2.get(0);
+
+        DijkstraEdge[] path = DijkstraSP.shortestPath(r1, r2);
+        System.out.println("Got the path. Start printing!");
+
+        int prev = r2.getId();
+        do
+        {
+            System.out.println(path[prev] + "-->");
+            prev = path[prev].getId();
+        } while(path[prev] != null);*/
     }
 }
