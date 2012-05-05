@@ -86,7 +86,12 @@ public class RoadParser {
             double speed = Double.parseDouble(nextLine[25]);
             double length = Double.parseDouble(nextLine[2]);
 
-            int startNumber = 0;
+            System.out.println(name);
+
+            int startNumber = 0, endNumber = 0;
+            String startLetter = null, endLetter = null;
+
+            if(!name.equals(" ")) {
                 int left = Integer.parseInt(nextLine[7]);
                 int right = Integer.parseInt(nextLine[9]);
                 if(left > 0) {
@@ -96,7 +101,6 @@ public class RoadParser {
                     } else startNumber = left;
                 } else if(right > 0) startNumber = right;
 
-            int endNumber = 0;
                 left = Integer.parseInt(nextLine[8]);
                 right = Integer.parseInt(nextLine[9]);
                 if(left > 0) {
@@ -106,7 +110,7 @@ public class RoadParser {
                     } else endNumber = left;
                 } else if(right > 0) endNumber = right;
 
-            String startLetter = null;
+
                 if(!nextLine[11].equals("''")) {
                     if(!nextLine[13].equals("''")) {
                         if(nextLine[11].compareTo(nextLine[13]) < 0) startLetter = nextLine[11];
@@ -114,14 +118,13 @@ public class RoadParser {
                     } else startLetter = nextLine[11];
                 } else if (!nextLine[13].equals("''")) startLetter = nextLine[13];
 
-            String endLetter = null;
                 if(!nextLine[12].equals("''")) {
                     if(!nextLine[14].equals("''")) {
                         if(nextLine[12].compareTo(nextLine[14]) > 0) endLetter = nextLine[12];
                         else endLetter = nextLine[14];
                     } else endLetter = nextLine[12];
                 } else if(!nextLine[14].equals("''")) endLetter = nextLine[14];
-
+            }
 
             type = MapModel.getRoadTypeFromId(type);
 
