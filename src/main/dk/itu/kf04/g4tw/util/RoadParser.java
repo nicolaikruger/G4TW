@@ -1,16 +1,16 @@
 package dk.itu.kf04.g4tw.util;
 
-import dk.itu.kf04.g4tw.model.*;
+import dk.itu.kf04.g4tw.model.AddressParser;
+import dk.itu.kf04.g4tw.model.MapModel;
+import dk.itu.kf04.g4tw.model.Node;
+import dk.itu.kf04.g4tw.model.Road;
 
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -65,7 +65,8 @@ public class RoadParser {
         // Fills in the data in the map
         scanner.nextLine();
         while (scanner.hasNextLine()) {
-            String[] nextLine = scanner.nextLine().split(",");
+            // Split the line on everything except blocks with ['...,...']
+            String[] nextLine = scanner.nextLine().split(",(?=([^']*'[^']*')*[^']*$)");
             String name = nextLine[6];
             // removes ' at the beginning and the end of the name
             name = name.replace("'", "");
@@ -90,7 +91,7 @@ public class RoadParser {
             String startLetter = null, endLetter = null;
 
             // Only if the road has a name, it house numbers and letters should be saved
-            if(!name.equals(" ")) {
+            if(!name.equals(" ") && !name.isEmpty()) {
                 int left = Integer.parseInt(nextLine[7]);
                 int right = Integer.parseInt(nextLine[9]);
                 if(left > 0) {
