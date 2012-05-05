@@ -83,6 +83,8 @@ public class WebServer implements Closeable {
         byte[] input = null;
         String contentType = null;
 
+        fileRequest = fileRequest.toLowerCase();
+
         // Match for map requests
         if (fileRequest.startsWith("xml?")) {
             try {

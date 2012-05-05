@@ -136,6 +136,7 @@ public class RoadParser {
 
             // If the road has a name
             if(name.length() > 2) {
+                name = name.toLowerCase();
                 // If the road-name is not yet in the namesRoads-hashmap, add it
                 if(!namedRoads.containsKey(name))
                     namedRoads.put(name, new DynamicArray<Road>());
