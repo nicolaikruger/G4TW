@@ -66,7 +66,8 @@ public class RoadParser {
         scanner.nextLine();
         while (scanner.hasNextLine()) {
             // Split the line on everything except blocks with ['...,...']
-            String[] nextLine = scanner.nextLine().split(",(?=([^']*'[^']*')*[^']*$)");
+            String[] nextLine = scanner.nextLine().split("((?<=\\d)|'),('|(?=\\d))");//split(",(?=([^']*'[^']*')*[^']*$)");
+            //System.out.println(Arrays.toString(nextLine));
             String name = nextLine[6];
             // removes ' at the beginning and the end of the name
             name = name.replace("'", "");
