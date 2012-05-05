@@ -1,7 +1,6 @@
 package dk.itu.kf04.g4tw.controller;
 
-import dk.itu.kf04.g4tw.model.MapModel;
-import dk.itu.kf04.g4tw.model.Road;
+import dk.itu.kf04.g4tw.model.*;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -104,6 +103,89 @@ public class RequestParser {
 		// calculates and prints the time taken.
 		long endTime = System.currentTimeMillis() - startTime;
 		Log.info("Found and wrote " + search.length() + " roads in : " + endTime + "ms");
+
+        // Return the result-stream as a byte-array
+        return os.toByteArray();
+    }
+
+    /**
+     * Handles input from the server through the input parameter and returns an appropriate
+     * message as an array of bytes, ready to dispatch to the sender.
+     * @param input  The input string received from the client
+     * @return  A series of bytes as a response
+     * @throws IllegalArgumentException  If the input is malformed
+     * @throws TransformerException  If we fail to transform the xml-document to actual output
+     */
+    public static byte[] parsePathToInputStream(String input) throws IllegalArgumentException, TransformerException {
+        String[] inputs = input.split("&");
+
+        // if there ain't exactly 2 arguments in the request, throw an error!
+        if(inputs.length != 2)
+            throw new IllegalArgumentException("Must have the format \"adr1=first+address&adr2=second+address\"");
+
+        // The two addresses from the client
+        String adr1 = inputs[0].substring(5);
+        String adr2 = inputs[1].substring(5);
+
+        // Array over all the roads that match the address.
+        DynamicArray<Road> hits1 = AddressParser.getRoad(adr1);
+        DynamicArray<Road> hits2 = AddressParser.getRoad(adr2);
+
+        // Instantiate the parse
+        XMLDocumentParser xmlParser = new XMLDocumentParser();
+
+        // Creates an XML document
+        Document docXML = xmlParser.createDocument();
+
+        // Creates a roadCollection element inside the root.
+        Element roads = null;
+
+        if(hits1.length() == 0 || hits2.length() == 0) {
+            // Oh crap, couldn't find at least one of the addresses!
+        } else if(hits1.length() == 1 && hits2.length() == 1) {
+            // You've found a path. Now go make some cool XML stuff!!!
+
+            Log.info("Trying to find path");
+            Road[] result = DijkstraSP.shortestPath(hits1.get(0), hits2.get(0));
+
+            // Initialize the roadCollection element and add namespaces
+            roads = docXML.createElement("roadCollection");
+            roads.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            roads.setAttribute("xsi:noNamespaceSchemaLocation", "kraX.xsd");
+            docXML.appendChild(roads);
+
+            // Iterates through the result array, appending the XML element of the current
+            // road to the roadCollection element. This is creating the XML document.
+            int prev = hits2.get(0).getId();
+            int num = 0;
+            roads.appendChild(hits2.get(0).toXML(docXML));
+            do {
+                roads.appendChild(result[prev].toXML(docXML));
+                prev = result[prev].getId();
+                num ++;
+            } while(result[prev] != null);
+
+            System.out.println("Start ID: " + hits1.get(0).getId());
+            System.out.println("End ID: " + hits2.get(0).getId());
+
+            System.out.println("Num: " + num);
+        } else {
+            // Alright, we have a problem. Put we can fix this. Right?
+        }
+
+        // Create the source
+        Source source = new DOMSource(docXML);
+
+        // Instantiate output-sources
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Result result            = new StreamResult(os);
+
+        // Instantiate xml-transformers
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer    = factory.newTransformer();
+
+        // Transform the xml
+        transformer.transform(source, result);
 
         // Return the result-stream as a byte-array
         return os.toByteArray();

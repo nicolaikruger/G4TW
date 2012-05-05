@@ -105,16 +105,18 @@ public class WebServer implements Closeable {
         } else if(fileRequest.startsWith("path?")) {
             try {
                 fileRequest = URLDecoder.decode(fileRequest, "UTF-8");
+                fileRequest = fileRequest.substring(5);
+                input = RequestParser.parsePathToInputStream(fileRequest);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                Log.warning("Unsupported encoding: " + e.getMessage());
+            } catch (TransformerException e) {
+                Log.warning("Transformer exception: " + e.getMessage());
             }
-            fileRequest = fileRequest.substring(5);
-            System.out.println(fileRequest);
-            String adr1 = fileRequest.split("&")[0].substring(5);
-            String adr2 = fileRequest.split("&")[1].substring(5);
 
-            System.out.println("1: " + adr1 + "\n2: " + adr2);
 
+            if (input != null) {
+                contentType = "text/xml";
+            }
 
         // Process request as normal
         } else {

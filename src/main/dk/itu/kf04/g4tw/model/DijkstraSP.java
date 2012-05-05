@@ -11,24 +11,24 @@ import java.util.PriorityQueue;
  */
 public class DijkstraSP {
 
-    public static DijkstraEdge[] shortestPath(DijkstraEdge from, DijkstraEdge to)
+    public static Road[] shortestPath(Road from, Road to)
     {
         return onLiner(812302, from, to);
     }
 
-    public static DijkstraEdge[] onLiner(int N, DijkstraEdge from, DijkstraEdge to)
+    public static Road[] onLiner(int N, Road from, Road to)
     {
         final double[] dist = new double[N];
         boolean[] visited = new boolean[N];
-        DijkstraEdge[] previous = new DijkstraEdge[N];
+        Road[] previous = new Road[N];
 
         Arrays.fill(dist, Double.POSITIVE_INFINITY);
         Arrays.fill(visited, false);
 
         dist[from.getId()] = 0;
 
-        PriorityQueue<DijkstraEdge> Q = new PriorityQueue<DijkstraEdge>(N, new Comparator<DijkstraEdge>() {
-            public int compare(DijkstraEdge o1, DijkstraEdge o2) {
+        PriorityQueue<Road> Q = new PriorityQueue<Road>(N, new Comparator<Road>() {
+            public int compare(Road o1, Road o2) {
                 double dist1 = dist[o1.getId()];
                 double dist2 = dist[o2.getId()];
 
@@ -42,7 +42,7 @@ public class DijkstraSP {
 
         while(!Q.isEmpty())
         {
-            DijkstraEdge U = Q.poll();
+            Road U = Q.poll();
             visited[U.getId()] = true;
 
             if(dist[U.getId()] == Double.POSITIVE_INFINITY)
@@ -53,12 +53,13 @@ public class DijkstraSP {
 
             if(U.getId() == to.getId()) break;
 
-            Iterator<DijkstraEdge> it = U.iterator();
+            Iterator<Road> it = U.iterator();
             while(it.hasNext())
             {
-                DijkstraEdge V = it.next();
+                Road V = it.next();
                 if(!visited[V.getId()])
                 {
+                    visited[V.getId()] = true;
                     Q.add(V);
                     double alt = dist[U.getId()] + V.getLength();
                     double vDist = dist[V.getId()];

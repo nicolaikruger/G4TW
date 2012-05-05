@@ -125,10 +125,12 @@ public class AddressParser {
         System.out.println("Got the map!");
 
         /*Road r1 = null;
-        Road r2 = null;
+        Road r2 = null;*/
 
-        //System.out.println(getRoad("Strøget 2 A").length());
+        System.out.println(getRoad("Strøget 65 A").length());
+        System.out.println(getRoad("Bispevej 37 R").length());
 
+        /*
         DynamicArray<Road> da1 = getRoad("Bispevej 37 R");
         DynamicArray<Road> da2 = getRoad("Bispevej 37 B");
 

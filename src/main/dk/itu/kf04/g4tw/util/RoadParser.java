@@ -206,7 +206,7 @@ public class RoadParser {
             int tID = Integer.parseInt(nextLine[3]);
 
             // Make the graph directed
-            Iterator<DijkstraEdge> it = arr[fID].iterator();
+            Iterator<Road> it = arr[fID].iterator();
             while(it.hasNext())
             {
                 if(it.next().getId() == tID) {
