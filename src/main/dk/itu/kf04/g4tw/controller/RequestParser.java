@@ -140,9 +140,28 @@ public class RequestParser {
         // Creates a roadCollection element inside the root.
         Element roads = null;
 
-        if(hits1.length() == 0 || hits2.length() == 0) {
+        if(hits1.length() == 0 || hits2.length() == 0) { // One or both of the addresses gave zero hits. User have to give a new address.
             // Oh crap, couldn't find at least one of the addresses!
-        } else if(hits1.length() == 1 && hits2.length() == 1) {
+            roads = docXML.createElement("error");
+            roads.setAttribute("type", "1");
+            docXML.appendChild(roads);
+
+            if(hits1.length() == 0) {
+                Element element = docXML.createElement("address");
+                element.appendChild(docXML.createTextNode(adr1));
+                roads.appendChild(element);
+            }
+
+            if(hits2.length() == 0) {
+                Element element = docXML.createElement("address");
+                element.appendChild(docXML.createTextNode(adr2));
+                roads.appendChild(element);
+            }
+            //roads.setAttribute("xsi:noNameSpaceSchemaLocation", "");
+
+            Log.info("");
+
+        } else if(hits1.length() == 1 && hits2.length() == 1) { // The addresses both gave only one hit. We can find a path.
             // You've found a path. Now go make some cool XML stuff!!!
 
             Log.info("Trying to find path");
@@ -169,7 +188,7 @@ public class RequestParser {
             System.out.println("End ID: " + hits2.get(0).getId());
 
             System.out.println("Num: " + num);
-        } else {
+        } else { // One or both of the addresses gave more than one hit. Make the user decide.
             // Alright, we have a problem. Put we can fix this. Right?
         }
 

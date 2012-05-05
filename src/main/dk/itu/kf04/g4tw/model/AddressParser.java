@@ -43,6 +43,8 @@ public class AddressParser {
         String[] addressInfo = parseAddress(address);
 
         DynamicArray<Road> hits = namedRoads.get(addressInfo[0]);
+        if(hits == null)
+            hits = new DynamicArray<Road>();
 
         if(!addressInfo[2].equals("") && hits.length() > 1) {
             hits = sortByLetter(hits, addressInfo[2]);
@@ -127,8 +129,8 @@ public class AddressParser {
         /*Road r1 = null;
         Road r2 = null;*/
 
-        System.out.println(getRoad("Strøget 65 A").length());
-        System.out.println(getRoad("Bispevej 37 R").length());
+        //System.out.println(getRoad("Strøget 65 A").length());
+        //System.out.println(getRoad("Bispevej 37 R").length());
 
         /*
         DynamicArray<Road> da1 = getRoad("Bispevej 37 R");

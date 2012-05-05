@@ -86,11 +86,10 @@ public class RoadParser {
             double speed = Double.parseDouble(nextLine[25]);
             double length = Double.parseDouble(nextLine[2]);
 
-            System.out.println(name);
-
             int startNumber = 0, endNumber = 0;
             String startLetter = null, endLetter = null;
 
+            // Only if the road has a name, it house numbers and letters should be saved
             if(!name.equals(" ")) {
                 int left = Integer.parseInt(nextLine[7]);
                 int right = Integer.parseInt(nextLine[9]);
