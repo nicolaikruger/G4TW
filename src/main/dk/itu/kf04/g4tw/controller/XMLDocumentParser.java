@@ -16,6 +16,8 @@ import java.io.StringWriter;
  * User: Alexander
  * Date: 18-04-12
  * Time: 11:52
+ *
+ *
  */
 public class XMLDocumentParser {
 	/**

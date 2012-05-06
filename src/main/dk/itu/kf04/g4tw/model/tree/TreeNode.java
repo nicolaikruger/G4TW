@@ -3,25 +3,23 @@ package dk.itu.kf04.g4tw.model.tree;
 import dk.itu.kf04.g4tw.model.Road;
 import dk.itu.kf04.g4tw.util.DynamicArray;
 
-import java.io.Serializable;
-
 /**
  * A TreeNode containing information about the geometric properties of the road (RoadRectangle) and the
  * id of the road.
  */
-public class TreeNode implements Serializable {
+public class TreeNode {
 
 	/**
 	 * A boolean value indicating whether we use the x-axis
 	 */
-	private boolean useX;
+	public final boolean useX;
 
 	/**
 	 * The left TreeNode - if any.
 	 */
 	private TreeNode leftTreeNode = null;
 
-	/**
+    /**
 	 * The right TreeNode - if any.
 	 */
 	private TreeNode rightTreeNode = null;
@@ -42,8 +40,23 @@ public class TreeNode implements Serializable {
 		this.road = road;
 	}
 
+    /**
+     * Constructs a TreeNode with the given children
+     * @param useX  Whether to compare the x- or y-axis
+     * @param road  The road of the node
+     * @param left  The left child
+     * @param right The right child              
+     */
+    public TreeNode (boolean useX, Road road, TreeNode left, TreeNode right) {
+        this.useX = useX;
+        this.road = road;
+        this.leftTreeNode = left;
+        this.rightTreeNode = right;
+    }
+
 	/**
 	 * Adds a tree node beneath this node.
+     * @param that  The road to add.
 	 */
 	public void addTreeNode(Road that)
 	{
@@ -65,6 +78,22 @@ public class TreeNode implements Serializable {
 			}
 		}
 	}
+
+    /**
+     * Fetches the left tree node. Can be null
+     * @return  The left node if it exists.
+     */
+    public TreeNode getLeftTreeNode() {
+        return leftTreeNode;
+    }
+
+    /**
+     * Fetches the right tree node. Can be null
+     * @return  The right node if it exists.
+     */
+    public TreeNode getRightTreeNode() {
+        return rightTreeNode;
+    }
 	
 	/**
 	 *Searches for nodes that intersects the given RoadRectangle.

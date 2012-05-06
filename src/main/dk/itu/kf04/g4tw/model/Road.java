@@ -5,21 +5,20 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.awt.geom.Point2D;
-import java.io.Serializable;
 
-public class Road extends DijkstraEdge implements Serializable {
+public class Road extends DijkstraEdge {
 
 	public final String name;
 	public final int id;
 	public final int type;
 	public final Point2D.Double from;
 	public final Point2D.Double to;
-	public double speed;
-	private double length;
-    int startNumber;
-    int endNumber;
-    String startLetter = null;
-    String endLetter = null;
+	public final double speed;
+	public final double length;
+    public final int startNumber;
+    public final int endNumber;
+    public final String startLetter;
+    public final String endLetter;
 
 	/**
 	 * The rectangle enclosing this road.
@@ -37,41 +36,28 @@ public class Road extends DijkstraEdge implements Serializable {
 		this.length = length;
         this.startNumber = startNumber;
         this.endNumber = endNumber;
-        this.startLetter = startLetter;
-        this.endLetter = endLetter;
 
-        if(startLetter != null)
+        if(startLetter != null) {
             this.startLetter = startLetter.replace("'", "");
+        } else {
+            this.startLetter = "";
+        }
 
-        if(endLetter != null)
+        if(endLetter != null) {
             this.endLetter = endLetter.replace("'", "");
+        } else {
+            this.endLetter = "";
+        }
 
 		rect = new RoadRectangle(f, t);
 	}
-    
+
     public int getId()        { return id; }
-    
+
 	public double getLength() { return length; }
 
-    public int getStartNumber() {
-        return startNumber;
-    }
-
-    public int getEndNumber() {
-        return endNumber;
-    }
-
-    public String getStartLetter() {
-        return startLetter;
-    }
-
-    public String getEndLetter() {
-        return endLetter;
-    }
-
-    public String toString() {
-        //return ("Name: "+name + "; From: ("+from.getX()+","+from.getY()+")" + " To: ("+to.getX()+","+to.getY()+")" + "; Type: "+type + "; Speed: "+speed + "; Length: "+length + ";");
-        return ("Name: " + name + " StartNumber: " + startNumber + " EndNumber: " + endNumber + " StartLetter: " + startLetter + " EndLetter: " + endLetter);
+    @Override public String toString() {
+        return ("Road[Id " + id + " Name '" + name + "' houseNumberStart: " + startNumber + " houseNumberEnd: " + endNumber + " houseLetterStart: " + startLetter + " houseLetterEnd: " + endLetter + "]");
     }
 
 	/**

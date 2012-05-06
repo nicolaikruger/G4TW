@@ -1,9 +1,8 @@
 package dk.itu.kf04.g4tw;
 
-import dk.itu.kf04.g4tw.controller.MapController;
-import dk.itu.kf04.g4tw.util.RoadParser;
+import dk.itu.kf04.g4tw.controller.WebServer;
+import dk.itu.kf04.g4tw.model.MapModel;
 
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +12,9 @@ import java.util.logging.Logger;
 public class Main {
 
     // General TODOs for the project
+    // TODO: Comment dijkstra!
+    // TODO: Comment Road - Especially all the fields
+    // TODO: Comment RoadRectangle
     // TODO: Clean up in the code
     // TODO: Solve other TODOs
     // TODO: Make som white- and blackbox testing
@@ -30,18 +32,15 @@ public class Main {
     public static void main(String[] args) {
         System.setProperty("file.encoding", "ISO8859_1");
         Log.setLevel(Level.ALL);
-        
+
         // Log program start
-        Log.info("Main starting up. Importing map-data...");
+        Log.info("Program starting up. Importing map-data...");
         
         // Import data
-        //DataStore.loadRoads();
-        RoadParser.load(new File("kdv_node_unload.txt"), new File("kdv_unload.txt"));
-        
-        Log.info("Import of map-data done. Starting server...");
+        MapModel model = DataStore.loadRoads();
 
-        // Start the controller
-        new MapController();
+        // Start the server on port 80
+        new WebServer(model, 80);
     }
 
 }

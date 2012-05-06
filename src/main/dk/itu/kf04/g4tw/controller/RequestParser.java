@@ -19,17 +19,19 @@ import java.util.logging.Logger;
 public class RequestParser {
 
     public static Logger Log = Logger.getLogger(RequestParser.class.getName());
+
     
     /**
      * Handles input from the server through the input parameter, decodes it and returns an appropriate
      * message as an array of bytes, ready to dispatch to the sender.
+     * @param model  The model to perform searches on
      * @param input  The input string received from the client
      * @return  A series of bytes as a response
      * @throws IllegalArgumentException  If the input is malformed
      * @throws UnsupportedEncodingException If the input cannot be understood under utf-8 encoding
      * @throws TransformerException  If we fail to transform the xml-document to actual output
      */
-    public static byte[] parseToInputStream(String input) throws IllegalArgumentException, UnsupportedEncodingException, TransformerException {
+    public static byte[] parseToInputStream(MapModel model, String input) throws IllegalArgumentException, UnsupportedEncodingException, TransformerException {
     	// Variables for the request
     	double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
     	int filter = 0;
@@ -69,7 +71,7 @@ public class RequestParser {
         XMLDocumentParser xmlParser = new XMLDocumentParser();
 
         // Search the model and concatenate the results with the previous
-        DynamicArray<Road> search = MapModel.search(x1, y1, x2, y2, filter);
+        DynamicArray<Road> search = model.search(x1, y1, x2, y2, filter);
 
 		// Creates an XML document
 		Document docXML = xmlParser.createDocument();
@@ -111,12 +113,13 @@ public class RequestParser {
     /**
      * Handles input from the server through the input parameter and returns an appropriate
      * message as an array of bytes, ready to dispatch to the sender.
+     * @param model  The model to perform the search on
      * @param input  The input string received from the client
      * @return  A series of bytes as a response
      * @throws IllegalArgumentException  If the input is malformed
      * @throws TransformerException  If we fail to transform the xml-document to actual output
      */
-    public static byte[] parsePathToInputStream(String input) throws IllegalArgumentException, TransformerException {
+    public static byte[] parsePathToInputStream(MapModel model, String input) throws IllegalArgumentException, TransformerException {
         String[] inputs = input.split("&");
 
         // if there ain't exactly 2 arguments in the request, throw an error!
@@ -159,7 +162,7 @@ public class RequestParser {
         }
 
 
-        // Instantiate the parse
+        // Instantiate the parser
         XMLDocumentParser xmlParser = new XMLDocumentParser();
 
         // Creates an XML document
@@ -192,7 +195,7 @@ public class RequestParser {
             // You've found a path. Now go make some cool XML stuff!!!
             // TODO: Find a way to see if there are any connection between the two roads. Maybe there are no reason for doing that?
             Log.info("Trying to find path");
-            Road[] result = DijkstraSP.shortestPath(hits1.get(0), hits2.get(0));
+            Road[] result = DijkstraSP.shortestPath(model, hits1.get(0), hits2.get(0));
 
             // Initialize the roadCollection element and add namespaces
             roads = docXML.createElement("roadCollection");

@@ -63,15 +63,15 @@ public class AddressParser {
 
         for(int i = 0; i < arr.length(); i++){
             Road r = arr.get(i);
-            if(r.getStartLetter() != null) {
-                if(r.getEndLetter() != null) {
-                    if(letter.compareTo(r.getStartLetter()) >= 0 && letter.compareTo(r.getEndLetter()) <= 0) {
+            if(r.startLetter != null) {
+                if(r.endLetter != null) {
+                    if(letter.compareTo(r.startLetter) >= 0 && letter.compareTo(r.endLetter) <= 0) {
                         returnArr.add(r);
                     }
-                } else if(letter.compareTo(r.getStartLetter()) >= 0) {
+                } else if(letter.compareTo(r.startLetter) >= 0) {
                     returnArr.add(r);
                 }
-            } else if(r.getEndLetter() != null && letter.compareTo(r.getEndLetter()) <= 0) {
+            } else if(r.endLetter != null && letter.compareTo(r.endLetter) <= 0) {
                 returnArr.add(r);
             }
         }
@@ -84,13 +84,13 @@ public class AddressParser {
 
         for(int i = 0; i < arr.length(); i++){
             Road r = arr.get(i);
-            if(r.getStartNumber() > 0) {
-                if(r.getEndNumber() > 0) {
-                    if(num >= r.getStartNumber() && num <= r.getEndNumber())
+            if(r.startNumber > 0) {
+                if(r.endNumber > 0) {
+                    if(num >= r.startNumber && num <= r.endNumber)
                         returnArr.add(arr.get(i));
-                } else if(num >= r.getStartNumber())
+                } else if(num >= r.startNumber)
                     returnArr.add(arr.get(i));
-            } else if(r.getEndNumber() > 0 && num <= r.getEndNumber())
+            } else if(r.endNumber > 0 && num <= r.endNumber)
                 returnArr.add(arr.get(i));
         }
         return returnArr;
@@ -124,12 +124,11 @@ public class AddressParser {
     public static void setNamedRoads(HashMap<String, DynamicArray<Road>> map)
     {
         namedRoads = map;
-        System.out.println("Got the map!");
 
         /*Road r1 = null;
         Road r2 = null;*/
 
-        System.out.println(getRoad("strøget 65 A").length());
+        //System.out.println(getRoad("Strøget 65 A").length());
         //System.out.println(getRoad("Bispevej 37 R").length());
 
         /*
