@@ -31,14 +31,12 @@ public class Main {
     public static void main(String[] args) {
         System.setProperty("file.encoding", "ISO8859_1");
         Log.setLevel(Level.ALL);
-        
+
         // Log program start
-        Log.info("Main starting up. Importing map-data...");
+        Log.info("Program starting up. Importing map-data...");
         
         // Import data
         MapModel model = DataStore.loadRoads();
-        
-        Log.info("Import of map-data done. Starting server...");
 
         // Start the server on port 8080
         new WebServer(model, 8080);

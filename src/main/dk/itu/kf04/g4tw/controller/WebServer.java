@@ -179,6 +179,9 @@ public class WebServer implements Closeable {
             ServerSocket server = new ServerSocket(port);
             isInitialized = true; 
             
+            // Log success
+            Log.info("Server has been started at port " + port);
+            
             // Loop
             while(true) {
                 // Wait for a connection

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class DataStore {
 
-    protected static final String dataFile = "data.bin";
+    protected static final File dataFile = new File("data.bin");
     
     public static Logger Log = Logger.getLogger(DataStore.class.getName());
 
@@ -33,12 +33,15 @@ public class DataStore {
     public static MapModel loadRoads() {
         // Create the model
         MapModel model = new MapModel();
-        
-        // Log status
-        Log.info("Importing roads...");
 
-        // Log the time
-        long time = System.currentTimeMillis();
+        // Log status
+        long start = System.currentTimeMillis();
+
+        // Create the binary file if it doesn't exist
+        if (!dataFile.exists()) {
+            Log.info("Could not locate " + dataFile + ". Compiling data anew.");
+            storeRoads();
+        }
         
         // Load roads and edges
         try {
@@ -50,9 +53,9 @@ public class DataStore {
             
             // Close stream
             is.close();
-            
+
             // Log success!
-            Log.info("Import done in " + ((System.currentTimeMillis() - time) / 1000) + " seconds.");
+            Log.info("Map-data successfully loaded in " + ((System.currentTimeMillis() - start)) + "ms.");
 
         } catch (FileNotFoundException e) {
             Log.severe("Error loading data. Could not locate file: " + e.getMessage());
