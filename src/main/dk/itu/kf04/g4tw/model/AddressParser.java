@@ -129,7 +129,7 @@ public class AddressParser {
         /*Road r1 = null;
         Road r2 = null;*/
 
-        //System.out.println(getRoad("Strøget 65 A").length());
+        System.out.println(getRoad("strøget 65 A").length());
         //System.out.println(getRoad("Bispevej 37 R").length());
 
         /*

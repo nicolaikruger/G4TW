@@ -4,6 +4,7 @@ var Model = (function() {
     var blueRoads = [];
     var greenRoads = [];
     var blackRoads = [];
+    var path = [];
 
     var level = 0;
 
@@ -88,6 +89,14 @@ var Model = (function() {
             greenRoads = [];
             blackRoads = [];
         },
+
+        /**
+         * Clears the path array
+         */
+        clearPath: function() {
+            path = [];
+        },
+
         /**
          * Create a method to retrieve the roads from the Model
          * @param color  The type of roads to receive.
@@ -105,6 +114,9 @@ var Model = (function() {
                     break;
                 case "black":
                     return blackRoads;
+                    break;
+                case "path":
+                    return path;
                     break;
             }
         },

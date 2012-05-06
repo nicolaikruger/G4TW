@@ -119,12 +119,16 @@ public class RoadParser {
                     } else startLetter = nextLine[11];
                 } else if (!nextLine[13].equals("''")) startLetter = nextLine[13];
 
+                startLetter = startLetter.toLowerCase();
+
                 if(!nextLine[12].equals("''")) {
                     if(!nextLine[14].equals("''")) {
                         if(nextLine[12].compareTo(nextLine[14]) > 0) endLetter = nextLine[12];
                         else endLetter = nextLine[14];
                     } else endLetter = nextLine[12];
                 } else if(!nextLine[14].equals("''")) endLetter = nextLine[14];
+
+                endLetter = endLetter.toLowerCase();
             }
 
             type = MapModel.getRoadTypeFromId(type);
