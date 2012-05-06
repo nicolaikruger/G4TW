@@ -6,8 +6,8 @@ package dk.itu.kf04.g4tw.util;
  */
 public class DynamicArray<Item> {
 
-	private Item[] a = (Item[]) new Object[1];
-	private int N = 0;
+	@SuppressWarnings("unchecked") protected Item[] a = (Item[]) new Object[1];
+	protected int N = 0;
 	
     /**
      * Adds an element to the array.
@@ -38,12 +38,10 @@ public class DynamicArray<Item> {
 	{
 		if(isEmpty())
 			throw new RuntimeException("The array is empty! FFS... -.-''");
-		
-		//a[index] = a[N];
 
         // Moves all elements after the index one spot to the left;
-        for(int i = index+1; i < N-1; i++)
-        {
+        // TODO: Use System.arraycopy
+        for(int i = index+1; i < N-1; i++) {
             a[i] = a[i+1];
         }
         a[--N] = null;
@@ -83,7 +81,7 @@ public class DynamicArray<Item> {
      * @param length  The new length of the array
      */
 	private void resize(int length) {
-		Item[] temp = (Item[]) new Object[length];
+        @SuppressWarnings("unchecked") Item[] temp = (Item[]) new Object[length];
 
         System.arraycopy(a, 0, temp, 0, N);
 
