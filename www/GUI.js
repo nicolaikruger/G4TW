@@ -54,7 +54,8 @@ var Controller = (function() {
 
             switch(errorType) {
                 case 0:
-                    window.alert("No errors!");
+                    // No errors!
+                    drawPath();
                     break;
                 case 1:
                     // Could not find the address
@@ -64,6 +65,43 @@ var Controller = (function() {
                     window.alert("Multiple hits!");
                     handleError2();
                     break;
+            }
+
+            function drawPath () {
+                var roadIterator = xml.evaluate("//r", xml, null, XPathResult.ANY_TYPE, null);
+                var i = xml.evaluate("//i", xml, null, XPathResult.ANY_TYPE, null);
+                var fx = xml.evaluate("//fx", xml, null, XPathResult.ANY_TYPE, null);
+                var fy = xml.evaluate("//fy", xml, null, XPathResult.ANY_TYPE, null);
+                var tx = xml.evaluate("//tx", xml, null, XPathResult.ANY_TYPE, null);
+                var ty = xml.evaluate("//ty", xml, null, XPathResult.ANY_TYPE, null);
+                var road = roadIterator.iterateNext();
+
+                // Clears the path array
+                Model.clearPath();
+
+                // Iterate over possible matches
+                while (road) {
+                    /**
+                     * Tries to parse a given input to a number.
+                     * @param e  The element to parse.
+                     */
+                    function toNumber(e) {
+                        return Number(e.iterateNext().childNodes[0].nodeValue);
+                    }
+
+                    // Retrieve values
+                    var x1 = toNumber(fx);
+                    var y1 = toNumber(fy);
+                    var x2 = toNumber(tx);
+                    var y2 = toNumber(ty);
+
+                    // Add the road to the path array
+                    Model.getRoads("path").push({from:Vector(x1, y1), to:Vector(x2, y2)});
+
+                    road = roadIterator.iterateNext();
+                }
+
+                View.draw();
             }
 
             function handleError1 () {
