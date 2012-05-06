@@ -7,25 +7,6 @@ body, html {
     width: 100%;
     margin: 0;
 }
-#all {
-    z-index: -1;
-    margin: 0;
-    height: 100%;
-    overflow: hidden;
-    width: 100%;
-}
-
-#left {
-    background-color: #FFF;
-    color: white;
-    float: left;
-    padding: 4px;
-}
-
-#right {
-    border: 1px solid black;
-    float: right;
-}
 
 #loading {
     display: none;
@@ -36,6 +17,79 @@ body, html {
     margin-left: -16px;
 }
 
-#zoom {
-    padding: 10px;
+#menu {
+    position: fixed;
+    height: 100%;
+    float: left;
+    background: #333 url('stribe.png') repeat-y 35px 13px;
+    color: black;
+    float: left;
+    padding: 4px;
+    width: 370px;
+    height: 100% ;
+}
+
+#map {
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.clear {
+    clear: both;
+}
+
+#logo{
+    margin-top: -10px;
+    margin-left: 1px;
+}
+
+#finder{
+    margin-top: -8px;
+    padding-left: 47px;
+}
+
+#directions{
+    padding-left: 47px;
+}
+
+#directions p{
+    margin-bottom: 2px;
+}
+
+#directions h1{
+    margin-bottom: -9px;
+}
+
+#fromForm{
+    margin-bottom: -9px;
+}
+
+#toForm{
+    margin-top: -2px;
+}
+
+#roadFilter{
+    margin-top: 40px;
+    padding-left: 47px;
+}
+
+#roadFilter fieldset{
+    border: none;
+    margin-top: -18px;
+    margin-left: -12px;
+}
+
+#roadFilter input, label{
+    margin-top: 8px;
+}
+
+h1, p {
+    margin-left: 30px;
+}
+
+h1{
+    font-size:22px;
 }

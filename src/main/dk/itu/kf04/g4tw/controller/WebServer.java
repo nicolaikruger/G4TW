@@ -2,10 +2,7 @@ package dk.itu.kf04.g4tw.controller;
 
 import javax.xml.transform.TransformerException;
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.URLConnection;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -86,6 +83,8 @@ public class WebServer implements Closeable {
         byte[] input = null;
         String contentType = null;
 
+        fileRequest = fileRequest.toLowerCase();
+
         // Match for map requests
         if (fileRequest.startsWith("xml?")) {
             try {
@@ -100,6 +99,23 @@ public class WebServer implements Closeable {
             }
 
             // Set the content type
+            if (input != null) {
+                contentType = "text/xml";
+            }
+
+        // Match for path request
+        } else if(fileRequest.startsWith("path?")) {
+            try {
+                fileRequest = URLDecoder.decode(fileRequest, "UTF-8");
+                fileRequest = fileRequest.substring(5);
+                input = RequestParser.parsePathToInputStream(fileRequest);
+            } catch (UnsupportedEncodingException e) {
+                Log.warning("Unsupported encoding: " + e.getMessage());
+            } catch (TransformerException e) {
+                Log.warning("Transformer exception: " + e.getMessage());
+            }
+
+
             if (input != null) {
                 contentType = "text/xml";
             }

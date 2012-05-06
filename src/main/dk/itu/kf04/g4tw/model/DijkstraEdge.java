@@ -7,15 +7,15 @@ import java.util.Iterator;
 /**
  *
  */
-public abstract class DijkstraEdge implements Iterable<DijkstraEdge>, Comparable<DijkstraEdge> {
+public abstract class DijkstraEdge implements Iterable<Road>, Comparable<DijkstraEdge> {
 
     public abstract double getLength();
 
     public abstract int getId();
 
-    private DynamicArray<DijkstraEdge> edges = new DynamicArray<DijkstraEdge>();
+    private DynamicArray<Road> edges = new DynamicArray<Road>();
 
-    public void addEdge(DijkstraEdge e){
+    public void addEdge(Road e){
            edges.add(e);
     }
 
@@ -23,14 +23,14 @@ public abstract class DijkstraEdge implements Iterable<DijkstraEdge>, Comparable
         return Double.compare(this.getLength(), o.getLength());
     }
 
-    public Iterator<DijkstraEdge> iterator() {
-        return new Iterator<DijkstraEdge>() {
+    public Iterator<Road> iterator() {
+        return new Iterator<Road>() {
             private int n = 0;
             public boolean hasNext() {
                 return n < edges.length();
             }
 
-            public DijkstraEdge next() {
+            public Road next() {
                 return edges.get(n++);
             }
 

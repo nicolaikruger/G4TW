@@ -16,13 +16,18 @@ public class Road extends DijkstraEdge implements Serializable {
 	public final Point2D.Double to;
 	public double speed;
 	private double length;
+    int startNumber;
+    int endNumber;
+    String startLetter = null;
+    String endLetter = null;
 
 	/**
 	 * The rectangle enclosing this road.
 	 */
 	public final RoadRectangle rect;
 	
-	public Road(int id, String name, Point2D.Double f, Point2D.Double t, int type, double speed, double length) {
+	public Road(int id, String name, Point2D.Double f, Point2D.Double t, int type, double speed, double length,
+                int startNumber, int endNumber, String startLetter, String endLetter) {
         this.id   = id;
 		this.name = name;
 		this.type = type;
@@ -30,7 +35,17 @@ public class Road extends DijkstraEdge implements Serializable {
 		this.to = t;
 		this.speed = speed;
 		this.length = length;
-		
+        this.startNumber = startNumber;
+        this.endNumber = endNumber;
+        this.startLetter = startLetter;
+        this.endLetter = endLetter;
+
+        if(startLetter != null)
+            this.startLetter = startLetter.replace("'", "");
+
+        if(endLetter != null)
+            this.endLetter = endLetter.replace("'", "");
+
 		rect = new RoadRectangle(f, t);
 	}
     
@@ -38,8 +53,25 @@ public class Road extends DijkstraEdge implements Serializable {
     
 	public double getLength() { return length; }
 
+    public int getStartNumber() {
+        return startNumber;
+    }
+
+    public int getEndNumber() {
+        return endNumber;
+    }
+
+    public String getStartLetter() {
+        return startLetter;
+    }
+
+    public String getEndLetter() {
+        return endLetter;
+    }
+
     public String toString() {
-        return ("Name: "+name + "; From: ("+from.getX()+","+from.getY()+")" + " To: ("+to.getX()+","+to.getY()+")" + "; Type: "+type + "; Speed: "+speed + "; Length: "+length + ";");
+        //return ("Name: "+name + "; From: ("+from.getX()+","+from.getY()+")" + " To: ("+to.getX()+","+to.getY()+")" + "; Type: "+type + "; Speed: "+speed + "; Length: "+length + ";");
+        return ("Name: " + name + " StartNumber: " + startNumber + " EndNumber: " + endNumber + " StartLetter: " + startLetter + " EndLetter: " + endLetter);
     }
 
 	/**

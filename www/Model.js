@@ -1,6 +1,6 @@
 var Model = (function() {
 	// The roads in the model.
-	var redRoads = [];
+    var redRoads = [];
     var blueRoads = [];
     var greenRoads = [];
     var blackRoads = [];
@@ -72,7 +72,8 @@ var Model = (function() {
 
                 // Add the road to the array
                 var obj = {from:Vector(x1, y1), to:Vector(x2, y2)};
-                array.push(obj);
+                if (array[id] == null)
+                    array[id] = obj;
 
                 road = roadIterator.iterateNext();
             }
@@ -180,7 +181,9 @@ var Model = (function() {
             // Set the level of the model.
             level = newLevel;
             // Creates the needed vectors.
-            var tv, tv1, tv2, diff;
+            var tv1, tv2, diff;
+            // Creates a vector with PI. This vector is used for the first call of method
+            // to get the first regular request.
             var piVector = new Vector(Math.PI, Math.PI);
 
             if (viewDefinition.x.x.equals(piVector)) {
@@ -193,16 +196,25 @@ var Model = (function() {
                 // Sets up the viewDefinition for ease of use:
                 var oldView = viewDefinition.x;
                 var newView = viewDefinition.y;
+
                 // Finds a vector representing the difference in two views after a pan
                 var difference = findViewDifference(viewDefinition.x, viewDefinition.y);
 
+                // Saves the actual difference in a variable.
+                // This is due to "difference" being a vector with two vectors as coordinates.
                 diff = difference.x;
+                // Finds delta x and delta y.
                 var x = diff.x; var y = diff.y;
+                // Calculates the width and height of the old view.
                 var oldViewWidth = oldView.y.x - oldView.x.x; var oldViewHeight = oldView.x.y - oldView.y.y;
 
                 if ((x > oldViewWidth) || (y > oldViewHeight) || (!difference.x.equals(difference.y))) {
+                    // If the view pans out of either the x or y, or the view zooms,
+                    // then a regular request will be run.
                     this.regularRequest(level);
                 } else {
+                    // Creates squares defined by vectors. The actual squares can be seen
+                    // in our report. The squares are the whitespace.
                     if (x >= 0 && y >= 0) {
                         square1 = new Vector(newView.x, new Vector(newView.y.x, oldView.x.y));
                         square2 = new Vector(new Vector(oldView.y.x, oldView.x.y), newView.y);
@@ -216,7 +228,6 @@ var Model = (function() {
                         square1 = new Vector(new Vector(newView.x.x, oldView.y.y), newView.y);
                         square2 = new Vector(newView.x, new Vector(oldView.x.x, oldView.y.y));
                     }
-                    var squares = new Array(square1, square2);
 
                     tv1 = square1.x;
                     tv2 = square1.y;
@@ -232,6 +243,7 @@ var Model = (function() {
         regularRequest: function(newLevel) {
             console.log("Making regular request");
             level = newLevel;
+
             this.clearRoads();
             // Creates a vector from the findPos function.
             // The vector will contain vectors for x and y values.
