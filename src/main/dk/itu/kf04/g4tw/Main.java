@@ -12,6 +12,12 @@ import java.util.logging.Logger;
  */
 public class Main {
 
+    // General TODOs for the project
+    // TODO: Clean up in the code
+    // TODO: Solve other TODOs
+    // TODO: Make som white- and blackbox testing
+    // TODO: Go make me a sandwich
+
     /**
      * The logging-util for the Main class.
      */
