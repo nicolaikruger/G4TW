@@ -4,6 +4,12 @@ var View = (function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+    var drawRed = true;
+    var drawBlue = true;
+    var drawGreen = true;
+    var drawBlack = true;
+    var drawPath = true;
+
     // Get the canvas context
     var c = canvas.getContext("2d");
 
@@ -18,6 +24,29 @@ var View = (function() {
         addEventListener: function(type, f) {
             canvas.addEventListener(type, f);
         },
+
+        // Change the "draw" booleans
+        changeDrawState: function(e) {
+            switch(e) {
+                case "red":
+                    drawRed = !drawRed;
+                    break;
+                case "blue":
+                    drawBlue = !drawBlue;
+                    break;
+                case "green":
+                    drawGreen = !drawGreen;
+                    break;
+                case "black":
+                    drawBlack = !drawBlack;
+                    break;
+                case "path":
+                    drawPath = !drawPath;
+                    break;
+            }
+            View.draw();
+        },
+
         // Iterate the model and draw the roads
         draw: function() {
             // Clear the canvas
@@ -29,11 +58,16 @@ var View = (function() {
             t.translate(pan);
             t.scale(zoom, -zoom);
 
-            drawFromArray(Model.getRoads("red"), "#003300", 4);
-            drawFromArray(Model.getRoads("blue"), "#663300", 3);
-            drawFromArray(Model.getRoads("green"), "#FFCCCC", 1);
-            drawFromArray(Model.getRoads("black"), "#CCCCCC", 2);
-            drawFromArray(Model.getRoads("path"),"#FFFF00", 6);
+            if(drawRed)
+                drawFromArray(Model.getRoads("red"), "#003300", 4);
+            if(drawBlue)
+                drawFromArray(Model.getRoads("blue"), "#663300", 3);
+            if(drawGreen)
+                drawFromArray(Model.getRoads("green"), "#FFCCCC", 1);
+            if(drawBlack)
+                drawFromArray(Model.getRoads("black"), "#CCCCCC", 2);
+            if(drawPath)
+                drawFromArray(Model.getRoads("path"),"#FFFF00", 6);
 
             c.restore();
 
