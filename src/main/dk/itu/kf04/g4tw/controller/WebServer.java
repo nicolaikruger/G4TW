@@ -1,5 +1,7 @@
 package dk.itu.kf04.g4tw.controller;
 
+import dk.itu.kf04.g4tw.model.MapModel;
+
 import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.net.*;
@@ -22,21 +24,39 @@ public class WebServer implements Closeable {
      * The log for this class.
      */
     protected static Logger Log = Logger.getLogger(WebServer.class.getName());
+
+    /**
+     * The model to perform the requests on
+     */
+    protected MapModel model;
     
     /**
      * The port of the webserver.
      */
-    protected static int port = 80;
+    protected int port = 80;
 
     /**
      * The server thread.
      */
-    protected static ServerSocket server;
+    protected ServerSocket server;
 
     /**
      * The root directory of the www files.
      */
-    protected static String webRoot = "www/";
+    protected String webRoot = "www/";
+
+    /**
+     * Creates a new webserver with the given model on the given point
+     * @param model  The model to perform the searches on.
+     * @param port  The port to listen on.               
+     */
+    public WebServer(MapModel model, int port) {
+        this.model = model;
+        this.port = port;
+        
+        // Init
+        init();
+    }
 
     /**
      * Close the server. 
@@ -54,14 +74,14 @@ public class WebServer implements Closeable {
      * Returns the port of the WebServer.
      * @return int  The port the WebServer listens to when initialized.
      */
-    public static int getPort() { return port; }
+    public int getPort() { return port; }
 
     /**
      * Handles a given request and respond appropriate output to the given PrintStream.
      * @param request  The request in string-format
      * @param out  The output stream to output content to
      */
-    protected static void handleRequest(String request, PrintStream out) {
+    protected void handleRequest(String request, PrintStream out) {
 
         // Turn down bad requests
         if (request == null ||
@@ -89,7 +109,7 @@ public class WebServer implements Closeable {
         if (fileRequest.startsWith("xml?")) {
             try {
                 // Set input stream via
-                input = RequestParser.parseToInputStream(fileRequest.substring(4, fileRequest.length()));
+                input = RequestParser.parseToInputStream(model, fileRequest.substring(4, fileRequest.length()));
             } catch (IllegalArgumentException e) {
                 Log.warning("Illegal argument: " + e.getMessage());
             } catch (UnsupportedEncodingException e) {
@@ -146,11 +166,13 @@ public class WebServer implements Closeable {
 
     /**
      * Initializes the web-server.
-     * @return A boolean value indicating success or failure.
      */
-    public static boolean init() {
+    public void init() {
         // Return if web-server already has been started
-        if (isInitialized) return false;
+        if (isInitialized) {
+            Log.warning("A web-server is already running. Cannot start.");
+            return;
+        }
         
         // Try to initialize a ServerSocket
         try {
@@ -189,9 +211,6 @@ public class WebServer implements Closeable {
             Log.warning("IOException while starting the server: " + e);
             isInitialized = false;
         }
-        
-        // Return success or failure
-        return isInitialized;
     }
 
     /**
@@ -201,7 +220,7 @@ public class WebServer implements Closeable {
      * @param is  The input stream of the response
      * @param os  The output stream to the client
      */
-    protected static void respond(String contentType, byte[] is, PrintStream os) {
+    protected void respond(String contentType, byte[] is, PrintStream os) {
         // Print HTTP meta-content
         os.println("HTTP/1.1 200 OK");
         os.println("Server: KraXServer/1.0");
@@ -220,13 +239,5 @@ public class WebServer implements Closeable {
 
         // Flush the stream
         os.flush();
-    }
-    
-    /**
-     * Sets the port of the WebServer.
-     * @param port  The port between 0 and 0xFFFF
-     */
-    public static void setPort(int port) {
-        WebServer.port = port;
     }
 }

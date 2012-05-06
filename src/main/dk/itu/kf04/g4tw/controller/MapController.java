@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 /**
  * The overall controller for the application.
+ * TODO: Obsolete?
  */
 public class MapController {
 
@@ -13,14 +14,5 @@ public class MapController {
      * Creates a new controller with the information stored in the model.
      */
 	public MapController() {
-        // Init server
-        boolean success = WebServer.init();
-        
-        // Log status
-        if (success) {
-            Log.info("Web-server has been started.");
-        } else {
-            Log.warning("Web-server failed to start.");
-        }
     }
 }

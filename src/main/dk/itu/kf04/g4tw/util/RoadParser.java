@@ -28,24 +28,30 @@ public class RoadParser {
      * 
      * @param nodes  The file to load the Nodes from.
      * @param edges  The file to load the edges from.
+     * @return A MapModel containing the loaded data
      * @see MapModel
      * @see RoadParser
      */
-    public static void load(File nodes, File edges) {
+    public static MapModel load(File nodes, File edges) {
+        // Create the model
+        MapModel model = new MapModel();
+
         try {
             // Log time
             long start = System.currentTimeMillis();
             
             // Parse the nodes and edges
             HashMap<Integer, Node> nodeMap = parseNodes(nodes);
-            int nr = parseEdges(edges, nodeMap);
+            int nr = parseEdges(edges, nodeMap, model);
             
             // Log success
             Log.info("Successfully loaded " + nr + " roads in " + (System.currentTimeMillis() - start) + "ms.");
         } catch (FileNotFoundException e) {
-            Log.warning("Exception while processing map-data: ");
-            e.printStackTrace();
+            Log.warning("Exception while processing map-data, model might be empty: " + e.getMessage());
         }
+
+        // Return
+        return model;
     }
     
     /**
@@ -53,10 +59,11 @@ public class RoadParser {
      *
      * @param file  The file to parse the edges from
      * @param nodeMap  The nodeMap to receive the data from
+     * @param model  The model to load the data into
      * @throws FileNotFoundException If the given file could not be found
      * @return The number of roads loaded.
      */
-    protected static int parseEdges(File file, HashMap<Integer, Node> nodeMap) throws FileNotFoundException {
+    protected static int parseEdges(File file, HashMap<Integer, Node> nodeMap, MapModel model) throws FileNotFoundException {
         // Start the id-counter
         int id = 0;
 
@@ -73,7 +80,6 @@ public class RoadParser {
         while (scanner.hasNextLine()) {
             // Split the line on everything except blocks with ['...,...']
             String[] nextLine = scanner.nextLine().split("((?<=\\d)|'),('|(?=\\d))");//split(",(?=([^']*'[^']*')*[^']*$)");
-            //System.out.println(Arrays.toString(nextLine));
             String name = nextLine[6];
             // removes ' at the beginning and the end of the name
             name = name.replace("'", "");
@@ -133,13 +139,13 @@ public class RoadParser {
                 } else if(!nextLine[14].equals("''")) endLetter = nextLine[14];
             }
 
-            type = MapModel.getRoadTypeFromId(type);
+            type = model.getRoadTypeFromId(type);
 
             // Create the road and setup connections/edges
             Road tmp = new Road(id++, name, pointA, pointB, type, speed, length, startNumber, endNumber, startLetter, endLetter);
 
             // Add the road to the edges collection
-            MapModel.addRoad(id - 1, tmp);
+            model.addRoad(id - 1, tmp);
 
             // If the road has a name
             if(name.length() > 2) {
@@ -160,13 +166,13 @@ public class RoadParser {
             // Add all other roads with same points to the new road
             // --> Creates a UNDIRECTED graph!
             for(int i : nodeRoadPair.get(pointA)) {
-                MapModel.getRoad(i).addEdge(tmp);
-                tmp.addEdge(MapModel.getRoad(i));
+                model.getRoad(i).addEdge(tmp);
+                tmp.addEdge(model.getRoad(i));
             }
 
             for(int i : nodeRoadPair.get(pointB)) {
-                MapModel.getRoad(i).addEdge(tmp);
-                tmp.addEdge(MapModel.getRoad(i));
+                model.getRoad(i).addEdge(tmp);
+                tmp.addEdge(model.getRoad(i));
             }
 
             // Add the new roads ID to the hashmap
@@ -176,8 +182,8 @@ public class RoadParser {
         // Close the scanner
         scanner.close();
 
-        // Directs the graph
-        trim(MapModel.getRoads());
+        // Directs the model
+        trim(model);
 
         // Set the namedRoads hashmap in AddressParser
         AddressParser.setNamedRoads(namedRoads);
@@ -191,9 +197,9 @@ public class RoadParser {
 
     /**
      * Directs the graph, by following the turn.txt file
-     * @param arr Array of the roads (the undirected graph)
+     * @param model The model to direct
      */
-    protected static void trim(Road[] arr)
+    protected static void trim(MapModel model)
     {
         Scanner scanner = null;
         try {
@@ -211,10 +217,10 @@ public class RoadParser {
                 int tID = Integer.parseInt(nextLine[3]);
 
                 // Make the graph directed
-                Iterator<Road> it = arr[fID].iterator();
+                Iterator<Integer> it = model.getRoads()[fID].iterator();
                 while(it.hasNext())
                 {
-                    if(it.next().getId() == tID) {
+                    if(model.getRoad(it.next()).id == tID) {
                         it.remove();
                         break;
                     }

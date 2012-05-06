@@ -53,7 +53,7 @@ public class DijkstraSP {
             if(U.getId() == to.getId()) break;
 
             // Krüger: I made this into a foreach loop. IntelliJ insisted...! Sorry...
-            for (Road V : U) {
+            /*for (Road V : U) {
                 if(!visited[V.getId()])
                 {
                     visited[V.getId()] = true;
@@ -66,7 +66,7 @@ public class DijkstraSP {
                         previous[V.getId()] = U;
                     }
                 }
-            }
+            }*/
         }
         return previous;
     }

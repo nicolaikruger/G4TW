@@ -19,17 +19,19 @@ import java.util.logging.Logger;
 public class RequestParser {
 
     public static Logger Log = Logger.getLogger(RequestParser.class.getName());
+
     
     /**
      * Handles input from the server through the input parameter, decodes it and returns an appropriate
      * message as an array of bytes, ready to dispatch to the sender.
+     * @param model  The model to perform searches on
      * @param input  The input string received from the client
      * @return  A series of bytes as a response
      * @throws IllegalArgumentException  If the input is malformed
      * @throws UnsupportedEncodingException If the input cannot be understood under utf-8 encoding
      * @throws TransformerException  If we fail to transform the xml-document to actual output
      */
-    public static byte[] parseToInputStream(String input) throws IllegalArgumentException, UnsupportedEncodingException, TransformerException {
+    public static byte[] parseToInputStream(MapModel model, String input) throws IllegalArgumentException, UnsupportedEncodingException, TransformerException {
     	// Variables for the request
     	double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
     	int filter = 0;
@@ -69,7 +71,7 @@ public class RequestParser {
         XMLDocumentParser xmlParser = new XMLDocumentParser();
 
         // Search the model and concatenate the results with the previous
-        DynamicArray<Road> search = MapModel.search(x1, y1, x2, y2, filter);
+        DynamicArray<Road> search = model.search(x1, y1, x2, y2, filter);
 
 		// Creates an XML document
 		Document docXML = xmlParser.createDocument();
