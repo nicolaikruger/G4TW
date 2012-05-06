@@ -74,7 +74,7 @@ var Model = (function() {
                 // Add the road to the array
                 var obj = {from:Vector(x1, y1), to:Vector(x2, y2)};
                 // Hashing the id:
-                var hash = id % 100000;
+                var hash = id % 200000;
                 array[hash] = obj;
 //                array.push(obj);
 
@@ -192,15 +192,19 @@ var Model = (function() {
           }
         },
         setFilterLevel: function(newLevel, viewDefinition) {
+            if (level != newLevel)
+                var runRegular = true;
             // Set the level of the model.
             level = newLevel;
+
             // Creates the needed vectors.
             var tv1, tv2, diff;
+
             // Creates a vector with PI. This vector is used for the first call of method
             // to get the first regular request.
             var piVector = new Vector(Math.PI, Math.PI);
 
-            if (viewDefinition.x.x.equals(piVector)) {
+            if ((viewDefinition.x.x.equals(piVector)) || (runRegular == true)) {
                 this.regularRequest(level);
             } else {
                 // Creates the needed squares.
@@ -213,6 +217,7 @@ var Model = (function() {
 
                 // Finds a vector representing the difference in two views after a pan
                 var difference = findViewDifference(viewDefinition.x, viewDefinition.y);
+                console.log(""+difference);
 
                 // Saves the actual difference in a variable.
                 // This is due to "difference" being a vector with two vectors as coordinates.

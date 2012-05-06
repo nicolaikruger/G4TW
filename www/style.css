@@ -83,10 +83,12 @@ body, html {
 }
 
 #roadFilter input, label{
+    color: #FFFFFF;
     margin-top: 8px;
 }
 
 h1, p {
+    color: #FFFFFF;
     margin-left: 30px;
 }
 
