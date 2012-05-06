@@ -192,8 +192,7 @@ var Model = (function() {
           }
         },
         setFilterLevel: function(newLevel, viewDefinition) {
-            if (level != newLevel)
-                var runRegular = true;
+            var runRegular = level-newLevel;
             // Set the level of the model.
             level = newLevel;
 
@@ -204,7 +203,7 @@ var Model = (function() {
             // to get the first regular request.
             var piVector = new Vector(Math.PI, Math.PI);
 
-            if ((viewDefinition.x.x.equals(piVector)) || (runRegular == true)) {
+            if ((viewDefinition.x.x.equals(piVector)) || (runRegular != 0)) {
                 this.regularRequest(level);
             } else {
                 // Creates the needed squares.
@@ -227,7 +226,7 @@ var Model = (function() {
                 // Calculates the width and height of the old view.
                 var oldViewWidth = oldView.y.x - oldView.x.x; var oldViewHeight = oldView.x.y - oldView.y.y;
 
-                if ((x > oldViewWidth) || (y > oldViewHeight) || (!difference.x.equals(difference.y))) {
+                if ((x > oldViewWidth) || (y > oldViewHeight) || !(difference.x.equals(difference.y))) {
                     // If the view pans out of either the x or y, or the view zooms,
                     // then a regular request will be run.
                     this.regularRequest(level);
