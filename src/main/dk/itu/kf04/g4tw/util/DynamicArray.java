@@ -1,7 +1,5 @@
 package dk.itu.kf04.g4tw.util;
 
-import java.util.Random;
-
 /**
  * An array that can be resized depending on the input.
  * @param <Item>  The type of the elements to store.
@@ -64,49 +62,31 @@ public class DynamicArray<Item> {
 	}
 	
     /**
-     * Take a wild guess.
+     * Fetches the number of elements in the array
+     * @return The number of elements.
      */
-	public int length()
-	{
+	public int length() {
 		return N;
 	}
 	
     /**
      * Retrieves the element from the given index.
      * @param index  The index of the element to remove.
+     * @return  The element at the given index or null if no element could be found               
      */
-	public Item get(int index)
-	{
+	public Item get(int index) {
 		return a[index];
 	}
 	
     /**
      * Resizes the array (hence the "dynamic" in DynamicArray).
+     * @param length  The new length of the array
      */
-	private void resize(int length)
-	{
+	private void resize(int length) {
 		Item[] temp = (Item[]) new Object[length];
-		
-		for(int i = 0; i < N; i++)
-			temp[i] = a[i];
-		
+
+        System.arraycopy(a, 0, temp, 0, N);
+
 		a = temp;
-	}
-
-	/**
-	 * Shuffle the array.
-	 */
-	public void shuffle() {
-		Random r = new Random();
-		for (int i = 0; i < N; i++) swap(i, r.nextInt(N));
-	}
-
-	/**
-	 * Swaps two elements in the array.
-	 */
-	private void swap(int x, int y) {
-		Item tmp = a[x];
-		a[x] = a[y];
-		a[y] = tmp;
 	}
 }
