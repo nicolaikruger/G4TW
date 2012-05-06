@@ -64,8 +64,7 @@ public class DataStore {
         } catch (ClassCastException e) {
             Log.severe("Error loading data. Could not cast to HashMap: " + e.getMessage());
         } catch (IOException e) {
-            Log.severe("Error loading data, bad format.");
-            e.printStackTrace();
+            Log.severe("Error loading data, bad format: " + e.getMessage());
         }
 
         // Return the model
@@ -76,9 +75,6 @@ public class DataStore {
      * Stores the MapModel
      */
     public static void storeRoads() {
-        // Log starting
-        Log.info("Loading map data from files...");
-
         // Load the roads
         MapModel model = RoadParser.load(new File("kdv_node_unload.txt"), new File("kdv_unload.txt"));
 

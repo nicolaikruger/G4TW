@@ -10,12 +10,12 @@ import java.util.PriorityQueue;
  */
 public class DijkstraSP {
 
-    public static Road[] shortestPath(Road from, Road to)
+    public static Road[] shortestPath(MapModel model, Road from, Road to)
     {
-        return onLiner(812302, from, to);
+        return onLiner(model, 812302, from, to);
     }
 
-    public static Road[] onLiner(int N, Road from, Road to)
+    public static Road[] onLiner(MapModel model, int N, Road from, Road to)
     {
         final double[] dist = new double[N];
         boolean[] visited = new boolean[N];
@@ -53,7 +53,8 @@ public class DijkstraSP {
             if(U.getId() == to.getId()) break;
 
             // Krüger: I made this into a foreach loop. IntelliJ insisted...! Sorry...
-            /*for (Road V : U) {
+            for (Integer i : U) {
+                Road V = model.getRoad(i);
                 if(!visited[V.getId()])
                 {
                     visited[V.getId()] = true;
@@ -66,7 +67,7 @@ public class DijkstraSP {
                         previous[V.getId()] = U;
                     }
                 }
-            }*/
+            }
         }
         return previous;
     }
@@ -75,19 +76,21 @@ public class DijkstraSP {
     {
         Point2D.Double p = new Point2D.Double(2.0, 2.0);
 
-        Road AB = new Road(0, "AB",p,p,2,2.0,1, 1, 2, "a", "b");
-        Road AC = new Road(1, "AC",p,p,2,2.0,2, 1, 2, "a", "b");
-        Road AD = new Road(2, "AD",p,p,2,2.0,1, 1, 2, "a", "b");
-        Road BD = new Road(3, "BD",p,p,2,2.0,2, 1, 2, "a", "b");
-        Road BE = new Road(4, "BE",p,p,2,2.0,3, 1, 2, "a", "b");
-        Road CF = new Road(5, "CF",p,p,2,2.0,1, 1, 2, "a", "b");
-        Road DG = new Road(6, "DG",p,p,2,2.0,2, 1, 2, "a", "b");
-        Road EF = new Road(7, "EF",p,p,2,2.0,1, 1, 2, "a", "b");
-        Road EG = new Road(8, "EG",p,p,2,2.0,4, 1, 2, "a", "b");
-        Road FH = new Road(9, "FH",p,p,2,2.0,4, 1, 2, "a", "b");
-        Road GH = new Road(10, "GH",p,p,2,2.0,1, 1, 2, "a", "b");
-        Road GI = new Road(11, "GI",p,p,2,2.0,3, 1, 2, "a", "b");
-        Road HI = new Road(12, "HI",p,p,2,2.0,1, 1, 2, "a", "b");
+        MapModel model = new MapModel();
+
+        Road AB = new Road(0, "AB",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(AB);
+        Road AC = new Road(1, "AC",p,p,2,2.0,2, 1, 2, "a", "b"); model.addRoad(AC);
+        Road AD = new Road(2, "AD",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(AD);
+        Road BD = new Road(3, "BD",p,p,2,2.0,2, 1, 2, "a", "b"); model.addRoad(BD);
+        Road BE = new Road(4, "BE",p,p,2,2.0,3, 1, 2, "a", "b"); model.addRoad(BE);
+        Road CF = new Road(5, "CF",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(CF);
+        Road DG = new Road(6, "DG",p,p,2,2.0,2, 1, 2, "a", "b"); model.addRoad(DG);
+        Road EF = new Road(7, "EF",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(EF);
+        Road EG = new Road(8, "EG",p,p,2,2.0,4, 1, 2, "a", "b"); model.addRoad(EG);
+        Road FH = new Road(9, "FH",p,p,2,2.0,4, 1, 2, "a", "b"); model.addRoad(FH);
+        Road GH = new Road(10, "GH",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(GH);
+        Road GI = new Road(11, "GI",p,p,2,2.0,3, 1, 2, "a", "b"); model.addRoad(GI);
+        Road HI = new Road(12, "HI",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(HI);
 
         AB.addEdge(AC);        AB.addEdge(AD);        AB.addEdge(BD);        AB.addEdge(BD);
 
@@ -115,7 +118,7 @@ public class DijkstraSP {
 
         HI.addEdge(FH);        HI.addEdge(GH);        HI.addEdge(GI);
 
-        DijkstraEdge[] arr = DijkstraSP.onLiner(13, AB, HI);
+        DijkstraEdge[] arr = DijkstraSP.onLiner(model, 13, AB, HI);
         int prev = HI.getId();
         while(arr[prev] != null)
         {

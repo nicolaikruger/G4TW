@@ -113,12 +113,13 @@ public class RequestParser {
     /**
      * Handles input from the server through the input parameter and returns an appropriate
      * message as an array of bytes, ready to dispatch to the sender.
+     * @param model  The model to perform the search on
      * @param input  The input string received from the client
      * @return  A series of bytes as a response
      * @throws IllegalArgumentException  If the input is malformed
      * @throws TransformerException  If we fail to transform the xml-document to actual output
      */
-    public static byte[] parsePathToInputStream(String input) throws IllegalArgumentException, TransformerException {
+    public static byte[] parsePathToInputStream(MapModel model, String input) throws IllegalArgumentException, TransformerException {
         String[] inputs = input.split("&");
 
         // if there ain't exactly 2 arguments in the request, throw an error!
@@ -194,7 +195,7 @@ public class RequestParser {
             // You've found a path. Now go make some cool XML stuff!!!
             // TODO: Find a way to see if there are any connection between the two roads. Maybe there are no reason for doing that?
             Log.info("Trying to find path");
-            Road[] result = DijkstraSP.shortestPath(hits1.get(0), hits2.get(0));
+            Road[] result = DijkstraSP.shortestPath(model, hits1.get(0), hits2.get(0));
 
             // Initialize the roadCollection element and add namespaces
             roads = docXML.createElement("roadCollection");

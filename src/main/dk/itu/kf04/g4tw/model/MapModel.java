@@ -57,12 +57,11 @@ public class MapModel implements Externalizable {
 
     /**
      * Adds a road to the Model with the given id.
-     * @param id  The index of the road
      * @param road The road to add.
      */
-	public void addRoad(int id, Road road) {
+	public void addRoad(Road road) {
         // Add the road to our array
-        roads[id] = road;
+        roads[road.id] = road;
         
         // Construct the tree if it does not exist
         if (!roadTrees.containsKey(road.type)) roadTrees.put(road.type, new Tree2D(this));

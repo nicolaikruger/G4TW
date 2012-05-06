@@ -145,7 +145,7 @@ public class RoadParser {
             Road tmp = new Road(id++, name, pointA, pointB, type, speed, length, startNumber, endNumber, startLetter, endLetter);
 
             // Add the road to the edges collection
-            model.addRoad(id - 1, tmp);
+            model.addRoad(tmp);
 
             // If the road has a name
             if(name.length() > 2) {

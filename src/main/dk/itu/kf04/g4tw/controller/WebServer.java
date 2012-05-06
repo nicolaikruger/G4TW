@@ -128,7 +128,7 @@ public class WebServer implements Closeable {
             try {
                 fileRequest = URLDecoder.decode(fileRequest, "UTF-8");
                 fileRequest = fileRequest.substring(5);
-                input = RequestParser.parsePathToInputStream(fileRequest);
+                input = RequestParser.parsePathToInputStream(model, fileRequest);
             } catch (UnsupportedEncodingException e) {
                 Log.warning("Unsupported encoding: " + e.getMessage());
             } catch (TransformerException e) {

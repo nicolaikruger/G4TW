@@ -38,8 +38,8 @@ public class Main {
         // Import data
         MapModel model = DataStore.loadRoads();
 
-        // Start the server on port 8080
-        new WebServer(model, 8080);
+        // Start the server on port 80
+        new WebServer(model, 80);
     }
 
 }
