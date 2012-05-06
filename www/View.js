@@ -4,9 +4,6 @@ var View = (function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Create view rectangle var
-    var viewRect;
-
     // Get the canvas context
     var c = canvas.getContext("2d");
 
@@ -40,12 +37,6 @@ var View = (function() {
             c.restore();
 
         },
-        getViewRect: function() {
-            return viewRect;
-        },
-        setViewRect: function() {
-            viewRect = findPos(canvas);
-        },
         getPan: function() {
             return pan;
         },
@@ -71,24 +62,12 @@ var View = (function() {
             }
         },
         findPos: function(obj) {
-            // Creates 2 new variables.
-            var curleft = curtop = 0;
-            // Checks if the current object has a parent.
-            if (obj.offsetParent) {
-                // Will continue to increment the offset with the offset
-                // of the parent objects, until the offset has been summed up.
-                // Then the loop breaks.
-                do {
-                    curleft += obj.offsetLeft;
-                    curtop += obj.offsetTop;
-                } while (obj = obj.offsetParent)
-            }
-
-            // Creates 2 vectors to define the boundaries of the canvas.
+            // Finds the coordinates of the canvas on the screen,
+            // and creates two vectors to define the boundaries of the canvas.
             // v1 is the start point, v2 is the end point (start point + canvas dimensions).
-            var v1 = Vector(curleft, curtop);
+            var v1 = findCanvasPos(obj);
             var v2 = Vector(v1.x + canvas.width, v1.y + canvas.height);
-            console.log("V1: " + v1 + " x: " + v1.x + " y: " + v1.y + "  V2: " + v2 + " x: " + v2.x + " y: " + v2.y);
+//            console.log("V1: " + v1 + " x: " + v1.x + " y: " + v1.y + "  V2: " + v2 + " x: " + v2.x + " y: " + v2.y);
 
             // Sets up the transformation matrix.
             // The transformation matrix can translate map coordinates to screen coordinates.
@@ -129,5 +108,23 @@ var View = (function() {
         c.strokeStyle = color;
         c.closePath();
         c.stroke();
+    }
+
+    function findCanvasPos(obj)  {
+        // Creates 2 new variables.
+        var curleft = curtop = 0;
+        // Checks if the current object has a parent.
+        if (obj.offsetParent) {
+            // Will continue to increment the offset with the offset
+            // of the parent objects, until the offset has been summed up.
+            // Then the loop breaks.
+            do {
+                curleft += obj.offsetLeft;
+                curtop += obj.offsetTop;
+            } while (obj = obj.offsetParent)
+        }
+
+        // Returns a vector with the coordinates of the canvas on the screen.
+        return Vector(curleft, curtop);
     }
 }());

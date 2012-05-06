@@ -1,9 +1,10 @@
 var Controller = (function() {
-    var isLeftMouseDown, startPoint;
+    var isLeftMouseDown, startPoint, canvasStartPos, canvasEndPos;
     var canvas = document.getElementById('canvas');
 
     View.resize();
-    Model.setFilterLevel(Model.HIGHWAY + Model.SEAWAY);
+    var specialVector = new Vector(new Vector(new Vector(Math.PI, Math.PI), 0), 0);
+    Model.setFilterLevel(Model.HIGHWAY + Model.SEAWAY, specialVector);
 
     var getCoordinates = function(e) {
         var x = 0;
@@ -28,10 +29,11 @@ var Controller = (function() {
     canvas.onmousedown = function(e) {
         isLeftMouseDown = true;
         startPoint = getCoordinates(e);
-        View.setViewRect();
+        canvasStartPos = View.findPos(canvas);
     };
     canvas.onmouseup   =  function(e) {
         isLeftMouseDown = false;
+        canvasEndPos = View.findPos(canvas);
         getLevel(View.getZoom());
     };
     canvas.onmousemove = function(e) {
@@ -53,6 +55,11 @@ var Controller = (function() {
     document.body.onresize = View.resize;
 
     var getLevel = function(zoom) {
+        // Creates a vector containing the vectors that contain the vectors that define the
+        // two views (Deep vector calculation).
+        var viewDefinitions = new Vector(canvasStartPos, canvasEndPos);
+        console.log(viewDefinitions);
+
         // Set default value
         var filter = Model.HIGHWAY + Model.SEAWAY;
 
@@ -63,15 +70,7 @@ var Controller = (function() {
         if (zoom > 0.055) filter += Model.PATH;
         if (zoom > 0.058) filter += Model.LOCATION;
 
-        Model.setFilterLevel(filter);
-    }
-
-    var findViewDifference = function() {
-        var previousView = View.getViewRect();
-        var newView = new Vector();
-        newView.x = previousView.x.add(View.getPan());
-        newView.y = previousView.y.add(View.getPan());
-
+        Model.setFilterLevel(filter, viewDefinitions);
     }
 
     // Return empty object

@@ -1,6 +1,6 @@
 var Model = (function() {
 	// The roads in the model.
-	  var redRoads = [];
+	var redRoads = [];
     var blueRoads = [];
     var greenRoads = [];
     var blackRoads = [];
@@ -17,6 +17,13 @@ var Model = (function() {
         req.onreadystatechange = callback;
         req.open("GET", url, callback);
         req.send(null);
+    }
+
+    function findViewDifference(startpoint, endpoint) {
+        var pandifference = new Vector(endpoint.x.subtract(startpoint.x), endpoint.y.subtract(startpoint.y));
+        pandifference.reverse();
+        console.log(""+pandifference)
+        return pandifference;
     }
 
     // Add a number of roads from the given XML-string
@@ -64,7 +71,8 @@ var Model = (function() {
                 var y2 = toNumber(ty);
 
                 // Add the road to the array
-                array.push({from:Vector(x1, y1), to:Vector(x2, y2)});
+                var obj = {from:Vector(x1, y1), to:Vector(x2, y2)};
+                array.push(obj);
 
                 road = roadIterator.iterateNext();
             }
@@ -168,23 +176,73 @@ var Model = (function() {
             }());
           }
         },
-        setFilterLevel: function(newLevel) {
+        setFilterLevel: function(newLevel, viewDefinition) {
             // Set the level of the model.
             level = newLevel;
+            // Creates the needed vectors.
+            var tv, tv1, tv2, diff;
+            var piVector = new Vector(Math.PI, Math.PI);
 
+            if (viewDefinition.x.x.equals(piVector)) {
+                this.regularRequest(level);
+            } else {
+                // Creates the needed squares.
+                var square1;
+                var square2;
+
+                // Sets up the viewDefinition for ease of use:
+                var oldView = viewDefinition.x;
+                var newView = viewDefinition.y;
+                // Finds a vector representing the difference in two views after a pan
+                var difference = findViewDifference(viewDefinition.x, viewDefinition.y);
+
+                diff = difference.x;
+                var x = diff.x; var y = diff.y;
+                var oldViewWidth = oldView.y.x - oldView.x.x; var oldViewHeight = oldView.x.y - oldView.y.y;
+
+                if ((x > oldViewWidth) || (y > oldViewHeight) || (!difference.x.equals(difference.y))) {
+                    this.regularRequest(level);
+                } else {
+                    if (x >= 0 && y >= 0) {
+                        square1 = new Vector(newView.x, new Vector(newView.y.x, oldView.x.y));
+                        square2 = new Vector(new Vector(oldView.y.x, oldView.x.y), newView.y);
+                    } else if (x >= 0 && y < 0) {
+                        square1 = new Vector(new Vector(newView.x.x, oldView.y.y), newView.y);
+                        square2 = new Vector(new Vector(oldView.y.x, newView.x.y), new Vector(newView.y.x, oldView.y.y));
+                    } else if (x < 0 && y >= 0) {
+                        square1 = new Vector(newView.x, new Vector(newView.y.x, oldView.x.y));
+                        square2 = new Vector(new Vector(newView.x.x, oldView.x.y), new Vector(oldView.x.x, newView.y.y));
+                    } else {
+                        square1 = new Vector(new Vector(newView.x.x, oldView.y.y), newView.y);
+                        square2 = new Vector(newView.x, new Vector(oldView.x.x, oldView.y.y));
+                    }
+                    var squares = new Array(square1, square2);
+
+                    tv1 = square1.x;
+                    tv2 = square1.y;
+                    // Perform the request
+                    this.requestRoads(tv1, tv2, level);
+
+                    tv1 = square2.x;
+                    tv2 = square2.y;
+                    this.requestRoads(tv1, tv2, level);
+                }
+            }
+        },
+        regularRequest: function(newLevel) {
+            console.log("Making regular request");
+            level = newLevel;
+            this.clearRoads();
             // Creates a vector from the findPos function.
             // The vector will contain vectors for x and y values.
-            var tv = View.findPos(canvas);
+            tv = View.findPos(canvas);
 
             // Creates 2 new vectors from the previous vector.
             // This is the start and end coordinates for the window.
-            var tv1 = tv.x;
-            var tv2 = tv.y;
+            tv1 = tv.x;
+            tv2 = tv.y;
 
-            // Perform the request
             this.requestRoads(tv1, tv2, level);
-
-          this.clearRoads();
         }
     }
 }());
