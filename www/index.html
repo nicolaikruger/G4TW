@@ -1,81 +1,70 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <title>KF04 - Opg 4!</title>
-</head>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <title>KF04 - Opg 4!</title>
+    </head>
 
-<body>
-
-<div id="loading"><img src="loading.gif"></div>
-<div id="menu">
-    <div id="logo">
-        <img src="logo.png" alt="G4TW-roads"/>
-    </div> <!-- logo ends here -->
-    <div id="finder">
-        <h1>Find road</h1>
-        <form name="findRoad" action="html_form_action.asp" method="get">
-            <input type="text" name="Road"/>
-            <input type="submit" value="Find"/>
-        </form>
-    </div> <!-- finder ends here -->
-
-    <div id="directions">
-        <h1>Directions</h1>
-        <p>From:</p>
-        <form id="fromForm" name="fromDir" action="html_form_action.asp" method="get">
-            <input type="text" name="from"/>
-            <input type="submit" value="Match" />
-        </form>
-        <p>To:</p>
-        <form id="toForm" name="toDir" action="html_form_action.asp" method="get">
-            <input type="text" name="to"/>
-            <input type="submit" value="Match" />
-        </form>
-    </div> <!-- directions ends here -->
-
-    <div id="roadFilter">
-        <h1>Road Filter:</h1>
-        <fieldset>
-            <input type="checkbox" id="highway" value="Highway" />
-            <label for="highway">Highways</label><br />
-            <input type="checkbox" id="expressway" value="Expressway" />
-            <label for="expressway">Expressways</label><br />
-            <input type="checkbox" id="primaryRoad" value="Primary Road" />
-            <label for="primaryRoad">Primary Roads</label><br />
-            <input type="checkbox" id="secondaryRoad" value="Secondary Road" />
-            <label for="secondaryRoad">Secondary Roads</label><br />
-            <input type="checkbox" id="minorRoad" value="Minor Road" />
-            <label for="minorRoad">Minor Roads</label><br />
-            <input type="checkbox" id="path" value="Path" />
-            <label for="path">Paths</label><br />
-            <input type="checkbox" id="seaway" value="Seaway" />
-            <label for="seaway">Seaways</label><br />
-            <input type="checkbox" id="location" value="Location" />
-            <label for="location">Locations</label><br />
-        </fieldset>
-    </div> <!-- roadFilter ends here -->
-    <p align="right">Design by Pony Inc<SUP>&copy</SUP></p>
-</div>
-<div id="map">
+    <body>
+        <div id="loading"><img src="loading.gif"></div>
 
 
+        <div id="menu">
+            <div id="logo">
+                <img src="logo.png" alt="G4TW-roads"/>
+            </div> <!-- logo ends here -->
+            <div id="finder">
+                <h1>Find road</h1>
+                <input type="text" name="Road"/>
+                <input type="submit" value="Find"/>
+                </form>
+            </div> <!-- finder ends here -->
 
+            <div id="directions">
+                <h1>Directions</h1>
+                <form id="fromForm" name="direction" action="">
+                    <p>From:</p>
+                    <input type="text" name="from"/>
+                    <p>To:</p>
+                    <input type="text" name="to"/>
+                    <input type="button" name="submit" value="Match" onclick=""/>
+                </form>
+            </div> <!-- directions ends here -->
 
+            <div id="roadFilter">
+                <h1>Road Filter:</h1>
+                <fieldset>
+                    <input type="checkbox" id="highway" value="Highway" />
+                    <label for="highway">Highways</label><br />
+                    <input type="checkbox" id="expressway" value="Expressway" />
+                    <label for="expressway">Expressways</label><br />
+                    <input type="checkbox" id="primaryRoad" value="Primary Road" />
+                    <label for="primaryRoad">Primary Roads</label><br />
+                    <input type="checkbox" id="secondaryRoad" value="Secondary Road" />
+                    <label for="secondaryRoad">Secondary Roads</label><br />
+                    <input type="checkbox" id="minorRoad" value="Minor Road" />
+                    <label for="minorRoad">Minor Roads</label><br />
+                    <input type="checkbox" id="path" value="Path" />
+                    <label for="path">Paths</label><br />
+                    <input type="checkbox" id="seaway" value="Seaway" />
+                    <label for="seaway">Seaways</label><br />
+                    <input type="checkbox" id="location" value="Location" />
+                    <label for="location">Locations</label><br />
+                </fieldset>
+            </div> <!-- roadFilter ends here -->
+            <p align="right">Design by Pony Inc<SUP>&copy</SUP></p>
+        </div>
 
-        <canvas id="canvas" />
+        <div id="map">
+            <canvas id="canvas" />
 
+            <script type="text/javascript" src="Transform.js"></script>
+            <script type="text/javascript" src="Vector.js"></script>
+            <script type="text/javascript" src="Model.js"></script>
+            <script type="text/javascript" src="View.js"></script>
+            <script type="text/javascript" src="Controller.js"></script>
+            <script type="text/javascript" src="GUI.js"></script>
 
-        <script type="text/javascript" src="Transform.js"></script>
-        <script type="text/javascript" src="Vector.js"></script>
-        <script type="text/javascript" src="Model.js"></script>
-        <script type="text/javascript" src="View.js"></script>
-        <script type="text/javascript" src="Controller.js"></script>
-
-
-
-
-</div> <!-- all ends here -->
-
-</body>
+        </div> <!-- all ends here -->
+    </body>
 </html>
