@@ -78,9 +78,6 @@ public class DataStore {
             // Cast to HashMap
             HashMap<Integer, RoadTypeTree> map = (HashMap<Integer, RoadTypeTree>) roads;
             
-            // Insert into the model
-            MapModel.setRoads(map);
-            
             // Close stream
             is.close();
             

@@ -13,10 +13,10 @@ public abstract class DijkstraEdge implements Iterable<Road>, Comparable<Dijkstr
 
     public abstract int getId();
 
-    private DynamicArray<Road> edges = new DynamicArray<Road>();
+    private DynamicArray<Integer> edges = new DynamicArray<Integer>();
 
     public void addEdge(Road e){
-           edges.add(e);
+           edges.add(e.id);
     }
 
     public int compareTo(DijkstraEdge o) {
@@ -31,7 +31,7 @@ public abstract class DijkstraEdge implements Iterable<Road>, Comparable<Dijkstr
             }
 
             public Road next() {
-                return edges.get(n++);
+                return MapModel.getRoad(edges.get(n++));
             }
 
             public void remove() {

@@ -21,6 +21,11 @@ public class MapModel {
     public static final int LOCATION       = 128;
 
     /**
+     * An array containing all the roads.
+     */
+    protected static Road[] roads = new Road[812302];
+    
+    /**
      * Maps relationships between road-ids given by the input-file and road-types given as static fields in the MapModel.
      */
     protected static HashMap<Integer, Integer> roadTypeMap = new HashMap<Integer, Integer>();
@@ -43,10 +48,14 @@ public class MapModel {
     }
 
     /**
-     * Adds a road to the Model.
+     * Adds a road to the Model with the given id.
+     * @param id  The index of the road
      * @param road The road to add.
      */
-	public static void addRoad(Road road) {
+	public static void addRoad(int id, Road road) {
+        // Add the road to our array
+        roads[id] = road;
+        
         // Construct the tree if it does not exist
         if (!roadTrees.containsKey(road.type)) roadTrees.put(road.type, new RoadTypeTree(road.type));
         
@@ -55,9 +64,17 @@ public class MapModel {
 	}
 
     /**
-     * Replaces the road-map with the given input.
+     * Retrieves a road from a given index
+     * @param index  The unique index for the road
+     * @return The road with the given index or null if no road could be found
      */
-    public static void setRoads(HashMap<Integer, RoadTypeTree> map) { roadTrees = map; }
+    public static Road getRoad(int index) { return roads[index]; }
+
+    /**
+     * Retrieves the underlying collection of roads.
+     * @return  An array with roads.
+     */
+    public static Road[] getRoads() { return roads; }
 
     /**
      * Insert a map from a set of given road-ids to a road-type.
@@ -70,12 +87,6 @@ public class MapModel {
             roadTypeMap.put(values[i], type);
         }
     }
-
-    /**
-     * Retrieves the entire data-structure for the model.
-     * @return A hash map containing the integer-types and the roads mapped to the types.
-     */
-    public static HashMap<Integer, RoadTypeTree> getRoads() { return roadTrees; }
 
     /**
      * Retrieves the road-type from the given id.

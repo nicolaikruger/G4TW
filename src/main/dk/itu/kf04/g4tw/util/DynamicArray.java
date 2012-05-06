@@ -15,8 +15,7 @@ public class DynamicArray<Item> {
      * Adds an element to the array.
      * @param item  The item to add.
      */
-	public void add(Item item)
-	{
+	public void add(Item item) {
 		if(N == a.length)
 			resize(a.length << 1);
 		
@@ -24,7 +23,8 @@ public class DynamicArray<Item> {
 	}
 
     /**
-     * Adds another DynamicArray to the array.
+     * Concatenate this array with another DynamicArray.
+     * @param that  The other array to concatenate.
      */
     public void add(DynamicArray<Item> that) {
         for (int i = 0; i < that.length(); i++) {
@@ -52,22 +52,6 @@ public class DynamicArray<Item> {
 		
 		if(N > 0 && N == a.length/4)
 			resize(a.length/2);
-	}
-	
-	/**
-	 * Replaces an item with a new one.
-	 * @param oldItem  The item to replace
-	 * @param newItem  The item to insert
-     * @return a boolean value to indicate success or failure.
-	 */
-	public boolean replace(Item oldItem, Item newItem) {
-        for (int i = 0; i < a.length; i++) {
-            if (a[i].equals(oldItem)) { // equals because the Integer type is a moron and can not understand ==
-                a[i] = newItem;
-                return true;
-            }
-        }
-        return false;
 	}
 	
     /**

@@ -3,7 +3,6 @@ package dk.itu.kf04.g4tw.model;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.PriorityQueue;
 
 /**
@@ -53,10 +52,8 @@ public class DijkstraSP {
 
             if(U.getId() == to.getId()) break;
 
-            Iterator<Road> it = U.iterator();
-            while(it.hasNext())
-            {
-                Road V = it.next();
+            // Krüger: I made this into a foreach loop. IntelliJ insisted...! Sorry...
+            for (Road V : U) {
                 if(!visited[V.getId()])
                 {
                     visited[V.getId()] = true;
