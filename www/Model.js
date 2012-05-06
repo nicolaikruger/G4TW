@@ -73,8 +73,10 @@ var Model = (function() {
 
                 // Add the road to the array
                 var obj = {from:Vector(x1, y1), to:Vector(x2, y2)};
-                if (array[id] == null)
-                    array[id] = obj;
+                // Hashing the id:
+                var hash = id % 100000;
+                array[hash] = obj;
+//                array.push(obj);
 
                 road = roadIterator.iterateNext();
             }
