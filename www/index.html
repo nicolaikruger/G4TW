@@ -34,22 +34,20 @@
             <div id="roadFilter">
                 <h1>Road Filter:</h1>
                 <fieldset>
-                    <input type="checkbox" id="highway" value="Highway" />
-                    <label for="highway">Highways</label><br />
-                    <input type="checkbox" id="expressway" value="Expressway" />
-                    <label for="expressway">Expressways</label><br />
-                    <input type="checkbox" id="primaryRoad" value="Primary Road" />
-                    <label for="primaryRoad">Primary Roads</label><br />
-                    <input type="checkbox" id="secondaryRoad" value="Secondary Road" />
-                    <label for="secondaryRoad">Secondary Roads</label><br />
-                    <input type="checkbox" id="minorRoad" value="Minor Road" />
-                    <label for="minorRoad">Minor Roads</label><br />
-                    <input type="checkbox" id="path" value="Path" />
-                    <label for="path">Paths</label><br />
-                    <input type="checkbox" id="seaway" value="Seaway" />
-                    <label for="seaway">Seaways</label><br />
-                    <input type="checkbox" id="location" value="Location" />
-                    <label for="location">Locations</label><br />
+                    <input type="checkbox" id="red" value="Highway" onclick="View.changeDrawState('red')" checked/>
+                    <label for="red">Highways &amp; Expressways</label><br />
+
+                    <input type="checkbox" id="blue" value="Primary Road" onclick="View.changeDrawState('blue')" checked/>
+                    <label for="blue">Primary Roads &amp; Secondary Roads</label><br />
+
+                    <input type="checkbox" id="green" value="Minor Road" onclick="View.changeDrawState('green')" checked/>
+                    <label for="green">Minor Roads &amp; Paths</label><br />
+
+                    <input type="checkbox" id="black" value="Seaway" onclick="View.changeDrawState('black')" checked/>
+                    <label for="black">Seaways &amp; Locations</label><br />
+
+                    <input type="checkbox" id="path" value="Path" onclick="View.changeDrawState('path')" checked/>
+                    <label for="black">Route</label><br />
                 </fieldset>
             </div> <!-- roadFilter ends here -->
             <p align="right">Design by Pony Inc<SUP>&copy</SUP></p>
