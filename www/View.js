@@ -36,6 +36,7 @@ var View = (function() {
             drawFromArray(Model.getRoads("blue"), "#663300", 3);
             drawFromArray(Model.getRoads("green"), "#FFCCCC", 1);
             drawFromArray(Model.getRoads("black"), "#CCCCCC", 2);
+            drawFromArray(Model.getRoads("path"),"#FFFF00", 6);
 
             c.restore();
 

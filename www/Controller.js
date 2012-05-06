@@ -1,6 +1,7 @@
 var Controller = (function() {
     var isLeftMouseDown, startPoint;
     var canvas = document.getElementById('canvas');
+    //canvas.width = window.window.innerWidth-370;
 
     View.resize();
     Model.setFilterLevel(Model.HIGHWAY + Model.SEAWAY);

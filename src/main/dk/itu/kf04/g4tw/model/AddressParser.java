@@ -124,7 +124,6 @@ public class AddressParser {
     public static void setNamedRoads(HashMap<String, DynamicArray<Road>> map)
     {
         namedRoads = map;
-        System.out.println("Got the map!");
 
         /*Road r1 = null;
         Road r2 = null;*/

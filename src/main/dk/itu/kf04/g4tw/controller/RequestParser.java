@@ -162,7 +162,7 @@ public class RequestParser {
         }
 
 
-        // Instantiate the parse
+        // Instantiate the parser
         XMLDocumentParser xmlParser = new XMLDocumentParser();
 
         // Creates an XML document
