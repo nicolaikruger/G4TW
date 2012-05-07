@@ -42,6 +42,8 @@ public class AddressParser {
          */
         String[] addressInfo = parseAddress(address);
 
+        System.out.println(addressInfo[0]);
+
         DynamicArray<Road> hits = namedRoads.get(addressInfo[0]);
         if(hits == null)
             hits = new DynamicArray<Road>();
@@ -124,6 +126,7 @@ public class AddressParser {
     public static void setNamedRoads(HashMap<String, DynamicArray<Road>> map)
     {
         namedRoads = map;
+        System.out.println("Got the roads!");
 
         /*Road r1 = null;
         Road r2 = null;*/

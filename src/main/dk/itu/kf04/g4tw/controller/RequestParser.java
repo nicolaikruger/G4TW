@@ -165,6 +165,8 @@ public class RequestParser {
         // Instantiate the parser
         XMLDocumentParser xmlParser = new XMLDocumentParser();
 
+        System.out.println(xmlParser.createDocument().getXmlEncoding());
+
         // Creates an XML document
         Document docXML = xmlParser.createDocument();
 
@@ -229,7 +231,7 @@ public class RequestParser {
 
                 for (int i = 0; i < hits1.length(); i++)
                 {
-                    collection.appendChild(hits1.get(i).toXML(docXML));
+                    collection.appendChild(hits1.get(i).toErrorXML(docXML));
                 }
                 Log.info("Found more than one road. \"" + adr1 + "\" in the system");
             }
@@ -243,7 +245,7 @@ public class RequestParser {
 
                 for (int i = 0; i < hits2.length(); i++)
                 {
-                    collection.appendChild(hits2.get(i).toXML(docXML));
+                    collection.appendChild(hits2.get(i).toErrorXML(docXML));
                 }
                 Log.info("Found more than one road. \"" + adr2 + "\" in the system");
             }
