@@ -146,6 +146,8 @@ public class MapModel implements Externalizable {
             out.writeInt(r.endNumber);      // end number
             out.writeUTF(r.startLetter);    // start letter
             out.writeUTF(r.endLetter);      // end letter
+            out.writeInt(r.leftPostalCode); // left postal code
+            out.writeInt(r.rightPostalCode);// right postal code
         }
 
         // Write the trees
@@ -173,7 +175,9 @@ public class MapModel implements Externalizable {
                     in.readInt(),    // start number
                     in.readInt(),    // end number
                     in.readUTF(),    // start letter
-                    in.readUTF()     // end letter
+                    in.readUTF(),    // end letter
+                    in.readInt(),    // left postal code
+                    in.readInt()     // right postal code
             );
         }
 

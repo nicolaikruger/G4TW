@@ -143,10 +143,13 @@ public class RoadParser {
                 endLetter = endLetter.toLowerCase();
             }
 
+            int leftPostalCode = Integer.parseInt(nextLine[17]);
+            int rightPostalCode = Integer.parseInt(nextLine[18]);
+
             type = model.getRoadTypeFromId(type);
 
             // Create the road and setup connections/edges
-            Road tmp = new Road(id++, name, pointA, pointB, type, speed, length, startNumber, endNumber, startLetter, endLetter);
+            Road tmp = new Road(id++, name, pointA, pointB, type, speed, length, startNumber, endNumber, startLetter, endLetter, leftPostalCode, rightPostalCode);
 
             // Add the road to the edges collection
             model.addRoad(tmp);

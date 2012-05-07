@@ -78,19 +78,19 @@ public class DijkstraSP {
 
         MapModel model = new MapModel();
 
-        Road AB = new Road(0, "AB",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(AB);
-        Road AC = new Road(1, "AC",p,p,2,2.0,2, 1, 2, "a", "b"); model.addRoad(AC);
-        Road AD = new Road(2, "AD",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(AD);
-        Road BD = new Road(3, "BD",p,p,2,2.0,2, 1, 2, "a", "b"); model.addRoad(BD);
-        Road BE = new Road(4, "BE",p,p,2,2.0,3, 1, 2, "a", "b"); model.addRoad(BE);
-        Road CF = new Road(5, "CF",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(CF);
-        Road DG = new Road(6, "DG",p,p,2,2.0,2, 1, 2, "a", "b"); model.addRoad(DG);
-        Road EF = new Road(7, "EF",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(EF);
-        Road EG = new Road(8, "EG",p,p,2,2.0,4, 1, 2, "a", "b"); model.addRoad(EG);
-        Road FH = new Road(9, "FH",p,p,2,2.0,4, 1, 2, "a", "b"); model.addRoad(FH);
-        Road GH = new Road(10, "GH",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(GH);
-        Road GI = new Road(11, "GI",p,p,2,2.0,3, 1, 2, "a", "b"); model.addRoad(GI);
-        Road HI = new Road(12, "HI",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(HI);
+        Road AB = new Road(0, "AB",p,p,2,2.0,1, 1, 2, "a", "b", 1, 1); model.addRoad(AB);
+        Road AC = new Road(1, "AC",p,p,2,2.0,2, 1, 2, "a", "b", 1, 1); model.addRoad(AC);
+        Road AD = new Road(2, "AD",p,p,2,2.0,1, 1, 2, "a", "b", 1, 1); model.addRoad(AD);
+        Road BD = new Road(3, "BD",p,p,2,2.0,2, 1, 2, "a", "b", 1, 1); model.addRoad(BD);
+        Road BE = new Road(4, "BE",p,p,2,2.0,3, 1, 2, "a", "b", 1, 1); model.addRoad(BE);
+        Road CF = new Road(5, "CF",p,p,2,2.0,1, 1, 2, "a", "b", 1, 1); model.addRoad(CF);
+        Road DG = new Road(6, "DG",p,p,2,2.0,2, 1, 2, "a", "b", 1, 1); model.addRoad(DG);
+        Road EF = new Road(7, "EF",p,p,2,2.0,1, 1, 2, "a", "b", 1, 1); model.addRoad(EF);
+        Road EG = new Road(8, "EG",p,p,2,2.0,4, 1, 2, "a", "b", 1, 1); model.addRoad(EG);
+        Road FH = new Road(9, "FH",p,p,2,2.0,4, 1, 2, "a", "b", 1, 1); model.addRoad(FH);
+        Road GH = new Road(10, "GH",p,p,2,2.0,1, 1, 2, "a", "b", 1, 1); model.addRoad(GH);
+        Road GI = new Road(11, "GI",p,p,2,2.0,3, 1, 2, "a", "b", 1, 1); model.addRoad(GI);
+        Road HI = new Road(12, "HI",p,p,2,2.0,1, 1, 2, "a", "b", 1, 1); model.addRoad(HI);
 
         AB.addEdge(AC);        AB.addEdge(AD);        AB.addEdge(BD);        AB.addEdge(BD);
 

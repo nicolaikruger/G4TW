@@ -137,6 +137,8 @@ var View = (function() {
             c.moveTo(from.x, from.y);
             c.lineTo(to.x, to.y);
 
+
+
         }
 
         c.lineWidth = width;

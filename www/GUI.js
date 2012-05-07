@@ -120,9 +120,6 @@ var Controller = (function() {
 
             }
 
-            // Initiate the view
-            //View.draw();
-
             // Hide the loader.gif
             loader.style.display = "none";
         }
