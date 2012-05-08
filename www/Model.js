@@ -7,6 +7,7 @@ var Model = (function() {
     var path = [];
 
     var level = 0;
+    var lastZoom = 0;
 
     // Get the canvas and the context
     var canvas = document.getElementById("canvas");
@@ -192,7 +193,8 @@ var Model = (function() {
           }
         },
         setFilterLevel: function(newLevel, viewDefinition) {
-            var runRegular = level-newLevel;
+            if (lastZoom != 0)
+                var runRegular = lastZoom - View.getZoom();
             // Set the level of the model.
             level = newLevel;
 
@@ -257,6 +259,7 @@ var Model = (function() {
                     this.requestRoads(tv1, tv2, level);
                 }
             }
+            lastZoom = View.getZoom();
         },
         regularRequest: function(newLevel) {
             console.log("Making regular request");

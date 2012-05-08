@@ -118,6 +118,9 @@ var View = (function() {
 
             // Returns a vector containing the two vectors.
             return Vector(tv1, tv2);
+        },
+        getZoom: function() {
+            return zoom;
         }
     }
 
