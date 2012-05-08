@@ -131,7 +131,8 @@ public class RoadParser {
                     } else startLetter = nextLine[11];
                 } else if (!nextLine[13].equals("''")) startLetter = nextLine[13];
 
-                startLetter = startLetter.toLowerCase();
+				assert startLetter != null;
+				startLetter = startLetter.toLowerCase();
 
                 if(!nextLine[12].equals("''")) {
                     if(!nextLine[14].equals("''")) {
@@ -140,7 +141,8 @@ public class RoadParser {
                     } else endLetter = nextLine[12];
                 } else if(!nextLine[14].equals("''")) endLetter = nextLine[14];
 
-                endLetter = endLetter.toLowerCase();
+				assert endLetter != null;
+				endLetter = endLetter.toLowerCase();
             }
 
             int leftPostalCode = Integer.parseInt(nextLine[17]);
@@ -224,7 +226,7 @@ public class RoadParser {
                 int tID = Integer.parseInt(nextLine[3]);
 
                 // Make the graph directed
-                Iterator<Integer> it = model.getRoads()[fID].iterator();
+                Iterator<Integer> it = model.getRoads()[fID-1].iterator();
                 while(it.hasNext())
                 {
                     if(model.getRoad(it.next()).id == tID) {

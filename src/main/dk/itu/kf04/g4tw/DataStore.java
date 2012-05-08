@@ -68,8 +68,6 @@ public class DataStore {
             Log.severe("Error loading data, bad format: " + e.getMessage());
         }
 
-        DijkstraEdge.setModel(model);
-
         // Return the model
         return model;
     }

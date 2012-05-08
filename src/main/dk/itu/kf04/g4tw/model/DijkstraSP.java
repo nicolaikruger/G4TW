@@ -12,7 +12,7 @@ public class DijkstraSP {
 
     public static Road[] shortestPath(MapModel model, Road from, Road to)
     {
-        return onLiner(model, 812302, from, to);
+        return onLiner(model, 812301, from, to);
     }
 
     public static Road[] onLiner(MapModel model, int N, Road from, Road to)
@@ -50,7 +50,10 @@ public class DijkstraSP {
                 return null;
             }
 
-            if(U.getId() == to.getId()) break;
+            if(U.getId() == to.getId()) {
+				System.out.println("Found the road");
+				break;
+			}
 
             // Krüger: I made this into a foreach loop. IntelliJ insisted...! Sorry...
             for (Integer i : U) {

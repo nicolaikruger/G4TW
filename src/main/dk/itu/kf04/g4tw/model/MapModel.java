@@ -58,6 +58,9 @@ public class MapModel implements Externalizable {
         setTypeReference(PATH, 8, 28, 48, 10, 11);
         setTypeReference(SEAWAY, 80);
         setTypeReference(LOCATION, 99);
+
+		/*Point2D.Double p = new Point2D.Double(0.0, 0.0);
+		roads[0] = new Road(0, "filler", p, p, 80, 1, 1, 0, 0, "", "", 0, 0);*/
     }
 
     /**
@@ -174,28 +177,28 @@ public class MapModel implements Externalizable {
         // Read the roads
         int i = 0;
         for (; i < numberOfRoads - 1; i++) {
-            Road tmp = new Road(
-                    in.readInt(),    // id
-                    in.readUTF(),    // name
-                    new Point2D.Double(in.readDouble(), in.readDouble()), // from
-                    new Point2D.Double(in.readDouble(), in.readDouble()), // to
-                    in.readInt(),    // type
-                    in.readDouble(), // speed
-                    in.readDouble(), // length
-                    in.readInt(),    // start number
-                    in.readInt(),    // end number
-                    in.readUTF(),    // start letter
-                    in.readUTF(),    // end letter
-                    in.readInt(),    // left postal code
-                    in.readInt()     // right postal code
-            );
+			Road tmp = new Road(
+				in.readInt(),    // id
+				in.readUTF(),    // name
+				new Point2D.Double(in.readDouble(), in.readDouble()), // from
+				new Point2D.Double(in.readDouble(), in.readDouble()), // to
+				in.readInt(),    // type
+				in.readDouble(), // speed
+				in.readDouble(), // length
+				in.readInt(),    // start number
+				in.readInt(),    // end number
+				in.readUTF(),    // start letter
+				in.readUTF(),    // end letter
+				in.readInt(),    // left postal code
+				in.readInt()     // right postal code
+			);
 
             roads[i] = tmp;
 
             // If the road has a name
             if(tmp.name.length() > 2) {
                 // If the road-name is not yet in the namesRoads-hashmap, add it
-                if(!namedRoads.containsKey(tmp.name))
+                if(!namedRoads.containsKey(tmp.name.toLowerCase()))
                     namedRoads.put(tmp.name.toLowerCase(), new DynamicArray<Road>());
 
                 // Add the road to the corresponding collection
@@ -215,8 +218,8 @@ public class MapModel implements Externalizable {
             }
 
             for(int j : nodeRoadPair.get(tmp.to)) {
-                getRoad(i).addEdge(tmp);
-                tmp.addEdge(getRoad(i));
+                getRoad(j).addEdge(tmp);
+                tmp.addEdge(getRoad(j));
             }
             // --> End building UNDIRECTED graph! <--
 
@@ -266,7 +269,7 @@ public class MapModel implements Externalizable {
             scanner.nextLine();
             while(scanner.hasNextLine()) {
                 String[] nextLine = scanner.nextLine().split(",");
-                int fID = Integer.parseInt(nextLine[2]);
+                int fID = Integer.parseInt(nextLine[2])-1;
                 int tID = Integer.parseInt(nextLine[3]);
 
                 // Make the graph directed
