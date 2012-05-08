@@ -1,5 +1,6 @@
 package dk.itu.kf04.g4tw;
 
+import dk.itu.kf04.g4tw.model.DijkstraEdge;
 import dk.itu.kf04.g4tw.model.MapModel;
 import dk.itu.kf04.g4tw.util.RoadParser;
 
@@ -66,6 +67,8 @@ public class DataStore {
         } catch (IOException e) {
             Log.severe("Error loading data, bad format: " + e.getMessage());
         }
+
+        DijkstraEdge.setModel(model);
 
         // Return the model
         return model;

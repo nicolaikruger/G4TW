@@ -120,7 +120,7 @@ public class Road extends DijkstraEdge {
         lpc.appendChild(doc.createTextNode("" + leftPostalCode));
         road.appendChild(lpc);
 
-        Element rpc = doc.createElement("rpc");
+        Element rpc = doc.createElement("rpc"); // right postal code
         rpc.appendChild(doc.createTextNode("" + rightPostalCode));
         road.appendChild(rpc);
 

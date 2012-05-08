@@ -165,8 +165,6 @@ public class RequestParser {
         // Instantiate the parser
         XMLDocumentParser xmlParser = new XMLDocumentParser();
 
-        System.out.println(xmlParser.createDocument().getXmlEncoding());
-
         // Creates an XML document
         Document docXML = xmlParser.createDocument();
 
@@ -209,10 +207,11 @@ public class RequestParser {
             // road to the roadCollection element. This is creating the XML document.
             int prev = hits2.get(0).getId();
             roads.appendChild(hits2.get(0).toXML(docXML));
+            System.out.println("result[prev]: " + result[prev]);
             while(result[prev] != null) {
                 roads.appendChild(result[prev].toXML(docXML));
                 prev = result[prev].getId();
-            };
+            }
 
             System.out.println("Start ID: " + hits1.get(0).getId());
             System.out.println("End ID: " + hits2.get(0).getId());

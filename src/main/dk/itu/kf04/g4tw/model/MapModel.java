@@ -272,7 +272,7 @@ public class MapModel implements Externalizable {
                 // Make the graph directed
                 Iterator<Integer> it = roads[fID].iterator();
                 while(it.hasNext()) {
-                    if(roads[it.next()].id == tID) {
+                    if(it.next() == tID) {
                         it.remove();
                         break;
                     }
