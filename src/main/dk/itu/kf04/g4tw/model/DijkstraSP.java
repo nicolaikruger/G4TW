@@ -57,7 +57,7 @@ public class DijkstraSP {
 
             // Krüger: I made this into a foreach loop. IntelliJ insisted...! Sorry...
             for (Integer i : U) {
-                Road V = model.getRoad(i-1);
+                Road V = model.getRoad(i);
                 if(!visited[V.getId()])
                 {
                     visited[V.getId()] = true;

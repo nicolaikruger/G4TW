@@ -23,7 +23,7 @@ public class MapModel implements Externalizable {
     public static final int SEAWAY         = 64;
     public static final int LOCATION       = 128;
     
-    protected static final int numberOfRoads = 812302; // Number of roads + 1. ID = index in arrays. (ID starts at 1)
+    protected static final int numberOfRoads = 812301; // Number of roads + 1. ID = index in arrays. (ID starts at 1)
     protected static final int numberOfTrees = 8;
 
     /**
@@ -139,7 +139,7 @@ public class MapModel implements Externalizable {
     public void writeExternal(ObjectOutput out) throws IOException {
         // Write the roads
         int i = 0;
-        for (; i < numberOfRoads - 1; i++) {
+        for (; i < numberOfRoads; i++) {
             Road r = roads[i];
             out.writeInt(r.id);             // id
             out.writeUTF(r.name);           // name
@@ -176,7 +176,7 @@ public class MapModel implements Externalizable {
 
         // Read the roads
         int i = 0;
-        for (; i < numberOfRoads - 1; i++) {
+        for (; i < numberOfRoads; i++) {
 			Road tmp = new Road(
 				in.readInt(),    // id
 				in.readUTF(),    // name
@@ -227,6 +227,8 @@ public class MapModel implements Externalizable {
             nodeRoadPair.get(tmp.from).add(tmp.id);
             nodeRoadPair.get(tmp.to).add(tmp.id);
         }
+
+		System.out.println(roads[50]);
 
         // Directs the graph
         trim();
