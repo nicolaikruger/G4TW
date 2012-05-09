@@ -9,6 +9,7 @@ body, html {
 }
 
 #loading {
+    z-index: 2;
     display: none;
     position: fixed;
     top: 50%;
@@ -17,8 +18,44 @@ body, html {
     margin-left: -16px;
 }
 
-#menu {
+#name {
     z-index: 1;
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+#nameContent {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    width: 1000px;
+    height: 700px;
+    overflow: auto;
+    background-color: #000;
+}
+
+#nameContent td p {
+    margin: 0;
+    color: white;
+}
+
+#nameContent h4 {
+    color: #FFF;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+#menu {
+    z-index: 0;
     position: fixed;
     height: 100%;
     float: left;
@@ -28,18 +65,6 @@ body, html {
     padding: 4px;
     width: 370px;
     height: 100% ;
-}
-
-#map {
-    z-index: -1;
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    overflow: hidden;
-}
-
-.clear {
-    clear: both;
 }
 
 #logo{

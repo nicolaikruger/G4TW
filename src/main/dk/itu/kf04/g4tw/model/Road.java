@@ -30,7 +30,10 @@ public class Road extends DijkstraEdge {
 	public Road(int id, String name, Point2D.Double f, Point2D.Double t, int type, double speed, double length,
                 int startNumber, int endNumber, String startLetter, String endLetter, int leftPostalCode, int rightPostalCode ) {
         this.id   = id;
-		this.name = name;
+
+		if(name != null) this.name = name;
+		else this.name = "";
+
 		this.type = type;
 		this.from = f;
 		this.to = t;
@@ -100,7 +103,15 @@ public class Road extends DijkstraEdge {
     public Element toErrorXML(Document doc) {
         Element road = doc.createElement("r");
 
-        Element startNum = doc.createElement("sn");
+		Element ID = doc.createElement("id");
+		ID.appendChild(doc.createTextNode("" + id));
+		road.appendChild(ID);
+
+		Element name = doc.createElement("n");
+		name.appendChild(doc.createTextNode("" + this.name));
+		road.appendChild(name);
+
+		Element startNum = doc.createElement("sn");
         startNum.appendChild(doc.createTextNode("" + startNumber));
         road.appendChild(startNum);
 
@@ -109,11 +120,11 @@ public class Road extends DijkstraEdge {
         road.appendChild(endNum);
 
         Element sLetter = doc.createElement("sl");
-        sLetter.appendChild(doc.createTextNode(startLetter));
+        sLetter.appendChild(doc.createTextNode(" " + startLetter));
         road.appendChild(sLetter);
 
         Element eLetter = doc.createElement("el");
-        eLetter.appendChild(doc.createTextNode(endLetter));
+        eLetter.appendChild(doc.createTextNode(" " + endLetter));
         road.appendChild(eLetter);
 
         Element lpc = doc.createElement("lpc"); //Left postal code

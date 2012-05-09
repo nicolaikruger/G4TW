@@ -221,32 +221,22 @@ public class RequestParser {
             roads.setAttribute("type", "2");
             docXML.appendChild(roads);
 
-            if(hits1.length() > 1) {
+            if(hits1.length() > 1 || hits2.length() > 1) {
                 Element collection = docXML.createElement("collection");
                 roads.appendChild(collection);
-                Element element = docXML.createElement("address");
-                element.appendChild(docXML.createTextNode(adr1));
-                collection.appendChild(element);
 
                 for (int i = 0; i < hits1.length(); i++)
                 {
                     collection.appendChild(hits1.get(i).toErrorXML(docXML));
                 }
-                Log.info("Found more than one road. \"" + adr1 + "\" in the system");
-            }
 
-            if(hits2.length() > 1) {
-                Element collection = docXML.createElement("collection");
-                roads.appendChild(collection);
-                Element element = docXML.createElement("address");
-                element.appendChild(docXML.createTextNode(adr2));
-                collection.appendChild(element);
+				Element collection2 = docXML.createElement("collection");
+				roads.appendChild(collection2);
 
-                for (int i = 0; i < hits2.length(); i++)
-                {
-                    collection.appendChild(hits2.get(i).toErrorXML(docXML));
-                }
-                Log.info("Found more than one road. \"" + adr2 + "\" in the system");
+				for (int i = 0; i < hits2.length(); i++)
+				{
+					collection2.appendChild(hits2.get(i).toErrorXML(docXML));
+				}
             }
 
         }
