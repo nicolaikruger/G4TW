@@ -129,7 +129,7 @@ public class RequestParser {
         // The two addresses from the client
         String adr1 = inputs[0].substring(5);
         String adr2 = inputs[1].substring(5);
-        int id1 = 0, id2 = 0;
+        int id1, id2;
 
         // Array over all the roads that match the address.
         DynamicArray<Road> hits1 = AddressParser.getRoad(adr1);
@@ -139,25 +139,26 @@ public class RequestParser {
             id1 = Integer.parseInt(inputs[2].substring(4));
             id2 = Integer.parseInt(inputs[3].substring(4));
 
+			// If the fromRoad has been specified by an ID, use that road
             if(hits1.length() > 1) {
-                outerloop:
-                for(int i = 0; i < hits1.length(); i++)
-                    if(hits1.get(i).getId() == id1) {
-                        Road hit = hits1.get(i);
-                        hits1 = new DynamicArray<Road>();
-                        hits1.add(hit);
-                        break outerloop;
-                    }
+				for (int i = 0; i < hits1.length(); i++)
+					if (hits1.get(i).getId() == id1) {
+						Road hit = hits1.get(i);
+						hits1 = new DynamicArray<Road>();
+						hits1.add(hit);
+						break;
+					}
             }
+
+			// If the toRoad has been specified by an ID, use that road
             if(hits2.length() > 1) {
-                outerloop:
-                for(int i = 0; i < hits2.length(); i++)
-                    if(hits2.get(i).getId() == id2) {
-                        Road hit = hits2.get(i);
-                        hits2 = new DynamicArray<Road>();
-                        hits2.add(hit);
-                        break outerloop;
-                    }
+				for (int i = 0; i < hits2.length(); i++)
+					if (hits2.get(i).getId() == id2) {
+						Road hit = hits2.get(i);
+						hits2 = new DynamicArray<Road>();
+						hits2.add(hit);
+						break;
+					}
             }
         }
 
@@ -169,10 +170,10 @@ public class RequestParser {
         Document docXML = xmlParser.createDocument();
 
         // Creates a roadCollection element inside the root.
-        Element roads = null;
+        Element roads;
 
-        if(hits1.length() == 0 || hits2.length() == 0) { // One or both of the addresses gave zero hits. User have to give a new address.
-            // Oh crap, couldn't find at least one of the addresses!
+		// One or both of the addresses gave zero hits. User have to give a new address.
+        if(hits1.length() == 0 || hits2.length() == 0) {
             roads = docXML.createElement("error");
             roads.setAttribute("type", "1");
             docXML.appendChild(roads);
@@ -191,9 +192,8 @@ public class RequestParser {
                 Log.info("Could not find \"" + adr2 + "\" in the system");
             }
 
-        } else if(hits1.length() == 1 && hits2.length() == 1) { // The addresses both gave only one hit. We can find a path.
-            // You've found a path. Now go make some cool XML stuff!!!
-            // TODO: Find a way to see if there are any connection between the two roads. Maybe there are no reason for doing that?
+		// The addresses both gave only one hit. We can find a path.
+        } else if(hits1.length() == 1 && hits2.length() == 1) {
             Log.info("Trying to find path");
             Road[] result = DijkstraSP.shortestPath(model, hits1.get(0), hits2.get(0));
 
@@ -215,30 +215,27 @@ public class RequestParser {
 
             System.out.println("Start ID: " + hits1.get(0).getId());
             System.out.println("End ID: " + hits2.get(0).getId());
-        } else { // One or both of the addresses gave more than one hit. Make the user decide.
-            // Alright, we have a problem. Put we can fix this. Right?
+		// One or both of the addresses gave more than one hit. Make the user decide.
+        } else {
             roads = docXML.createElement("error");
             roads.setAttribute("type", "2");
             docXML.appendChild(roads);
 
-            if(hits1.length() > 1 || hits2.length() > 1) {
-                Element collection = docXML.createElement("collection");
-                roads.appendChild(collection);
+			Element collection = docXML.createElement("collection");
+			roads.appendChild(collection);
 
-                for (int i = 0; i < hits1.length(); i++)
-                {
-                    collection.appendChild(hits1.get(i).toErrorXML(docXML));
-                }
+			for (int i = 0; i < hits1.length(); i++)
+			{
+				collection.appendChild(hits1.get(i).toErrorXML(docXML));
+			}
 
-				Element collection2 = docXML.createElement("collection");
-				roads.appendChild(collection2);
+			Element collection2 = docXML.createElement("collection");
+			roads.appendChild(collection2);
 
-				for (int i = 0; i < hits2.length(); i++)
-				{
-					collection2.appendChild(hits2.get(i).toErrorXML(docXML));
-				}
-            }
-
+			for (int i = 0; i < hits2.length(); i++)
+			{
+				collection2.appendChild(hits2.get(i).toErrorXML(docXML));
+			}
         }
 
         // Create the source
