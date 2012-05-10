@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 public class Main {
 
     // General TODOs for the project
-    // TODO: Comment dijkstra!
     // TODO: Comment Road - Especially all the fields
     // TODO: Comment RoadRectangle
     // TODO: Clean up in the code
