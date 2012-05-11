@@ -19,7 +19,10 @@ public class Main {
     // TODO: Clean up in the code
     // TODO: Solve other TODOs
     // TODO: Make som white- and blackbox testing
-    // TODO: Go make me a sandwich
+    // TODO: Go make me a sandwich (still hungry)
+    // TODO: Fix GC overhead error
+    // TODO: Fix HTML layout
+    // TODO: Fix JavaScript load time
 
     /**
      * The logging-util for the Main class.

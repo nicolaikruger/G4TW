@@ -88,7 +88,7 @@ public class DynamicArray<Item> implements Iterable<Item> {
 	{
 		if(!isEmpty()) {
             // Moves all elements after the index one spot to the left;
-			System.arraycopy(a, index + 2, a, index + 1, N - 1 - (index + 1));
+			System.arraycopy(a, index + 1, a, index, N - index - 1);
             a[--N] = null;
 
             // Resize to half if size decreases to a fourth
