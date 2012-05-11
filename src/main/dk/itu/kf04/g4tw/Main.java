@@ -15,6 +15,7 @@ public class Main {
     // TODO (?): Include turn.txt in binary compression
     // TODO: Comment Road - Especially all the fields
     // TODO: Comment RoadRectangle
+    // TODO: Comment Dijkstras methods
     // TODO: Clean up in the code
     // TODO: Solve other TODOs
     // TODO: Make som white- and blackbox testing
