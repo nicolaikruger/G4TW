@@ -1,6 +1,5 @@
 package dk.itu.kf04.g4tw.model;
 
-import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -8,19 +7,20 @@ import java.util.PriorityQueue;
 /**
  *
  */
-public class DijkstraSP {
+public abstract class DijkstraSP<T extends DijkstraEdge> {
 
-    public static Road[] shortestPath(MapModel model, Road from, Road to)
-    {
-        return onLiner(model, 812301, from, to);
+    public abstract T getEdge(int i);
+    
+    public T[] shortestPath(T from, T to) {
+        return onLiner(812301, from, to);
     }
 
-    public static Road[] onLiner(MapModel model, int N, Road from, Road to)
+    protected T[] onLiner(int N, T from, T to)
     {
-        final double[] dist = new double[N];	// Holds the distance from a node back to the starting node
-        boolean[] visited = new boolean[N];		// If a node have been visited, the visited[node.id] will be set to true
-        Road[] previous = new Road[N];			// The node that led to the current node
-        											// --> If a lead to b, then previous[b.id] = a
+        final double[] dist = new double[N]; // Holds the distance from a node back to the starting node
+        boolean[] visited = new boolean[N];	 // If a node have been visited, the visited[node.id] will be set to true
+        T[] previous = (T[]) new Object[N];  // The node that led to the current node
+                                             // --> If a lead to b, then previous[b.id] = a
 
 		// Fills the arrays
         Arrays.fill(dist, Double.POSITIVE_INFINITY);
@@ -30,8 +30,8 @@ public class DijkstraSP {
         dist[from.getId()] = 0;
 
 		// Create a minimum priority queue of nodes, with custom comparator on the distance for the nodes
-        PriorityQueue<Road> Q = new PriorityQueue<Road>(N, new Comparator<Road>() {
-            public int compare(Road o1, Road o2) {
+        PriorityQueue<T> Q = new PriorityQueue<T>(N, new Comparator<T>() {
+            public int compare(T o1, T o2) {
                 double dist1 = dist[o1.getId()];
                 double dist2 = dist[o2.getId()];
 
@@ -48,14 +48,13 @@ public class DijkstraSP {
         while(!Q.isEmpty())
         {
 			// Get the first road in the queue
-            Road U = Q.poll();
+            T U = Q.poll();
 
 			// Mark the road as visited
             visited[U.getId()] = true;
 
 			// If the distance from U to the starting node is infinity, there ain't no path.
-            if(dist[U.getId()] == Double.POSITIVE_INFINITY)
-            {
+            if(dist[U.getId()] == Double.POSITIVE_INFINITY) {
                 System.out.println("THERE IS NO PATH!");
                 return null;
             }
@@ -69,7 +68,7 @@ public class DijkstraSP {
 
             // Runs trough all the nodes that U leads to. One at a time.
             for (Integer i : U) {
-                Road V = model.getRoad(i);
+                T V = getEdge(i);
 
 				// If the rode, V, has not yet been visited, go on.
                 if(!visited[V.getId()])
@@ -100,33 +99,5 @@ public class DijkstraSP {
         }
         return previous;
     }
-
-    public static void main(String[] args)
-    {
-		Point2D.Double p = new Point2D.Double(2.0, 2.0);
-
-		MapModel model = new MapModel();
-
-		Road AAA = new Road(0, "AA",p,p,2,2.0,5, 1, 2, "a", "b", 1, 1); model.addRoad(AAA);
-		Road AB = new Road(1, "AB",p,p,2,2.0,1, 1, 2, "a", "b", 1, 1); model.addRoad(AB);
-		Road AAC = new Road(2, "AAC",p,p,2,2.0,2, 1, 2, "a", "b", 1, 1); model.addRoad(AAC);
-		Road BD = new Road(3, "BD",p,p,2,2.0,1, 1, 2, "a", "b", 1, 1); model.addRoad(BD);
-		Road CE = new Road(4, "CE",p,p,2,2.0,2, 1, 2, "a", "b", 1, 1); model.addRoad(CE);
-		Road DF = new Road(5, "DF",p,p,2,2.0,1, 1, 2, "a", "b", 1, 1); model.addRoad(DF);
-		Road EG = new Road(6, "EG",p,p,2,2.0,2, 1, 2, "a", "b", 1, 1); model.addRoad(EG);
-		Road FG = new Road(7, "FG",p,p,2,2.0,5, 1, 2, "a", "b", 1, 1); model.addRoad(FG);
-
-		AAA.addEdge(AB); AAA.addEdge(AAC);
-		AB.addEdge(BD);
-		BD.addEdge(DF);
-		DF.addEdge(FG);
-		AAC.addEdge(CE);
-		CE.addEdge(EG);
-		EG.addEdge(FG);
-
-
-		DijkstraEdge[] arr = DijkstraSP.onLiner(model, 8, AAA, FG);
-		int prev = FG.getId();
-		System.out.println(arr[prev].getId());
-	}
+    
 }

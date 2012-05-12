@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * A Model of the map-data. The model is currently split into 8 different {@link Tree2D}s to simplify
  * the search of particular road-types.
  */
-public class MapModel implements Externalizable {
+public class MapModel extends DijkstraSP<Road> implements Externalizable {
 
     public static final int HIGHWAY        = 1;
     public static final int EXPRESSWAY     = 2;
@@ -77,6 +77,13 @@ public class MapModel implements Externalizable {
         // Insert
         roadTrees.get(road.type).addNode(road);
 	}
+
+    /**
+     * Retrieves a road from a given index
+     * @param index  The unique index for the road
+     * @return The road with the given index or null if no road could be found
+     */
+    public Road getEdge(int index) { return roads[index]; }
 
     /**
      * Retrieves a road from a given index
