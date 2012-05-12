@@ -79,7 +79,8 @@ public class RoadParser {
         scanner.nextLine();
         while (scanner.hasNextLine()) {
             // Split the line on everything except blocks with ['...,...']
-            String[] nextLine = scanner.nextLine().split("((?<=\\d)|'),('|(?=\\d))");//split(",(?=([^']*'[^']*')*[^']*$)");
+            //String[] nextLine = scanner.nextLine().split("((?<=\\d)|'),('|(?=\\d))");//split(",(?=([^']*'[^']*')*[^']*$)");
+            String[] nextLine = scanner.nextLine().split(",(?=([^']*'[^']*')*[^']*$)");
             String name = nextLine[6];
             // removes ' at the beginning and the end of the name
             name = name.replace("'", "");
@@ -131,8 +132,9 @@ public class RoadParser {
                     } else startLetter = nextLine[11];
                 } else if (!nextLine[13].equals("''")) startLetter = nextLine[13];
 
-				assert startLetter != null;
-				startLetter = startLetter.toLowerCase();
+				if (startLetter != null) {
+                    startLetter = startLetter.toLowerCase();
+                }
 
                 if(!nextLine[12].equals("''")) {
                     if(!nextLine[14].equals("''")) {
@@ -141,8 +143,9 @@ public class RoadParser {
                     } else endLetter = nextLine[12];
                 } else if(!nextLine[14].equals("''")) endLetter = nextLine[14];
 
-				assert endLetter != null;
-				endLetter = endLetter.toLowerCase();
+				if (endLetter != null) {
+				    endLetter = endLetter.toLowerCase();
+                }
             }
 
             int leftPostalCode = Integer.parseInt(nextLine[17]);
