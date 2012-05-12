@@ -68,7 +68,7 @@ public class RequestParser {
         long startTime = System.currentTimeMillis();
 
         // Instantiate the parse
-        XMLDocumentParser xmlParser = new XMLDocumentParser();
+        XMLBuilder xmlParser = new XMLBuilder();
 
         // Search the model and concatenate the results with the previous
         DynamicArray<Road> search = model.search(x1, y1, x2, y2, filter);
@@ -163,11 +163,11 @@ public class RequestParser {
         }
 
 
-        // Instantiate the parser
-        XMLDocumentParser xmlParser = new XMLDocumentParser();
+        // Instantiate the builder
+        XMLBuilder builder = new XMLBuilder();
 
         // Creates an XML document
-        Document docXML = xmlParser.createDocument();
+        Document docXML = builder.createDocument();
 
         // Creates a roadCollection element inside the root.
         Element roads;

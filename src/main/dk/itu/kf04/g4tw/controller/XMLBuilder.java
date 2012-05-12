@@ -12,15 +12,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Alexander
- * Date: 18-04-12
- * Time: 11:52
- *
- *
+ * A class used to build XML using the javax.xml library.
  */
-public class XMLDocumentParser {
-	/**
+public class XMLBuilder {
+
+    /**
 	 * DocumentBuilder used to create fresh documents for further use.
 	 */
 	DocumentBuilderFactory dbFac;
@@ -33,9 +29,9 @@ public class XMLDocumentParser {
 	Transformer transformer;
 
 	/**
-	 * Sets up the XMLDocumentParser for further use.
+	 * Sets up the XMLBuilder for further use.
 	 */
-	public XMLDocumentParser() {
+	public XMLBuilder() {
 		try {
 			// Creating a document builder
 			dbFac = DocumentBuilderFactory.newInstance();
