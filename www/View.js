@@ -72,12 +72,6 @@ var View = (function() {
             c.restore();
 
         },
-        getPan: function() {
-            return pan;
-        },
-        getZoom: function() {
-            return zoom;
-        },
         pan: function(vector) {
             pan = pan.add(vector);
             this.draw();
@@ -88,11 +82,11 @@ var View = (function() {
             View.draw();
         },
         zoom: function(delta, point) {
-            var point = point || Vector(canvas.width / 2, canvas.height / 2);
+            var zoomPoint = point || Vector(canvas.width / 2, canvas.height / 2);
             if ((zoom > 0.0001 || delta > 0) && (zoom < 3 || delta < 0)) {
                 var f = Math.pow(2, delta * 0.5);
                 zoom *= f;
-                pan = pan.subtract(point).multiply(f).add(point);
+                pan = pan.subtract(zoomPoint).multiply(f).add(zoomPoint);
                 View.draw();
             }
         },
@@ -122,7 +116,7 @@ var View = (function() {
         getZoom: function() {
             return zoom;
         }
-    }
+    };
 
     function drawFromArray(roads, color, width)
     {
@@ -152,19 +146,20 @@ var View = (function() {
 
     function findCanvasPos(obj)  {
         // Creates 2 new variables.
-        var curleft = curtop = 0;
+        var currentTop;
+        var currentLeft = currentTop = 0;
         // Checks if the current object has a parent.
         if (obj.offsetParent) {
             // Will continue to increment the offset with the offset
             // of the parent objects, until the offset has been summed up.
             // Then the loop breaks.
             do {
-                curleft += obj.offsetLeft;
-                curtop += obj.offsetTop;
+                currentLeft += obj.offsetLeft;
+                currentTop += obj.offsetTop;
             } while (obj = obj.offsetParent)
         }
 
         // Returns a vector with the coordinates of the canvas on the screen.
-        return Vector(curleft, curtop);
+        return Vector(currentLeft, currentTop);
     }
 }());

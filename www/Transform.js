@@ -34,11 +34,11 @@ Transform.prototype.multiply = function(matrix) {
 
 Transform.prototype.getScale = function() {
   return Math.sqrt((this.m[0] * this.m[0]) + (this.m[1] * this.m[1]));
-}
+};
 
 Transform.prototype.getTranslation = function() {
   return Vector(this.m[4], this.m[5]);
-}
+};
 
 Transform.prototype.invert = function() {
   var d = 1 / (this.m[0] * this.m[3] - this.m[1] * this.m[2]);
@@ -60,7 +60,7 @@ Transform.prototype.invert = function() {
 
 Transform.prototype.reset = function() {
   this.m = [1,0,0,1,0,0];
-}
+};
 
 Transform.prototype.rotate = function(rad) {
   var c = Math.cos(rad);

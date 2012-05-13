@@ -26,4 +26,4 @@ var Vector = function(x, y) {
     }
   }
 
-}
+};

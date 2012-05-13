@@ -21,11 +21,10 @@ var Model = (function() {
         req.send(null);
     }
 
-    function findViewDifference(startpoint, endpoint) {
-        var pandifference = new Vector(endpoint.x.subtract(startpoint.x), endpoint.y.subtract(startpoint.y));
-        pandifference.reverse();
-        console.log(""+pandifference)
-        return pandifference;
+    function findViewDifference(startPoint, endPoint) {
+        var panDifference = new Vector(endPoint.x.subtract(startPoint.x), endPoint.y.subtract(startPoint.y));
+        panDifference.reverse();
+        return panDifference;
     }
 
     // Add a number of roads from the given XML-string
@@ -268,12 +267,12 @@ var Model = (function() {
             this.clearRoads();
             // Creates a vector from the findPos function.
             // The vector will contain vectors for x and y values.
-            tv = View.findPos(canvas);
+            var tv = View.findPos(canvas);
 
             // Creates 2 new vectors from the previous vector.
             // This is the start and end coordinates for the window.
-            tv1 = tv.x;
-            tv2 = tv.y;
+            var tv1 = tv.x;
+            var tv2 = tv.y;
 
             this.requestRoads(tv1, tv2, level);
         },
@@ -288,6 +287,7 @@ var Model = (function() {
                 // Defines difference as infinite, until futher notice.
                 var difference = Infinity;
                 for (var i = 0; i<this.length; i++) {
+                    var curDiff;
                     // Depending on the axis checked, finds the actual difference
                     // between the current road coordinate and the edge of the screen.
                     if (axis)  {curDiff = Math.abs(this[i].from.x - find);}
@@ -300,7 +300,7 @@ var Model = (function() {
                     }
                 }
                 return target;
-            }
+            };
 
             // Sorts the current array by their from-x coordinates.
             array.sort(function(a,b) {return a.from.x - b.from.x});

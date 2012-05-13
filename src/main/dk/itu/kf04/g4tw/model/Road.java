@@ -8,12 +8,18 @@ import java.awt.geom.Point2D;
 
 public class Road extends DijkstraEdge {
 
+	// The name of the road
 	public final String name;
+	// The ID of the road
 	public final int id;
+	// The type of the road
 	public final int type;
+	// The from and to coordinates
 	public final Point2D.Double from;
 	public final Point2D.Double to;
+	// The speed limitation
 	public final double speed;
+	// The length of the road
 	public final double length;
     public final int startNumber;
     public final int endNumber;

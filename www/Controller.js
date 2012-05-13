@@ -22,7 +22,7 @@ var Controller = (function() {
           + document.documentElement.scrollTop;
         }
 
-        // posx and posy contain the mouse position relative to the document
+        // posX and posY contain the mouse position relative to the document
         // Do something with this information
         return Vector(x, y).round(3);
     };
@@ -72,7 +72,7 @@ var Controller = (function() {
         if (zoom > 0.058) filter += Model.LOCATION;
 
         Model.setFilterLevel(filter, viewDefinitions);
-    }
+    };
 
     // Return empty object
     return {};
