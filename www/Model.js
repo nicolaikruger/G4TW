@@ -75,9 +75,7 @@ var Model = (function() {
                 // Add the road to the array
                 var obj = {from:Vector(x1, y1), to:Vector(x2, y2)};
                 // Hashing the id:
-                var hash = id % 200000;
-                array[hash] = obj;
-//                array.push(obj);
+                array.push(obj);
 
                 road = roadIterator.iterateNext();
             }
@@ -128,22 +126,22 @@ var Model = (function() {
          * is split up for each
          */
         requestRoads: function(v1, v2, filter) {
-          /**
-           * Retrieves the right array from the given road type
-           * @param level  The type of the array to retrieve
-           */
-          function getArrayFromFilter(type) {
-            switch (type) {
-                case 1:  case 2:
-                    return redRoads; break;
-                case 4:  case 8:
-                    return blueRoads; break;
-                case 16: case 32:
-                    return greenRoads; break;
-                case 64: case 128:
-                    return blackRoads; break;
+            /**
+             * Retrieves the right array from the given road type
+             * @param level  The type of the array to retrieve
+             */
+            function getArrayFromFilter(type) {
+                switch (type) {
+                    case 1:  case 2:
+                        return redRoads; break;
+                    case 4:  case 8:
+                        return blueRoads; break;
+                    case 16: case 32:
+                        return greenRoads; break;
+                    case 64: case 128:
+                        return blackRoads; break;
+                }
             }
-          }
 
           // Shows the loading.gif
           var loader = document.getElementById("loading");
@@ -177,7 +175,9 @@ var Model = (function() {
                   xml = parser.parseFromString(String(req.response), "text/xml");
 
                   // Add roads to the model
-                  Model.addRoads(xml, getArrayFromFilter(n));
+                  var workArray = getArrayFromFilter(n);
+                  Model.addRoads(xml, workArray);
+                  Model.tidyModel(workArray);
 
                   // Initiate the view
                   View.draw();
@@ -276,6 +276,45 @@ var Model = (function() {
             tv2 = tv.y;
 
             this.requestRoads(tv1, tv2, level);
+        },
+        tidyModel: function(array) {
+            // Gets the current View coordinates.
+            var curView = View.findPos(canvas);
+
+            // Defines a linear search function for arrays
+            Array.prototype.search = function(find, axis) {
+                // Defines a target as a number.
+                var target = -1;
+                // Defines difference as infinite, until futher notice.
+                var difference = Infinity;
+                for (var i = 0; i<this.length; i++) {
+                    // Depending on the axis checked, finds the actual difference
+                    // between the current road coordinate and the edge of the screen.
+                    if (axis)  {curDiff = Math.abs(this[i].from.x - find);}
+                    else       {curDiff = Math.abs(this[i].from.y - find);}
+                    if (curDiff < difference) {
+                        // Sets the final difference to the latest found difference
+                        difference = curDiff;
+                        // Sets the target to the index of the road found.
+                        target = i;
+                    }
+                }
+                return target;
+            }
+
+            // Sorts the current array by their from-x coordinates.
+            array.sort(function(a,b) {return a.from.x - b.from.x});
+            // Searches for the road that is closest to the edge of the current view.
+            var edgeLowX = array.search(curView.x.x, true), edgeHighX = array.search(curView.y.x, true);
+            // Deletes all roads outside the current view (Which all have x-coordinates that pass the screen edge).
+            array.splice(0,edgeLowX-1);
+            array.splice(edgeHighX+1,array.length-(edgeHighX+1));
+
+            // Same for the y-axis
+            array.sort(function(a,b) {return a.from.y - b.from.y});
+            var edgeHighY = array.search(curView.x.y, false), edgeLowY = array.search(curView.y.y, false);
+            array.splice(edgeHighY+1,array.length-(edgeHighY+1));
+            array.splice(0,edgeLowY-1);
         }
     }
 }());
