@@ -61,8 +61,6 @@ public class DataStore {
             Log.severe("Error loading data. Could not locate file: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             Log.severe("Error loading data. Data was malformed: " + e.getMessage());
-        } catch (ClassCastException e) {
-            Log.severe("Error loading data. Could not cast to HashMap: " + e.getMessage());
         } catch (IOException e) {
             Log.severe("Error loading data, bad format: " + e.getMessage());
         }

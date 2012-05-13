@@ -79,7 +79,8 @@ public class RoadParser {
         scanner.nextLine();
         while (scanner.hasNextLine()) {
             // Split the line on everything except blocks with ['...,...']
-            String[] nextLine = scanner.nextLine().split("((?<=\\d)|'),('|(?=\\d))");//split(",(?=([^']*'[^']*')*[^']*$)");
+            //String[] nextLine = scanner.nextLine().split("((?<=\\d)|'),('|(?=\\d))");//split(",(?=([^']*'[^']*')*[^']*$)");
+            String[] nextLine = scanner.nextLine().split(",(?=([^']*'[^']*')*[^']*$)");
             String name = nextLine[6];
             // removes ' at the beginning and the end of the name
             name = name.replace("'", "");
@@ -131,7 +132,9 @@ public class RoadParser {
                     } else startLetter = nextLine[11];
                 } else if (!nextLine[13].equals("''")) startLetter = nextLine[13];
 
-                startLetter = startLetter.toLowerCase();
+				if (startLetter != null) {
+                    startLetter = startLetter.toLowerCase();
+                }
 
                 if(!nextLine[12].equals("''")) {
                     if(!nextLine[14].equals("''")) {
@@ -140,13 +143,18 @@ public class RoadParser {
                     } else endLetter = nextLine[12];
                 } else if(!nextLine[14].equals("''")) endLetter = nextLine[14];
 
-                endLetter = endLetter.toLowerCase();
+				if (endLetter != null) {
+				    endLetter = endLetter.toLowerCase();
+                }
             }
+
+            int leftPostalCode = Integer.parseInt(nextLine[17]);
+            int rightPostalCode = Integer.parseInt(nextLine[18]);
 
             type = model.getRoadTypeFromId(type);
 
             // Create the road and setup connections/edges
-            Road tmp = new Road(id++, name, pointA, pointB, type, speed, length, startNumber, endNumber, startLetter, endLetter);
+            Road tmp = new Road(id++, name, pointA, pointB, type, speed, length, startNumber, endNumber, startLetter, endLetter, leftPostalCode, rightPostalCode);
 
             // Add the road to the edges collection
             model.addRoad(tmp);
@@ -221,7 +229,7 @@ public class RoadParser {
                 int tID = Integer.parseInt(nextLine[3]);
 
                 // Make the graph directed
-                Iterator<Integer> it = model.getRoads()[fID].iterator();
+                Iterator<Integer> it = model.getRoads()[fID-1].iterator();
                 while(it.hasNext())
                 {
                     if(model.getRoad(it.next()).id == tID) {

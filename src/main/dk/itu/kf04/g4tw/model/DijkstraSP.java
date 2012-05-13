@@ -1,6 +1,5 @@
 package dk.itu.kf04.g4tw.model;
 
-import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -8,26 +7,31 @@ import java.util.PriorityQueue;
 /**
  *
  */
-public class DijkstraSP {
+public abstract class DijkstraSP<T extends DijkstraEdge> {
 
-    public static Road[] shortestPath(MapModel model, Road from, Road to)
-    {
-        return onLiner(model, 812302, from, to);
+    public abstract T getEdge(int i);
+    
+    public T[] shortestPath(T from, T to) {
+        return onLiner(812301, from, to);
     }
 
-    public static Road[] onLiner(MapModel model, int N, Road from, Road to)
+    protected T[] onLiner(int N, T from, T to)
     {
-        final double[] dist = new double[N];
-        boolean[] visited = new boolean[N];
-        Road[] previous = new Road[N];
+        final double[] dist = new double[N]; // Holds the distance from a node back to the starting node
+        boolean[] visited = new boolean[N];	 // If a node have been visited, the visited[node.id] will be set to true
+        T[] previous = (T[]) new Object[N];  // The node that led to the current node
+                                             // --> If a lead to b, then previous[b.id] = a
 
+		// Fills the arrays
         Arrays.fill(dist, Double.POSITIVE_INFINITY);
         Arrays.fill(visited, false);
 
+		// Mark the starting node
         dist[from.getId()] = 0;
 
-        PriorityQueue<Road> Q = new PriorityQueue<Road>(N, new Comparator<Road>() {
-            public int compare(Road o1, Road o2) {
+		// Create a minimum priority queue of nodes, with custom comparator on the distance for the nodes
+        PriorityQueue<T> Q = new PriorityQueue<T>(N, new Comparator<T>() {
+            public int compare(T o1, T o2) {
                 double dist1 = dist[o1.getId()];
                 double dist2 = dist[o2.getId()];
 
@@ -37,33 +41,57 @@ public class DijkstraSP {
             }
         });
 
+		// Add the starting node to the queue
         Q.add(from);
 
+		// Start the Dijstra search
         while(!Q.isEmpty())
         {
-            Road U = Q.poll();
+			// Get the first road in the queue
+            T U = Q.poll();
+
+			// Mark the road as visited
             visited[U.getId()] = true;
 
-            if(dist[U.getId()] == Double.POSITIVE_INFINITY)
-            {
+			// If the distance from U to the starting node is infinity, there ain't no path.
+            if(dist[U.getId()] == Double.POSITIVE_INFINITY) {
                 System.out.println("THERE IS NO PATH!");
                 return null;
             }
 
-            if(U.getId() == to.getId()) break;
+			// If the ID of node U is the same as the ID of the end node, the path has been found.
+			// no need to continue the search.
+            if(U.getId() == to.getId()) {
+				System.out.println("Found the road");
+				break;
+			}
 
-            // Krüger: I made this into a foreach loop. IntelliJ insisted...! Sorry...
+            // Runs trough all the nodes that U leads to. One at a time.
             for (Integer i : U) {
-                Road V = model.getRoad(i);
+                T V = getEdge(i);
+
+				// If the rode, V, has not yet been visited, go on.
                 if(!visited[V.getId()])
                 {
+					// Mark V as visited
                     visited[V.getId()] = true;
+
+					// Add V to the queue
                     Q.add(V);
+
+					// Calculate the distance from V to the start node, via U
                     double alt = dist[U.getId()] + V.getLength();
+
+					// Gets the current distance from V to the star node
                     double vDist = dist[V.getId()];
+
+					// If the calculated distance, alt, is smaller than the current distance, vDist, go on.
                     if(alt < vDist)
                     {
+						// Set the distance from V to the start node to be the calculated distance, alt
                         dist[V.getId()] = alt;
+
+						// Set the node that leads to V to be U.
                         previous[V.getId()] = U;
                     }
                 }
@@ -71,60 +99,5 @@ public class DijkstraSP {
         }
         return previous;
     }
-
-    public static void main(String[] args)
-    {
-        Point2D.Double p = new Point2D.Double(2.0, 2.0);
-
-        MapModel model = new MapModel();
-
-        Road AB = new Road(0, "AB",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(AB);
-        Road AC = new Road(1, "AC",p,p,2,2.0,2, 1, 2, "a", "b"); model.addRoad(AC);
-        Road AD = new Road(2, "AD",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(AD);
-        Road BD = new Road(3, "BD",p,p,2,2.0,2, 1, 2, "a", "b"); model.addRoad(BD);
-        Road BE = new Road(4, "BE",p,p,2,2.0,3, 1, 2, "a", "b"); model.addRoad(BE);
-        Road CF = new Road(5, "CF",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(CF);
-        Road DG = new Road(6, "DG",p,p,2,2.0,2, 1, 2, "a", "b"); model.addRoad(DG);
-        Road EF = new Road(7, "EF",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(EF);
-        Road EG = new Road(8, "EG",p,p,2,2.0,4, 1, 2, "a", "b"); model.addRoad(EG);
-        Road FH = new Road(9, "FH",p,p,2,2.0,4, 1, 2, "a", "b"); model.addRoad(FH);
-        Road GH = new Road(10, "GH",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(GH);
-        Road GI = new Road(11, "GI",p,p,2,2.0,3, 1, 2, "a", "b"); model.addRoad(GI);
-        Road HI = new Road(12, "HI",p,p,2,2.0,1, 1, 2, "a", "b"); model.addRoad(HI);
-
-        AB.addEdge(AC);        AB.addEdge(AD);        AB.addEdge(BD);        AB.addEdge(BD);
-
-        AC.addEdge(AB);        AC.addEdge(AD);        AC.addEdge(CF);
-
-        AD.addEdge(AB);        AD.addEdge(AC);        AD.addEdge(BD);        AD.addEdge(DG);
-
-        BD.addEdge(AB);        BD.addEdge(AC);        BD.addEdge(AD);        BD.addEdge(BE);        BD.addEdge(DG);
-
-        BE.addEdge(AB);        BE.addEdge(BD);        BE.addEdge(EF);        BE.addEdge(EG);
-
-        CF.addEdge(AC);        CF.addEdge(EF);        CF.addEdge(FH);
-
-        DG.addEdge(AD);        DG.addEdge(BD);        DG.addEdge(EG);        DG.addEdge(GH);        DG.addEdge(GI);
-
-        EF.addEdge(BE);        EF.addEdge(CF);        EF.addEdge(EG);        EF.addEdge(FH);
-
-        EG.addEdge(BE);        EG.addEdge(DG);        EG.addEdge(EF);        EG.addEdge(GH);        EG.addEdge(GI);
-
-        FH.addEdge(CF);        FH.addEdge(EF);        FH.addEdge(GH);
-
-        GH.addEdge(DG);        GH.addEdge(EG);        GH.addEdge(FH);        GH.addEdge(GI);        GH.addEdge(HI);
-
-        GI.addEdge(DG);        GI.addEdge(EG);        GI.addEdge(GH);        GI.addEdge(HI);
-
-        HI.addEdge(FH);        HI.addEdge(GH);        HI.addEdge(GI);
-
-        DijkstraEdge[] arr = DijkstraSP.onLiner(model, 13, AB, HI);
-        int prev = HI.getId();
-        while(arr[prev] != null)
-        {
-            System.out.println(arr[prev] + "-->");
-            prev = arr[prev].getId();
-        }
-    }
-
+    
 }

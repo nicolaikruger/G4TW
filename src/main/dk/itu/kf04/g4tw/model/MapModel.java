@@ -5,14 +5,14 @@ import dk.itu.kf04.g4tw.util.DynamicArray;
 
 import java.awt.geom.Point2D;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * A Model of the map-data. The model is currently split into 8 different {@link Tree2D}s to simplify
  * the search of particular road-types.
  */
-public class MapModel implements Externalizable {
+public class MapModel extends DijkstraSP<Road> implements Externalizable {
 
     public static final int HIGHWAY        = 1;
     public static final int EXPRESSWAY     = 2;
@@ -23,8 +23,13 @@ public class MapModel implements Externalizable {
     public static final int SEAWAY         = 64;
     public static final int LOCATION       = 128;
     
-    protected static final int numberOfRoads = 812302;
+    protected static final int numberOfRoads = 812301; // Number of roads + 1. ID = index in arrays. (ID starts at 1)
     protected static final int numberOfTrees = 8;
+
+    /**
+     * The logger for the class
+     */
+    static Logger Log = Logger.getLogger(MapModel.class.getName());
 
     /**
      * An array containing all the roads.
@@ -53,6 +58,9 @@ public class MapModel implements Externalizable {
         setTypeReference(PATH, 8, 28, 48, 10, 11);
         setTypeReference(SEAWAY, 80);
         setTypeReference(LOCATION, 99);
+
+		/*Point2D.Double p = new Point2D.Double(0.0, 0.0);
+		roads[0] = new Road(0, "filler", p, p, 80, 1, 1, 0, 0, "", "", 0, 0);*/
     }
 
     /**
@@ -69,6 +77,13 @@ public class MapModel implements Externalizable {
         // Insert
         roadTrees.get(road.type).addNode(road);
 	}
+
+    /**
+     * Retrieves a road from a given index
+     * @param index  The unique index for the road
+     * @return The road with the given index or null if no road could be found
+     */
+    public Road getEdge(int index) { return roads[index]; }
 
     /**
      * Retrieves a road from a given index
@@ -131,7 +146,7 @@ public class MapModel implements Externalizable {
     public void writeExternal(ObjectOutput out) throws IOException {
         // Write the roads
         int i = 0;
-        for (; i < numberOfRoads - 1; i++) {
+        for (; i < numberOfRoads; i++) {
             Road r = roads[i];
             out.writeInt(r.id);             // id
             out.writeUTF(r.name);           // name
@@ -146,6 +161,8 @@ public class MapModel implements Externalizable {
             out.writeInt(r.endNumber);      // end number
             out.writeUTF(r.startLetter);    // start letter
             out.writeUTF(r.endLetter);      // end letter
+            out.writeInt(r.leftPostalCode); // left postal code
+            out.writeInt(r.rightPostalCode);// right postal code
         }
 
         // Write the trees
@@ -159,23 +176,73 @@ public class MapModel implements Externalizable {
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        // Hashmap of the roads with a name
+        HashMap<String, DynamicArray<Road>> namedRoads = new HashMap<String, DynamicArray<Road>>();
+
+        HashMap<Point2D.Double, ArrayList<Integer>> nodeRoadPair = new HashMap<Point2D.Double, ArrayList<Integer>>();
+
         // Read the roads
         int i = 0;
-        for (; i < numberOfRoads - 1; i++) {
-            roads[i] = new Road(
-                    in.readInt(),    // id
-                    in.readUTF(),    // name
-                    new Point2D.Double(in.readDouble(), in.readDouble()), // from
-                    new Point2D.Double(in.readDouble(), in.readDouble()), // to
-                    in.readInt(),    // type
-                    in.readDouble(), // speed
-                    in.readDouble(), // length
-                    in.readInt(),    // start number
-                    in.readInt(),    // end number
-                    in.readUTF(),    // start letter
-                    in.readUTF()     // end letter
-            );
+        for (; i < numberOfRoads; i++) {
+			Road tmp = new Road(
+				in.readInt(),    // id
+				in.readUTF(),    // name
+				new Point2D.Double(in.readDouble(), in.readDouble()), // from
+				new Point2D.Double(in.readDouble(), in.readDouble()), // to
+				in.readInt(),    // type
+				in.readDouble(), // speed
+				in.readDouble(), // length
+				in.readInt(),    // start number
+				in.readInt(),    // end number
+				in.readUTF(),    // start letter
+				in.readUTF(),    // end letter
+				in.readInt(),    // left postal code
+				in.readInt()     // right postal code
+			);
+
+            roads[i] = tmp;
+
+            // If the road has a name
+            if(tmp.name.length() > 2) {
+                // If the road-name is not yet in the namesRoads-hashmap, add it
+                if(!namedRoads.containsKey(tmp.name.toLowerCase()))
+                    namedRoads.put(tmp.name.toLowerCase(), new DynamicArray<Road>());
+
+                // Add the road to the corresponding collection
+                namedRoads.get(tmp.name.toLowerCase()).add(tmp);
+            }
+
+            // If the points are not yet in the nodeRoadPair-hashmap, add them.
+            if(!nodeRoadPair.containsKey(tmp.from)) nodeRoadPair.put(tmp.from, new ArrayList<Integer>());
+            if(!nodeRoadPair.containsKey(tmp.to)) nodeRoadPair.put(tmp.to, new ArrayList<Integer>());
+
+            // Add the new road as an edge to all other roads that shares the same points
+            // Add all other roads with same points to the new road
+            // --> Creates a UNDIRECTED graph!
+            for(int j : nodeRoadPair.get(tmp.from)) {
+                getRoad(j).addEdge(tmp);
+                tmp.addEdge(getRoad(j));
+            }
+
+            for(int j : nodeRoadPair.get(tmp.to)) {
+                getRoad(j).addEdge(tmp);
+                tmp.addEdge(getRoad(j));
+            }
+            // --> End building UNDIRECTED graph! <--
+
+            // Add the new roads ID to the hashmap
+            nodeRoadPair.get(tmp.from).add(tmp.id);
+            nodeRoadPair.get(tmp.to).add(tmp.id);
         }
+
+		System.out.println(roads[50]);
+
+        // Directs the graph
+        trim();
+
+        // Set the namedRoads hashmap in AddressParser
+        AddressParser.setNamedRoads(namedRoads);
+
 
         // Read the trees (as many as possible)
         try {
@@ -192,6 +259,41 @@ public class MapModel implements Externalizable {
             }
         } catch (EOFException e) {
             // Expected
+        }
+    }
+
+    /**
+     * Directs the graph, by following the turn.txt file
+     */
+    protected void trim()
+    {
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new FileReader("turn.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            scanner.nextLine();
+            while(scanner.hasNextLine()) {
+                String[] nextLine = scanner.nextLine().split(",");
+                int fID = Integer.parseInt(nextLine[2])-1;
+                int tID = Integer.parseInt(nextLine[3]);
+
+                // Make the graph directed
+                Iterator<Integer> it = roads[fID].iterator();
+                while(it.hasNext()) {
+                    if(it.next() == tID) {
+                        it.remove();
+                        break;
+                    }
+                }
+            }
+        } catch (NullPointerException e) {
+            Log.warning("Unable to direct graph - error in reading: " + e.getMessage());
+        } finally {
+            scanner.close();
         }
     }
 }

@@ -8,17 +8,35 @@
     <body>
         <div id="loading"><img src="loading.gif"></div>
 
+        <div id="name">
+            <div id="nameContent">
+                <h4>The following roads was found:</h4>
+                <form id="selectRoads" name="selectRoads" action="">
+                    <table>
+                        <tr>
+                            <td><p id="fromRoadName">Vej 1</p></td>
+                            <td><p id="toRoadName">Vej 3</p></td>
+                        </tr>
+                        <tr>
+                            <td id="fromRoads">
+                                <input type="radio" name="fromRoad" id="1" value="1"> <label for="1">Road 1</label><br />
+                                <input type="radio" name="fromRoad" id="2" value="2"> <label for="2">Road 2sadfsdf sdfsdf sdf</label><br />
+                            </td>
+                            <td id="toRoads">
+                                <input type="radio" name="toRoad" id="3" value="3"> <label for="3">Road 3</label><br />
+                                <input type="radio" name="toRoad" id="4" value="4"> <label for="4">Road 4sadfsdf sdfsdf sdf</label><br />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="button" name="submit" value="Match" onclick=""/>
+                </form>
+            </div>
+        </div>
 
         <div id="menu">
             <div id="logo">
                 <img src="logo.png" alt="G4TW-roads"/>
             </div> <!-- logo ends here -->
-            <div id="finder">
-                <h1>Find road</h1>
-                <input type="text" name="Road"/>
-                <input type="submit" value="Find"/>
-                </form>
-            </div> <!-- finder ends here -->
 
             <div id="directions">
                 <h1>Directions</h1>
@@ -54,7 +72,7 @@
         </div>
 
         <div id="map">
-            <canvas id="canvas" />
+            <canvas id="canvas"></canvas>
 
             <script type="text/javascript" src="Transform.js"></script>
             <script type="text/javascript" src="Vector.js"></script>
