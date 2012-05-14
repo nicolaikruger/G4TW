@@ -15,7 +15,7 @@ var View = (function() {
 
     // Create the transformation matrix
     var t    = new Transform();
-    var pan  = Vector(-370.856257136847, 6462.1620226675);
+    var pan  = new Vector(-370.856257136847, 6462.1620226675);
     var zoom = 0.001;
 
     // Create returning object
@@ -82,7 +82,7 @@ var View = (function() {
             View.draw();
         },
         zoom: function(delta, point) {
-            var zoomPoint = point || Vector(canvas.width / 2, canvas.height / 2);
+            var zoomPoint = point || new Vector(canvas.width / 2, canvas.height / 2);
             if ((zoom > 0.0001 || delta > 0) && (zoom < 3 || delta < 0)) {
                 var f = Math.pow(2, delta * 0.5);
                 zoom *= f;
@@ -95,7 +95,7 @@ var View = (function() {
             // and creates two vectors to define the boundaries of the canvas.
             // v1 is the start point, v2 is the end point (start point + canvas dimensions).
             var v1 = findCanvasPos(obj);
-            var v2 = Vector(v1.x + canvas.width, v1.y + canvas.height);
+            var v2 = new Vector(v1.x + canvas.width, v1.y + canvas.height);
 //            console.log("V1: " + v1 + " x: " + v1.x + " y: " + v1.y + "  V2: " + v2 + " x: " + v2.x + " y: " + v2.y);
 
             // Sets up the transformation matrix.
@@ -111,7 +111,7 @@ var View = (function() {
             var tv2 = it.transformPoint(v2);
 
             // Returns a vector containing the two vectors.
-            return Vector(tv1, tv2);
+            return new Vector(tv1, tv2);
         },
         getZoom: function() {
             return zoom;
@@ -150,7 +150,7 @@ var View = (function() {
         var currentLeft = currentTop = 0;
         // Checks if the current object has a parent.
         if (obj.offsetParent) {
-            // Will continue to increment the offset with the offset
+            // Will continue to increase the offset with the offset
             // of the parent objects, until the offset has been summed up.
             // Then the loop breaks.
             do {
@@ -160,6 +160,6 @@ var View = (function() {
         }
 
         // Returns a vector with the coordinates of the canvas on the screen.
-        return Vector(currentLeft, currentTop);
+        return new Vector(currentLeft, currentTop);
     }
 }());
