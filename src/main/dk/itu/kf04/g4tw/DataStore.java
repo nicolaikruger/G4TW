@@ -7,8 +7,8 @@ import java.io.*;
 import java.util.logging.Logger;
 
 /**
- * The DataStore can store already parsed map-data loaded from the {@link RoadParser}
- * and retrieve it for later use. It significantly reduces load-time.
+ * The DataStore can store and read already parsed map-data loaded from the {@link RoadParser}
+ * and retrieve it for later use. The binary format significantly reduces load-time.
  */
 public class DataStore {
 

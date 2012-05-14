@@ -58,24 +58,4 @@ public class XMLBuilder {
 	 */
 	public Document createDocument() {return docBuilder.newDocument();}
 
-	/**
-	 * Transforms a java Document object into a clean-text XML string.
-	 * This is used to translate the java to a browser-compatible response.
-	 *
-	 * @param doc An XML document needing a transformation to clean-text
-	 * @return An XML string in clean-text of the document
-	 * @throws TransformerException
-	 */
-	public String createXMLString(Document doc) throws TransformerException {
-		StringWriter sw = new StringWriter();
-		StreamResult result = new StreamResult(sw);
-		DOMSource source = new DOMSource(doc);
-		transformer.transform(source, result);
-		String xmlString = sw.toString();
-
-		sw.flush();
-		try {sw.close();} catch (IOException e) {e.printStackTrace();}
-
-		return xmlString;
-	}
 }
