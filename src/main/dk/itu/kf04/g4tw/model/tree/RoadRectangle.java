@@ -11,14 +11,26 @@ public class RoadRectangle {
 	public final double yMin;
 	public final double xMax;
 	public final double yMax;
-	
+
+    /**
+     * Creates an RoadRectangle from four integers
+     * @param x1 The first X coordinate
+     * @param y1 The first Y coordinate
+     * @param x2 The second X coordinate
+     * @param y2 The second Y coordinate
+     */
 	public RoadRectangle(double x1, double y1, double x2, double y2) {
 		this.xMin = Math.min(x1, x2);
 		this.yMin = Math.min(y1, y2);
 		this.xMax = Math.max(x1, x2);
 		this.yMax = Math.max(y1, y2);
-	}     
-    
+	}
+
+    /**
+     * Creates an RoadRectangle from two points
+     * @param p1 The first coordinate set
+     * @param p2 The second coordinate set
+     */
     public RoadRectangle(Point2D.Double p1, Point2D.Double p2) {
         this.xMin = Math.min(p1.getX(), p2.getX());
         this.yMin = Math.min(p1.getY(), p2.getY());
@@ -26,12 +38,23 @@ public class RoadRectangle {
         this.yMax = Math.max(p1.getY(), p2.getY());
     }
 
+    /**
+     *
+     * @param that
+     * @param dimension
+     * @return
+     */
     public int compareTo(RoadRectangle that, byte dimension) {
         double d1 = getDimensionValue(dimension).doubleValue();
         double d2 = that.getDimensionValue(dimension).doubleValue();
         return Double.compare(d1, d2);
-    }   
-    
+    }
+
+    /**
+     * Checks if this rectangle are the same as another object.
+     * @param obj The object to compare with
+     * @return returns true if the objects are the same.
+     */
     @Override public boolean equals(Object obj) {
         if (obj instanceof RoadRectangle) {
             RoadRectangle that = (RoadRectangle) obj;
@@ -42,6 +65,11 @@ public class RoadRectangle {
         }
     }
 
+    /**
+     *
+     * @param dimension
+     * @return
+     */
     public Number getDimensionValue(byte dimension) {
         // Make sure input is ok
         if (dimension < 1) {
@@ -73,7 +101,11 @@ public class RoadRectangle {
 	public boolean intersects(RoadRectangle that) {
 		return (this.xMin <= that.xMax && this.xMax >= that.xMin && this.yMin <= that.yMax && this.yMax >= that.yMin);
 	}
-    
+
+    /**
+     * Creates a string over the data from the rectangle
+     * @return a String
+     */
     @Override public String toString() {
         return "RoadRectangle: (" + xMin + ", " + yMin + "), (" + xMax + ", " + yMax + ")";
     }

@@ -10,16 +10,29 @@ import java.util.PriorityQueue;
 public abstract class DijkstraSP<T extends DijkstraEdge> {
 
     public abstract T getEdge(int i);
-    
-    public T[] shortestPath(T from, T to) {
-        return onLiner(812301, from, to);
+
+    /**
+     * The same as onLiner(), but with a fixed number for N - for this specific project.
+     */
+    public DijkstraEdge[] shortestPath(T from, T to) {
+        return Dijkstra(812301, from, to);
     }
 
-    protected T[] onLiner(int N, T from, T to)
+    /**
+     * Makes a shortest path finding, with Dijkstra's algorithm
+     *
+     * @param N     The number of elements there are in graph
+     * @param from  The from node
+     * @param to    The to node
+     * @return      Returns a array nodes. The node is that one that leads to the node
+     *              with the corresponding ID with the index.
+     *              If a road A leads to a node with ID 5, then T[5] = A
+     */
+    protected DijkstraEdge[] Dijkstra(int N, T from, T to)
     {
         final double[] dist = new double[N]; // Holds the distance from a node back to the starting node
         boolean[] visited = new boolean[N];	 // If a node have been visited, the visited[node.id] will be set to true
-        T[] previous = (T[]) new Object[N];  // The node that led to the current node
+        DijkstraEdge[] previous = new DijkstraEdge[N];  // The node that led to the current node
                                              // --> If a lead to b, then previous[b.id] = a
 
 		// Fills the arrays

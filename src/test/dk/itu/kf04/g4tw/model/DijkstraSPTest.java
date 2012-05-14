@@ -38,7 +38,7 @@ public class DijkstraSPTest {
 		EG.addEdge(FG);
 
 
-		DijkstraEdge[] arr = model.onLiner(8, AAA, FG);
+		DijkstraEdge[] arr = model.Dijkstra(8, AAA, FG);
 		int prev = FG.getId();
 
 		assertEquals(DF, arr[prev]);
@@ -66,7 +66,7 @@ public class DijkstraSPTest {
 		EG.addEdge(FG);
 
 
-		DijkstraEdge[] arr = model.onLiner(8, AAA, FG);
+		DijkstraEdge[] arr = model.Dijkstra(8, AAA, FG);
 		int prev = FG.getId();
 
 		assertNull(arr[prev]);
