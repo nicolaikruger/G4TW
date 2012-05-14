@@ -26,8 +26,8 @@ public class AddressParser {
             /* City */						"(?<=\\s|^)(?!"+sal+")("+bs+"{3,}\\s?)+\\s"+bs+"+"};
 
     /**
-     *
-     * @param address The adress to search for
+     * Return a dynamicarray of roads, that matches a given address
+     * @param address The address to search for
      * @return return an DynamicArray of Road with all the hits
      */
     public static DynamicArray<Road> getRoad(String address) throws IllegalArgumentException
@@ -38,6 +38,7 @@ public class AddressParser {
         }
 
         /**
+         * The index order og the array
          * index 0 = street name
          * index 1 = street number
          * index 2 = house letter
@@ -45,6 +46,8 @@ public class AddressParser {
          * index 4 = postal code
          * index 5 = city
          */
+
+        // Split the address up into smaller parts
         String[] addressInfo = parseAddress(address);
 
         System.out.println(addressInfo[0]);
@@ -53,10 +56,18 @@ public class AddressParser {
         if(hits == null)
             hits = new DynamicArray<Road>();
 
+        // If a postal code is given, use that to sort with
+        if(!addressInfo[4].equals("") && hits.length() > 1)
+        {
+            hits = sortByPostal(hits, Integer.parseInt(addressInfo[4]));
+        }
+
+        // If a street number is given, use that to sort with
         if(!addressInfo[2].equals("") && hits.length() > 1) {
             hits = sortByLetter(hits, addressInfo[2]);
         }
 
+        // Is a house letter is given, use that to sort with
         if(!addressInfo[1].equals("")  && hits.length() > 1) {
             hits = sortByNumber(hits, Integer.parseInt(addressInfo[1]));
         }
