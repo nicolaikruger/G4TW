@@ -18,8 +18,10 @@ import java.util.logging.Logger;
  */
 public class RequestParser {
 
+    /**
+     * The log of the RequestParser.
+     */
     public static Logger Log = Logger.getLogger(RequestParser.class.getName());
-
     
     /**
      * Handles input from the server through the input parameter, decodes it and returns an appropriate
