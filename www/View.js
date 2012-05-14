@@ -77,8 +77,8 @@ var View = (function() {
             this.draw();
         },
         resize: function() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth * 0.69;
+            canvas.height = window.innerHeight - 2;
             View.draw();
         },
         zoom: function(delta, point) {
