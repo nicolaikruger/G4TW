@@ -15,11 +15,10 @@ public class Main {
     // TODO (?): Include turn.txt in binary compression
     // TODO: Comment Road - Especially all the fields
     // TODO: Comment RoadRectangle
-    // TODO: Comment Dijkstras methods
     // TODO: Clean up in the code
     // TODO: Solve other TODOs
     // TODO: Make som white- and blackbox testing
-    // TODO: Go make me a sandwich (still hungry)
+    // TODO: Go make me a sandwich (still hungry - I'm still VERY hungry)
     // TODO: Fix GC overhead error
     // TODO: Fix HTML layout
     // TODO: Fix JavaScript load time

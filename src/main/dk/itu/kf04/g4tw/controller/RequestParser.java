@@ -197,7 +197,7 @@ public class RequestParser {
 		// The addresses both gave only one hit. We can find a path.
         } else if(hits1.length() == 1 && hits2.length() == 1) {
             Log.info("Trying to find path");
-            Road[] result = model.shortestPath(hits1.get(0), hits2.get(0));
+            Road[] result = (Road[]) model.shortestPath(hits1.get(0), hits2.get(0));
 
             // Initialize the roadCollection element and add namespaces
             roads = docXML.createElement("roadCollection");
