@@ -1,7 +1,6 @@
 var Controller = (function() {
     var isLeftMouseDown, startPoint, canvasStartPos, canvasEndPos;
     var canvas = document.getElementById('canvas');
-    //canvas.width = window.window.innerWidth-370;
 
     View.resize();
     var specialVector = new Vector(new Vector(new Vector(Math.PI, Math.PI), 0), 0);

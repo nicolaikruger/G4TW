@@ -1,6 +1,6 @@
 body {
     font-family: helvetica, sans-serif;
-    background-color: #000;
+    background-color: #F9F9F9;
 }
 body, html {
     height: 100%;
@@ -50,21 +50,17 @@ body, html {
 }
 
 #map {
+    float: left;
     height: 100%;
-    width: 100%;
+    width: 70%;
 }
 
 #menu {
-    z-index: 0;
-    position: fixed;
     height: 100%;
     float: left;
     background: #333 url('stribe.png') repeat-y 35px 13px;
     color: black;
-    float: left;
-    padding: 4px;
-    width: 370px;
-    height: 100% ;
+    width: 30%;
 }
 
 #logo{

@@ -26,13 +26,14 @@ public class AddressParser {
             /* City */						"(?<=\\s|^)(?!"+sal+")("+bs+"{3,}\\s?)+\\s"+bs+"+"};
 
     /**
-     *
-     * @param address The adress to search for
+     * Return a dynamicarray of roads, that matches a given address
+     * @param address The address to search for
      * @return return an DynamicArray of Road with all the hits
      */
     public static DynamicArray<Road> getRoad(String address)
     {
         /**
+         * The index order og the array
          * index 0 = street name
          * index 1 = street number
          * index 2 = house letter
@@ -40,6 +41,8 @@ public class AddressParser {
          * index 4 = postal code
          * index 5 = city
          */
+
+        // Split the address up into smaller parts
         String[] addressInfo = parseAddress(address);
 
         System.out.println(addressInfo[0]);
@@ -48,15 +51,18 @@ public class AddressParser {
         if(hits == null)
             hits = new DynamicArray<Road>();
 
+        // If a postal code is given, use that to sort with
         if(!addressInfo[4].equals("") && hits.length() > 1)
         {
             hits = sortByPostal(hits, Integer.parseInt(addressInfo[4]));
         }
 
+        // If a street number is given, use that to sort with
         if(!addressInfo[2].equals("") && hits.length() > 1) {
             hits = sortByLetter(hits, addressInfo[2]);
         }
 
+        // Is a house letter is given, use that to sort with
         if(!addressInfo[1].equals("")  && hits.length() > 1) {
             hits = sortByNumber(hits, Integer.parseInt(addressInfo[1]));
         }
@@ -64,11 +70,16 @@ public class AddressParser {
         return hits;
     }
 
+    /**
+     * Sorts out all of the roads that doesn't have the given postal code
+     * @param arr       All the roads to sort
+     * @param postal    The postal code to find matches with
+     * @return          Returns a dynamicarray of all the roads that matched the postal code
+     */
     private static DynamicArray<Road> sortByPostal(DynamicArray<Road> arr, int postal)
     {
         DynamicArray<Road> returnArr = new DynamicArray<Road>();
 
-        // Magic
         for(int i = 0; i < arr.length(); i++){
             Road r = arr.get(i);
             if(r.leftPostalCode == postal || r.rightPostalCode == postal)
@@ -78,6 +89,12 @@ public class AddressParser {
         return returnArr;
     }
 
+    /**
+     * Sorts out all of the roads that doesn't have the given house letter
+     * @param arr       All the roads to sort
+     * @param letter    The house letter to find matches with
+     * @return          Returns a dynamicarray of all the roads that matched the letter
+     */
     private static DynamicArray<Road> sortByLetter(DynamicArray<Road> arr, String letter)
     {
         DynamicArray<Road> returnArr = new DynamicArray<Road>();
@@ -99,6 +116,12 @@ public class AddressParser {
         return returnArr;
     }
 
+    /**
+     * Sorts out all of the roads that doesn't have the given street number
+     * @param arr   All the roads to sort
+     * @param num   The street number to find matches with
+     * @return      Returns a dynamicarray of all the roads that matched the street number
+     */
     private static DynamicArray<Road> sortByNumber(DynamicArray<Road> arr, int num)
     {
         DynamicArray<Road> returnArr = new DynamicArray<Road>();

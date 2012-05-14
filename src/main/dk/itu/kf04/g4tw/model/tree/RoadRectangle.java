@@ -3,21 +3,40 @@ package dk.itu.kf04.g4tw.model.tree;
 import java.awt.geom.Point2D;
 
 /**
- * A rectangle that encapsulates a road.
+ * The smallest rectangle that encapsulated two given points.
  */
 public class RoadRectangle {
-	
+
+    /**
+     * The least x-coordinate.
+     */
 	public final double xMin;
+
+    /**
+     * The least y-coordinate.
+     */
 	public final double yMin;
+
+    /**
+     * The biggest x-coordinate.
+     */
 	public final double xMax;
+
+    /**
+     * The biggest y-coordinate.
+     */
 	public final double yMax;
 
     /**
-     * Creates an RoadRectangle from four integers
-     * @param x1 The first X coordinate
-     * @param y1 The first Y coordinate
-     * @param x2 The second X coordinate
-     * @param y2 The second Y coordinate
+     * Creates a RoadRectangle that spans the four coordinates, interpreted as pairs of two points in a
+     * 2-dimensional space.
+     * <br />
+     * The constructor tests for the least value between x1 and x2 and y1 and y2 and stores them in the
+     * appropriate variables.
+     * @param x1  The first x-coordinate.
+     * @param y1  The first y-coordinate.
+     * @param x2  The second x-coordinate.
+     * @param y2  The second y-coordinate.
      */
 	public RoadRectangle(double x1, double y1, double x2, double y2) {
 		this.xMin = Math.min(x1, x2);
@@ -27,9 +46,10 @@ public class RoadRectangle {
 	}
 
     /**
-     * Creates an RoadRectangle from two points
-     * @param p1 The first coordinate set
-     * @param p2 The second coordinate set
+     * Builds a RoadRectangle from two points testing for the least values and storing them in the 
+     * appropriate places.
+     * @param p1  The first point of the rectangle.
+     * @param p2  The second point of the rectangle.
      */
     public RoadRectangle(Point2D.Double p1, Point2D.Double p2) {
         this.xMin = Math.min(p1.getX(), p2.getX());
@@ -39,10 +59,11 @@ public class RoadRectangle {
     }
 
     /**
-     *
-     * @param that
-     * @param dimension
-     * @return
+     * Compares this RoadRectangle to another by testing the dimension given by the <code>dimension</code> variable.
+     * The comparisons follow the convention of the <code>compare</code> method in {@link Double}.
+     * @param that  The other rectangle to test.
+     * @param dimension  The dimension on which to compare.
+     * @return  An int < 0 if the dimension of the other rectangle is larger, 0 if equality and > 0 if the dimension of other rectangle is smaller.
      */
     public int compareTo(RoadRectangle that, byte dimension) {
         double d1 = getDimensionValue(dimension).doubleValue();
@@ -51,9 +72,9 @@ public class RoadRectangle {
     }
 
     /**
-     * Checks if this rectangle are the same as another object.
-     * @param obj The object to compare with
-     * @return returns true if the objects are the same.
+     * The equality method tests for equality between the coordinate-values.
+     * @param obj  The other object to compare.
+     * @return  True if the object is a RoadRectangle and its points are the same, false otherwise.
      */
     @Override public boolean equals(Object obj) {
         if (obj instanceof RoadRectangle) {
@@ -66,11 +87,12 @@ public class RoadRectangle {
     }
 
     /**
-     *
-     * @param dimension
-     * @return
+     * Returns the value associated with the dimension.
+     * @param dimension  The dimension whose value we are interested in.
+     * @return  The value of the given dimension in this rectangle
+     * @throws IllegalArgumentException If the dimension input is less than one or larger than 4.
      */
-    public Number getDimensionValue(byte dimension) {
+    public Number getDimensionValue(byte dimension) throws IllegalArgumentException {
         // Make sure input is ok
         if (dimension < 1) {
             throw new IllegalArgumentException("Dimension cannot be less than 1.");
@@ -101,11 +123,7 @@ public class RoadRectangle {
 	public boolean intersects(RoadRectangle that) {
 		return (this.xMin <= that.xMax && this.xMax >= that.xMin && this.yMin <= that.yMax && this.yMax >= that.yMin);
 	}
-
-    /**
-     * Creates a string over the data from the rectangle
-     * @return a String
-     */
+    
     @Override public String toString() {
         return "RoadRectangle: (" + xMin + ", " + yMin + "), (" + xMax + ", " + yMax + ")";
     }
