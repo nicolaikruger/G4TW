@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 /**
- *
+ * A WebServer that can respond to incoming HTTP requests.
  */
 public class WebServer implements Closeable {
 
@@ -33,7 +33,7 @@ public class WebServer implements Closeable {
     /**
      * The port of the webserver.
      */
-    protected int port = 80;
+    protected int port;
 
     /**
      * The server thread.

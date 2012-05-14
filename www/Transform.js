@@ -58,10 +58,6 @@ Transform.prototype.invert = function() {
   return t;
 };
 
-Transform.prototype.reset = function() {
-  this.m = [1,0,0,1,0,0];
-};
-
 Transform.prototype.rotate = function(rad) {
   var c = Math.cos(rad);
   var s = Math.sin(rad);

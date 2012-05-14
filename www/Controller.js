@@ -29,11 +29,11 @@ var Controller = (function() {
     canvas.onmousedown = function(e) {
         isLeftMouseDown = true;
         startPoint = getCoordinates(e);
-        canvasStartPos = View.findPos(canvas);
+        canvasStartPos = View.findPos();
     };
     canvas.onmouseup   =  function(e) {
         isLeftMouseDown = false;
-        canvasEndPos = View.findPos(canvas);
+        canvasEndPos = View.findPos();
         getLevel(View.getZoom());
     };
     canvas.onmousemove = function(e) {
