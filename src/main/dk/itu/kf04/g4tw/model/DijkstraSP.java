@@ -1,5 +1,6 @@
 package dk.itu.kf04.g4tw.model;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -19,7 +20,8 @@ public abstract class DijkstraSP<T extends DijkstraEdge> {
     {
         final double[] dist = new double[N]; // Holds the distance from a node back to the starting node
         boolean[] visited = new boolean[N];	 // If a node have been visited, the visited[node.id] will be set to true
-        T[] previous = (T[]) new Object[N];  // The node that led to the current node
+        T[] previous = (T[]) Array.newInstance(from.getClass(), N);
+                                             // The node that led to the current node
                                              // --> If a lead to b, then previous[b.id] = a
 
 		// Fills the arrays

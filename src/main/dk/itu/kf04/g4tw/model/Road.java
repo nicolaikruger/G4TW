@@ -6,33 +6,109 @@ import org.w3c.dom.Element;
 
 import java.awt.geom.Point2D;
 
+/**
+ * <p>A Road is basically a connection between two points in a two-dimensional space.
+ * Besides the two points the road also contains an id, name and various other information
+ * relevant for a map.
+ * </p>
+ * <p>
+ * One of the most important aspects of a Road is its <code>rect</code>-field. This field describes
+ * the minimum bounding rectangle (see {@link RoadRectangle}) which is used to examine intersections with
+ * the road.
+ * </p>
+ * <p>
+ * Roads also functions as edges in a graph understood as a connection between two points.
+ * This makes the road a somewhat strange hybrid of a node and edge, albeit efficient for graph-problems.
+ * </p>
+ */
 public class Road extends DijkstraEdge {
 
-	// The name of the road
+    /**
+     * The name of the road
+     */
 	public final String name;
-	// The ID of the road
+
+    /**
+     * The ID of the road.
+     */
 	public final int id;
-	// The type of the road
+
+    /**
+     * The type of the road, as seen in the {@link MapModel}.
+     */
 	public final int type;
-	// The from and to coordinates
+
+    /**
+     * The first end-point of the road.
+     */
 	public final Point2D.Double from;
+
+    /**
+     * The last end-point of the road.
+     */
 	public final Point2D.Double to;
-	// The speed limitation
+
+    /**
+     * The speed limitation of the road.
+     */
 	public final double speed;
-	// The length of the road
+
+    /**
+     * The length of the road.
+     */
 	public final double length;
+
+    /**
+     * The starting numbers for the houses on this road.
+     */
     public final int startNumber;
+
+    /**
+     * The last number for the houses on this road.
+     */
     public final int endNumber;
+
+    /**
+     * The first letter for houses on this road.
+     */
     public final String startLetter;
+
+    /**
+     * The last letter for houses on this road.
+     */
     public final String endLetter;
+
+    /**
+     * The postal code for the left side of the road.
+     */
     public final int leftPostalCode;
+
+    /**
+     * The postal code for the right side of the road.
+     */
     public final int rightPostalCode;
 
 	/**
 	 * The rectangle enclosing this road.
 	 */
 	public final RoadRectangle rect;
-	
+
+    /**
+     * Instantiates a new road represented as the connection between the two given points f and t.
+     * @param id  The unique identifier of the road.
+     * @param name  The name of the road
+     * @param f  The first end-point of the road.
+     * @param t  The other end-point of the road. 
+     * @param type  The road-type of the road corresponding to the ones given in {@link MapModel}.
+     * @param speed  The speed with which you can drive on the road.
+     * @param length  The length of the road.
+     * @param startNumber  The first house-number on the road.
+     * @param endNumber  The last house-number on the road.
+     * @param startLetter  The first letter on the road.
+     * @param endLetter  The last letter on the road.
+     * @param leftPostalCode  The postal code for the left side of the road.
+     * @param rightPostalCode  The postal code for the right side of the road.
+     */
 	public Road(int id, String name, Point2D.Double f, Point2D.Double t, int type, double speed, double length,
                 int startNumber, int endNumber, String startLetter, String endLetter, int leftPostalCode, int rightPostalCode ) {
         this.id   = id;
@@ -60,8 +136,16 @@ public class Road extends DijkstraEdge {
 		rect = new RoadRectangle(f, t);
 	}
 
+    /**
+     * Finds the unique id of the road segment.
+     * @return The id as an int.
+     */
     public int getId()        { return id; }
 
+    /**
+     * Finds the length of the road segment.
+     * @return The length of the road in meters.
+     */
 	public double getLength() { return length; }
 
     @Override public String toString() {
