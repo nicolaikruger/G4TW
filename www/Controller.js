@@ -1,7 +1,6 @@
 var Controller = (function() {
     var isLeftMouseDown, startPoint, canvasStartPos, canvasEndPos;
     var canvas = document.getElementById('canvas');
-    //canvas.width = window.window.innerWidth-370;
 
     View.resize();
     var specialVector = new Vector(new Vector(new Vector(Math.PI, Math.PI), 0), 0);
@@ -30,11 +29,11 @@ var Controller = (function() {
     canvas.onmousedown = function(e) {
         isLeftMouseDown = true;
         startPoint = getCoordinates(e);
-        canvasStartPos = View.findPos(canvas);
+        canvasStartPos = View.findPos();
     };
     canvas.onmouseup   =  function(e) {
         isLeftMouseDown = false;
-        canvasEndPos = View.findPos(canvas);
+        canvasEndPos = View.findPos();
         getLevel(View.getZoom());
     };
     canvas.onmousemove = function(e) {

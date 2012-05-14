@@ -45,13 +45,11 @@ var Model = (function() {
          */
         addRoads: function(xml, array) {
             var roadIterator = xml.evaluate("//r", xml, null, XPathResult.ANY_TYPE, null);
-            var i = xml.evaluate("//i", xml, null, XPathResult.ANY_TYPE, null);
             var t = xml.evaluate("//t", xml, null, XPathResult.ANY_TYPE, null);
             var fx = xml.evaluate("//fx", xml, null, XPathResult.ANY_TYPE, null);
             var fy = xml.evaluate("//fy", xml, null, XPathResult.ANY_TYPE, null);
             var tx = xml.evaluate("//tx", xml, null, XPathResult.ANY_TYPE, null);
             var ty = xml.evaluate("//ty", xml, null, XPathResult.ANY_TYPE, null);
-            //var l = xml.evaluate("//l", xml, null, XPathResult.ANY_TYPE, null);
             var road = roadIterator.iterateNext();
 
             // Iterate over possible matches
@@ -65,14 +63,13 @@ var Model = (function() {
                 }
 
                 // Retrieve values
-                var id = toNumber(i);
                 var x1 = toNumber(fx);
                 var y1 = toNumber(fy);
                 var x2 = toNumber(tx);
                 var y2 = toNumber(ty);
 
                 // Add the road to the array
-                var obj = {from:Vector(x1, y1), to:Vector(x2, y2)};
+                var obj = {from:new Vector(x1, y1), to:new Vector(x2, y2)};
                 // Hashing the id:
                 array.push(obj);
 
@@ -127,7 +124,7 @@ var Model = (function() {
         requestRoads: function(v1, v2, filter) {
             /**
              * Retrieves the right array from the given road type
-             * @param level  The type of the array to retrieve
+             * @param type The type of the array to retrieve
              */
             function getArrayFromFilter(type) {
                 switch (type) {
@@ -140,6 +137,7 @@ var Model = (function() {
                     case 64: case 128:
                         return blackRoads; break;
                 }
+                return [];
             }
 
           // Shows the loading.gif
@@ -267,7 +265,7 @@ var Model = (function() {
             this.clearRoads();
             // Creates a vector from the findPos function.
             // The vector will contain vectors for x and y values.
-            var tv = View.findPos(canvas);
+            var tv = View.findPos();
 
             // Creates 2 new vectors from the previous vector.
             // This is the start and end coordinates for the window.
@@ -278,7 +276,7 @@ var Model = (function() {
         },
         tidyModel: function(array) {
             // Gets the current View coordinates.
-            var curView = View.findPos(canvas);
+            var curView = View.findPos();
 
             // Defines a linear search function for arrays
             Array.prototype.search = function(find, axis) {

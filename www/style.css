@@ -58,12 +58,12 @@ body, html {
 #menu {
     height: 100%;
     float: left;
-    background: #333 url('stribe.png') repeat-y 35px 13px;
+    background: #333 url('stribe.png') repeat-y 33px 13px;
     color: black;
     width: 30%;
 }
 
-#logo{
+#logo {
     margin-top: -10px;
     margin-left: 1px;
 }
@@ -94,19 +94,24 @@ body, html {
 }
 
 #roadFilter{
-    margin-top: 40px;
     padding-left: 47px;
+    position: absolute;
+    top: 268px;
 }
-
-#roadFilter fieldset{
-    border: none;
-    margin-top: -18px;
-    margin-left: -12px;
-}
-
-#roadFilter input, label{
+#roadFilter input, #roadFilter label {
+    background-color: #333;
     color: #FFFFFF;
-    margin-top: 8px;
+}
+
+#roadFilter input {
+    height: 24px;
+    padding: 0;
+}
+
+#footer {
+    position: absolute;
+    left: 8%;
+    bottom: 10px;
 }
 
 h1, p {
