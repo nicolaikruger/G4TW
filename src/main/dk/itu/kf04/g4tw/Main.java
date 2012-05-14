@@ -12,17 +12,15 @@ import java.util.logging.Logger;
 public class Main {
 
     // General TODOs for the project
-    // TODO (?): Include turn.txt in binary compression
-    // TODO: Comment Road - Especially all the fields
-    // TODO: Comment RoadRectangle
-    // TODO: Comment Dijkstras methods
-    // TODO: Clean up in the code
-    // TODO: Solve other TODOs
+    // TODO: Clean up in the javascript code
     // TODO: Make som white- and blackbox testing
-    // TODO: Go make me a sandwich (still hungry)
-    // TODO: Fix GC overhead error
     // TODO: Fix HTML layout
     // TODO: Fix JavaScript load time
+    // TODO: Krüger: Comment Road - Especially all the fields
+    // TODO: Krüger: Comment Dijkstras methods
+    // TODO: Krüger: Compile the turn-file into binary
+    // TODO: Krüger: Move trim() to RoadParser
+    // TODO: Krüger: Der er en test i AddressParser der fejler - fikser du den? :P
 
     /**
      * The logging-util for the Main class.

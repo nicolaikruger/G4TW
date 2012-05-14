@@ -30,8 +30,13 @@ public class AddressParser {
      * @param address The adress to search for
      * @return return an DynamicArray of Road with all the hits
      */
-    public static DynamicArray<Road> getRoad(String address)
+    public static DynamicArray<Road> getRoad(String address) throws IllegalArgumentException
     {
+        // Throw exception if null or empty
+        if (address == null || address.equals("")) {
+            throw new IllegalArgumentException("Unable to parse empty address.");
+        }
+
         /**
          * index 0 = street name
          * index 1 = street number
@@ -59,7 +64,7 @@ public class AddressParser {
         return hits;
     }
 
-    private static DynamicArray<Road> sortByLetter(DynamicArray<Road> arr, String letter)
+    protected static DynamicArray<Road> sortByLetter(DynamicArray<Road> arr, String letter)
     {
         DynamicArray<Road> returnArr = new DynamicArray<Road>();
 
@@ -80,7 +85,7 @@ public class AddressParser {
         return returnArr;
     }
 
-    private static DynamicArray<Road> sortByNumber(DynamicArray<Road> arr, int num)
+    protected static DynamicArray<Road> sortByNumber(DynamicArray<Road> arr, int num)
     {
         DynamicArray<Road> returnArr = new DynamicArray<Road>();
 
@@ -98,7 +103,7 @@ public class AddressParser {
         return returnArr;
     }
 
-    private static String[] parseAddress(String s) throws IllegalArgumentException {
+    protected static String[] parseAddress(String s) throws IllegalArgumentException {
         String[] address = new String[6];
         Arrays.fill(address, "");
 

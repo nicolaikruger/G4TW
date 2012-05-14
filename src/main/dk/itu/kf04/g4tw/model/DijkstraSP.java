@@ -13,7 +13,7 @@ public abstract class DijkstraSP<T extends DijkstraEdge> {
     public abstract T getEdge(int i);
     
     public T[] shortestPath(T from, T to) {
-        return onLiner(812301, from, to);
+        return onLiner(MapModel.numberOfRoads, from, to);
     }
 
     protected T[] onLiner(int N, T from, T to)
