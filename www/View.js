@@ -1,8 +1,6 @@
 var View = (function() {
     // Get the canvas
     var canvas = document.getElementById('canvas');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
 
     var drawRed = true;
     var drawBlue = true;
@@ -15,7 +13,7 @@ var View = (function() {
 
     // Create the transformation matrix
     var t    = new Transform();
-    var pan  = Vector(-370.856257136847, 6462.1620226675);
+    var pan  = Vector(-300.856257136847, 6562.1620226675);
     var zoom = 0.001;
 
     // Create returning object
@@ -133,9 +131,6 @@ var View = (function() {
 
             c.moveTo(from.x, from.y);
             c.lineTo(to.x, to.y);
-
-
-
         }
 
         c.lineWidth = width;
@@ -145,21 +140,7 @@ var View = (function() {
     }
 
     function findCanvasPos(obj)  {
-        // Creates 2 new variables.
-        var currentTop;
-        var currentLeft = currentTop = 0;
-        // Checks if the current object has a parent.
-        if (obj.offsetParent) {
-            // Will continue to increment the offset with the offset
-            // of the parent objects, until the offset has been summed up.
-            // Then the loop breaks.
-            do {
-                currentLeft += obj.offsetLeft;
-                currentTop += obj.offsetTop;
-            } while (obj = obj.offsetParent)
-        }
-
         // Returns a vector with the coordinates of the canvas on the screen.
-        return Vector(currentLeft, currentTop);
+        return Vector(0, 0);
     }
 }());
