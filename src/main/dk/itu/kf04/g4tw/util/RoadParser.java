@@ -65,15 +65,14 @@ public class RoadParser {
      */
     protected static int parseEdges(File file, HashMap<Integer, Node> nodeMap, MapModel model) throws FileNotFoundException {
         // Start the id-counter
+        // We use our own id's to promise consistency
         int id = 0;
+
+        // Initialize the hashmap with nodes and points
+        HashMap<Point2D.Double, ArrayList<Integer>> nodeRoadPair = new HashMap<Point2D.Double, ArrayList<Integer>>();
 
         // Load the file
         Scanner scanner = new Scanner(new FileInputStream(file), "ISO8859_1");
-
-        // Hashmap of the roads with a name
-        HashMap<String, DynamicArray<Road>> namedRoads = new HashMap<String, DynamicArray<Road>>();
-
-        HashMap<Point2D.Double, ArrayList<Integer>> nodeRoadPair = new HashMap<Point2D.Double, ArrayList<Integer>>();
 
         // Fills in the data in the map
         scanner.nextLine();
@@ -94,9 +93,6 @@ public class RoadParser {
             Point2D.Double pointA = new Point2D.Double(nodeA.x,nodeA.y);
             Point2D.Double pointB = new Point2D.Double(nodeB.x,nodeB.y);
 
-            // Use the id's of the dynamic array so we promise consistency
-            //int id = Integer.parseInt(nextLine[3]); // DAV_DK-ID
-            //int id2 = Integer.parseInt(nextLine[4]); // DAV_DK-ID
             int type = Integer.parseInt(nextLine[5]);
             double speed = Double.parseDouble(nextLine[25]);
             double length = Double.parseDouble(nextLine[2]);
@@ -154,21 +150,10 @@ public class RoadParser {
             type = model.getRoadTypeFromId(type);
 
             // Create the road and setup connections/edges
-            Road tmp = new Road(id++, name, pointA, pointB, type, speed, length, startNumber, endNumber, startLetter, endLetter, leftPostalCode, rightPostalCode);
+            Road tmp = new Road(id, name, pointA, pointB, type, speed, length, startNumber, endNumber, startLetter, endLetter, leftPostalCode, rightPostalCode);
 
             // Add the road to the edges collection
             model.addRoad(tmp);
-
-            // If the road has a name
-            if(name.length() > 2) {
-                name = name.toLowerCase();
-                // If the road-name is not yet in the namesRoads-hashmap, add it
-                if(!namedRoads.containsKey(name))
-                    namedRoads.put(name, new DynamicArray<Road>());
-
-                // Add the road to the corresponding collection
-                namedRoads.get(name).add(tmp);
-            }
 
             // If the points are not yet in the nodeRoadPair-hashmap, add them.
             if(!nodeRoadPair.containsKey(pointA)) nodeRoadPair.put(pointA, new ArrayList<Integer>());
@@ -178,27 +163,27 @@ public class RoadParser {
             // Add all other roads with same points to the new road
             // --> Creates a UNDIRECTED graph!
             for(int i : nodeRoadPair.get(pointA)) {
-                model.getRoad(i).addEdge(tmp);
-                tmp.addEdge(model.getRoad(i));
+                model.getRoad(i).addEdge(tmp.id);
+                tmp.addEdge(model.getRoad(i).id);
             }
 
             for(int i : nodeRoadPair.get(pointB)) {
-                model.getRoad(i).addEdge(tmp);
-                tmp.addEdge(model.getRoad(i));
+                model.getRoad(i).addEdge(tmp.id);
+                tmp.addEdge(model.getRoad(i).id);
             }
 
             // Add the new roads ID to the hashmap
             nodeRoadPair.get(pointA).add(id);
             nodeRoadPair.get(pointB).add(id);
+
+            // Increment id
+            id++;
         }
         // Close the scanner
         scanner.close();
 
         // Directs the model
         trim(model);
-
-        // Set the namedRoads hashmap in AddressParser
-        AddressParser.setNamedRoads(namedRoads);
 
         // Log success
         Log.fine("Successfully loaded Map edges into model.");
@@ -229,9 +214,8 @@ public class RoadParser {
                 int tID = Integer.parseInt(nextLine[3]);
 
                 // Make the graph directed
-                Iterator<Integer> it = model.getRoads()[fID-1].iterator();
-                while(it.hasNext())
-                {
+                Iterator<Integer> it = model.getRoads()[fID].iterator();
+                while(it.hasNext()) {
                     if(model.getRoad(it.next()).id == tID) {
                         it.remove();
                         break;

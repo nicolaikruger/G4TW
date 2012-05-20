@@ -14,9 +14,9 @@ public abstract class DijkstraEdge implements Iterable<Integer>, Comparable<Dijk
     public abstract int getId();
 
     private DynamicArray<Integer> edges = new DynamicArray<Integer>();
-
-    public void addEdge(Road e){
-           edges.add(e.id);
+    
+    public void addEdge(int e) {
+        edges.add(e);
     }
 
     public int compareTo(DijkstraEdge o) {
@@ -39,4 +39,10 @@ public abstract class DijkstraEdge implements Iterable<Integer>, Comparable<Dijk
             }
         };
     }
+
+    /**
+     * Find the number of roads this road is connected to.
+     * @return A number equal to the number of connections for this road.
+     */
+    public int numberOfEdges() { return edges.length(); }
 }

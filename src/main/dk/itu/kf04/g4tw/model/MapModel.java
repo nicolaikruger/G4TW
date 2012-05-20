@@ -11,6 +11,9 @@ import java.util.logging.Logger;
 /**
  * A Model of the map-data. The model is currently split into 8 different {@link Tree2D}s to simplify
  * the search of particular road-types.
+ *
+ * @author Nicolai Krüger <nkrk@itu.dk>
+ * @author Jens Egholm <jegp@itu.dk>
  */
 public class MapModel extends DijkstraSP<Road> implements Externalizable {
 
@@ -159,6 +162,12 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
             out.writeUTF(r.endLetter);      // end letter
             out.writeInt(r.leftPostalCode); // left postal code
             out.writeInt(r.rightPostalCode);// right postal code
+            // Connections
+            out.writeInt(r.numberOfEdges()); // Number of edges
+            for (Integer connection : r) {
+                out.writeInt(connection);    // Edge
+            }
+            
         }
 
         // Write the trees
@@ -174,8 +183,6 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         // Hashmap of the roads with a name
         HashMap<String, DynamicArray<Road>> namedRoads = new HashMap<String, DynamicArray<Road>>();
-
-        HashMap<Point2D.Double, ArrayList<Integer>> nodeRoadPair = new HashMap<Point2D.Double, ArrayList<Integer>>();
 
         // Read the roads
         int i = 0;
@@ -195,50 +202,29 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
 				in.readInt(),    // left postal code
 				in.readInt()     // right postal code
 			);
-
-            roads[i] = tmp;
-
-            // If the road has a name
+            
+            // Add connections
+            int connections = in.readInt();
+            for (int n = 0; n < connections; n++) {
+                tmp.addEdge(in.readInt());
+            }
+            
+            // Add the road to the named roads map
             if(tmp.name.length() > 2) {
-                // If the road-name is not yet in the namesRoads-hashmap, add it
-                if(!namedRoads.containsKey(tmp.name.toLowerCase()))
-                    namedRoads.put(tmp.name.toLowerCase(), new DynamicArray<Road>());
+                String name = tmp.name.toLowerCase();
+                // If the road-name is not yet in the namedRoads-hashmap, add it
+                if(!namedRoads.containsKey(name))
+                    namedRoads.put(name, new DynamicArray<Road>());
 
                 // Add the road to the corresponding collection
-                namedRoads.get(tmp.name.toLowerCase()).add(tmp);
+                namedRoads.get(name).add(tmp);
             }
 
-            // If the points are not yet in the nodeRoadPair-hashmap, add them.
-            if(!nodeRoadPair.containsKey(tmp.from)) nodeRoadPair.put(tmp.from, new ArrayList<Integer>());
-            if(!nodeRoadPair.containsKey(tmp.to)) nodeRoadPair.put(tmp.to, new ArrayList<Integer>());
-
-            // Add the new road as an edge to all other roads that shares the same points
-            // Add all other roads with same points to the new road
-            // --> Creates a UNDIRECTED graph!
-            for(int j : nodeRoadPair.get(tmp.from)) {
-                getRoad(j).addEdge(tmp);
-                tmp.addEdge(getRoad(j));
-            }
-
-            for(int j : nodeRoadPair.get(tmp.to)) {
-                getRoad(j).addEdge(tmp);
-                tmp.addEdge(getRoad(j));
-            }
-            // --> End building UNDIRECTED graph! <--
-
-            // Add the new roads ID to the hashmap
-            nodeRoadPair.get(tmp.from).add(tmp.id);
-            nodeRoadPair.get(tmp.to).add(tmp.id);
+            roads[i] = tmp;
         }
-
-		System.out.println(roads[50]);
-
-        // Directs the graph
-        trim();
 
         // Set the namedRoads hashmap in AddressParser
         AddressParser.setNamedRoads(namedRoads);
-
 
         // Read the trees (as many as possible)
         try {

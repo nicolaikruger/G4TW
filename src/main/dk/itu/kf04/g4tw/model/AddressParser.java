@@ -29,6 +29,7 @@ public class AddressParser {
      * Return a dynamicarray of roads, that matches a given address
      * @param address The address to search for
      * @return return an DynamicArray of Road with all the hits
+     * @throws IllegalArgumentException If the address is null or "".
      */
     public static DynamicArray<Road> getRoad(String address) throws IllegalArgumentException
     {
