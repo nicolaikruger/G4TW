@@ -21,6 +21,7 @@ var Controller = (function() {
           + document.documentElement.scrollTop;
         }
 
+        // Correct for menu-width
         x -= screen.width * 0.3;
 
         // posX and posY contain the mouse position relative to the document
