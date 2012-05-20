@@ -35,9 +35,10 @@ body, html {
     padding-bottom: 20px;
     padding-left: 10px;
     width: 1000px;
-    height: 700px;
+    height: 500px;
     overflow: auto;
     background-color: #000;
+    color: #FFF;
 }
 
 #nameContent td p {
