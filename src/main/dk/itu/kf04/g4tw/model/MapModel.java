@@ -275,7 +275,7 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
             while(scanner.hasNextLine()) {
                 String[] nextLine = scanner.nextLine().split(",");
                 int fID = Integer.parseInt(nextLine[2])-1;
-                int tID = Integer.parseInt(nextLine[3]);
+                int tID = Integer.parseInt(nextLine[3])-1;
 
                 // Make the graph directed
                 Iterator<Integer> it = roads[fID].iterator();

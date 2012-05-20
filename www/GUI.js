@@ -14,19 +14,16 @@ var Controller = (function() {
 
         for(var i = 0; i < fromRoads.length; i++) {
             if(fromRoads[i].checked) {
-                alert(toRoads[i].value);
                 adr1ID = fromRoads[i].value;
             }
         }
 
         for(var j = 0; j < toRoads.length; j++) {
             if(toRoads[j].checked) {
-                alert(toRoads[j].value);
                 adr2ID = toRoads[j].value;
             }
         }
         var url = "path?adr1=" + fromForm.from.value + "&adr2=" + fromForm.to.value + "&id1=" + adr1ID + "&id2=" + adr2ID;
-        alert(url);
         getXML(url);
     };
 
