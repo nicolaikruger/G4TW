@@ -75,6 +75,20 @@ public class AddressParser {
         return hits;
     }
 
+    private static DynamicArray<Road> sortByPostal(DynamicArray<Road> arr, int postal)
+    {
+        DynamicArray<Road> returnArr = new DynamicArray<Road>();
+
+        // Magic
+        for(int i = 0; i < arr.length(); i++){
+            Road r = arr.get(i);
+            if(r.leftPostalCode == postal || r.rightPostalCode == postal)
+                returnArr.add(r);
+        }
+
+        return returnArr;
+    }
+
     protected static DynamicArray<Road> sortByLetter(DynamicArray<Road> arr, String letter)
     {
         DynamicArray<Road> returnArr = new DynamicArray<Road>();
