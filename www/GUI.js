@@ -99,6 +99,8 @@ var Controller = (function() {
             }
 
             function drawPath () {
+                Model.clearPath();
+
                 var roadIterator = xml.evaluate("//r", xml, null, XPathResult.ANY_TYPE, null);
                 var i = xml.evaluate("//i", xml, null, XPathResult.ANY_TYPE, null);
                 var fx = xml.evaluate("//fx", xml, null, XPathResult.ANY_TYPE, null);
