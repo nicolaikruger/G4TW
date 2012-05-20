@@ -21,6 +21,8 @@ var Controller = (function() {
           + document.documentElement.scrollTop;
         }
 
+        x -= screen.width * 0.3;
+
         // posX and posY contain the mouse position relative to the document
         // Do something with this information
         return Vector(x, y).round(3);

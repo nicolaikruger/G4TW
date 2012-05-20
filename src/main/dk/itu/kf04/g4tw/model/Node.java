@@ -41,7 +41,7 @@ public class Node {
      */
 	public void connectTo(Road r) {
 		for(int i = 0; i < edges.length(); i++) {
-            edges.get(i).addEdge(r);
+            edges.get(i).addEdge(r.id);
         }
 
         edges.add(r);

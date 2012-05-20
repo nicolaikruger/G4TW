@@ -41,8 +41,13 @@ public class Main {
         // Import data
         MapModel model = DataStore.loadRoads();
 
-        // Start the server on port 80
-        new WebServer(model, 80);
+        // Start the server on the given port or, if none, 80
+        int port = 80;
+        try { port = Integer.parseInt(args[0]); }
+        catch (ArrayIndexOutOfBoundsException e) {}
+        catch (NumberFormatException e) {}
+
+        new WebServer(model, port);
     }
 
 }

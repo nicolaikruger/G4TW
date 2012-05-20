@@ -26,13 +26,13 @@ public class DijkstraSPTest {
 		Road EG = new Road(6, "EG",p,p,2,2.0,2, 1, 2, "a", "b", 1, 1); model.addRoad(EG);
 		Road FG = new Road(7, "FG",p,p,2,2.0,5, 1, 2, "a", "b", 1, 1); model.addRoad(FG);
 
-		AAA.addEdge(AB); AAA.addEdge(AAC);
-		AB.addEdge(BD);
-		BD.addEdge(DF);
-		DF.addEdge(FG);
-		AAC.addEdge(CE);
-		CE.addEdge(EG);
-		EG.addEdge(FG);
+		AAA.addEdge(AB.id); AAA.addEdge(AAC.id);
+		AB.addEdge(BD.id);
+		BD.addEdge(DF.id);
+		DF.addEdge(FG.id);
+		AAC.addEdge(CE.id);
+		CE.addEdge(EG.id);
+		EG.addEdge(FG.id);
 
 
 		//DijkstraEdge[] arr = model.Dijkstra(8, AAA, FG);
@@ -56,11 +56,11 @@ public class DijkstraSPTest {
 		Road EG = new Road(6, "EG",p,p,2,2.0,2, 1, 2, "a", "b", 1, 1); model.addRoad(EG);
 		Road FG = new Road(7, "FG",p,p,2,2.0,5, 1, 2, "a", "b", 1, 1); model.addRoad(FG);
 
-		AAA.addEdge(AB); AAA.addEdge(AAC);
-		AB.addEdge(BD);
-		BD.addEdge(DF);
-		AAC.addEdge(CE);
-		EG.addEdge(FG);
+		AAA.addEdge(AB.id); AAA.addEdge(AAC.id);
+		AB.addEdge(BD.id);
+		BD.addEdge(DF.id);
+		AAC.addEdge(CE.id);
+		EG.addEdge(FG.id);
 
 
 		//DijkstraEdge[] arr = model.Dijkstra(8, AAA, FG);
