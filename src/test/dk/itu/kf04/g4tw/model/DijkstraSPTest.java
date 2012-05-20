@@ -8,10 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Black
- * Date: 10-05-12
- * Time: 13:05
+ * Tests the Dijkstra graph searching algorithm.
  */
 public class DijkstraSPTest {
 	@Test

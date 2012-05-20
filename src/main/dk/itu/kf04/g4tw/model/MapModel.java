@@ -24,7 +24,6 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
     public static final int LOCATION       = 128;
     
     protected static final int numberOfRoads = 812301; // Number of roads + 1. ID = index in arrays. (ID starts at 1)
-    protected static final int numberOfTrees = 8;
 
     /**
      * The logger for the class
@@ -58,9 +57,6 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
         setTypeReference(PATH, 8, 28, 48, 10, 11);
         setTypeReference(SEAWAY, 80);
         setTypeReference(LOCATION, 99);
-
-		/*Point2D.Double p = new Point2D.Double(0.0, 0.0);
-		roads[0] = new Road(0, "filler", p, p, 80, 1, 1, 0, 0, "", "", 0, 0);*/
     }
 
     /**
