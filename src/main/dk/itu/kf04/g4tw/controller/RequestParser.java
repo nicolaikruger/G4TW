@@ -149,7 +149,7 @@ public class RequestParser {
 
         // if there ain't exactly 2 arguments in the request, throw an error!
         if(!(inputs.length == 2 || inputs.length == 4))
-            throw new IllegalArgumentException("Must have the format \"adr1=first+address&adr2=second+address\" OR \"adr1=first+address&adr2=second+address&id1=Xid2=Y\"");
+            throw new IllegalArgumentException("Must have the format \"adr1=first address&adr2=second address\" OR \"adr1=first address&adr2=second address&id1=Xid2=Y\"");
 
         // The two addresses from the client
         String adr1 = inputs[0].substring(5);

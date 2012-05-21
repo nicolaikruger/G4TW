@@ -6,6 +6,7 @@ import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.net.*;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.logging.Logger;
@@ -63,7 +64,7 @@ public class WebServer implements Closeable {
         if (model == null)
             throw new IllegalArgumentException("Cannot start server with empty model.");
 
-        if (port <= 0 || port <= 1 << 16)
+        if (port <= 0 || port > 1 << 16)
             throw new IllegalArgumentException("Cannot set port to " + port + ".");
 
         // Store model and port
@@ -143,8 +144,9 @@ public class WebServer implements Closeable {
                 Log.warning("Unsupported encoding: " + e.getMessage());
             } catch (TransformerException e) {
                 Log.warning("Transformer exception: " + e.getMessage());
+            } catch (IllegalArgumentException e) {
+                Log.warning("Malformed request received: " + fileRequest);
             }
-
 
             if (input != null) {
                 contentType = "text/xml";
@@ -165,6 +167,8 @@ public class WebServer implements Closeable {
                 else		                   			contentType = URLConnection.guessContentTypeFromName(fileRequest);
             } catch (IOException e) {
                 Log.warning("Exception while handling " + fileRequest + ": " + e.getMessage());
+            } catch (InvalidPathException e) {
+                Log.warning("Invalid path: "+  fileRequest);
             }
         }
 
@@ -248,8 +252,13 @@ public class WebServer implements Closeable {
         // Avoid printing null data
         if (is != null) {
             // Print HTTP meta-content
-            os.print("HTTP/1.1 200 OK\nServer: KraXServer/1.0\nDate: " + new Date());
-            if (contentType != null) { os.println("Content-Type: " + contentType); }
+            os.println("HTTP/1.1 200 OK");
+            os.println("Server: KraXServer/1.0");
+            os.println("Date: " + new Date());
+            // Print content-type
+            if (contentType != null) {
+                os.println("Content-Type: " + contentType);
+            }
 
             // Create a line between meta-content and content
             os.println();
@@ -262,8 +271,7 @@ public class WebServer implements Closeable {
             }
         }
 
-        // Flush the stream and close it afterwards.
+        // Flush the stream - closing it will close the connection!
         os.flush();
-        os.close();
     }
 }

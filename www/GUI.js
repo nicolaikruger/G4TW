@@ -152,7 +152,7 @@ var Controller = (function() {
                 document.getElementById("toRoads").innerHTML = readXML(2, "toRoad");
 
                 function readXML(i, str) {
-                    var HTML = "";
+                    var HTML;
 
                     var roadIterator = xml.evaluate("error/collection["+i+"]/r", xml, null, XPathResult.ANY_TYPE, null);
                     var id = xml.evaluate("error/collection["+i+"]/r/id", xml, null, XPathResult.ANY_TYPE, null);

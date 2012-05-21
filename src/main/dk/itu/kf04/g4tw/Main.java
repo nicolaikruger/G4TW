@@ -14,8 +14,7 @@ public class Main {
     // General TODOs for the project
     // TODO: Clean up in the javascript code
     // TODO: Make som white- and blackbox testing
-    // TODO: Fix HTML layout
-    // TODO: Fix JavaScript load time
+    // TODO: Adjust colours
     // TODO: Krüger: Comment Road - Especially all the fields
     // TODO: Krüger: Comment Dijkstras methods
     // TODO: Krüger: Compile the turn-file into binary

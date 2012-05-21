@@ -1,11 +1,18 @@
-body {
+body, html {
     font-family: helvetica, sans-serif;
     background-color: #F9F9F9;
-}
-body, html {
-    height: 100%;
-    width: 100%;
     margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+h1, p {
+    color: #FFFFFF;
+    margin-left: 30px;
+}
+
+h1 {
+    font-size:22px;
 }
 
 #loading {
@@ -21,7 +28,7 @@ body, html {
 #name {
     z-index: 1;
     display: none;
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100%;
     background-color: rgba(128, 128, 128, 0.2);
@@ -57,16 +64,16 @@ body, html {
 }
 
 #menu {
-    height: 100%;
+    color: #FFF;
     float: left;
-    background: #333 url('stribe.png') repeat-y 33px 13px;
-    color: black;
-    width: 30%;
+    height: 100%;
+    background: #333 url('stribe.png') repeat-y 43px 0;
+    width: 30%
 }
 
 #logo {
     margin-top: -10px;
-    margin-left: 1px;
+    margin-left: 13px;
 }
 
 #finder{
@@ -74,34 +81,18 @@ body, html {
     padding-left: 47px;
 }
 
-#directions{
-    padding-left: 47px;
-}
-
-#directions p{
-    margin-bottom: 2px;
-}
-
-#directions h1{
-    margin-bottom: -9px;
-}
-
-#fromForm{
-    margin-bottom: -9px;
-}
-
-#toForm{
-    margin-top: -2px;
+#roadFilter, #directions {
+ margin-left: 75px;
 }
 
 #roadFilter{
-    padding-left: 47px;
     position: absolute;
     top: 268px;
 }
 #roadFilter input, #roadFilter label {
     background-color: #333;
     color: #FFFFFF;
+    vertical-align: middle;
 }
 
 #roadFilter input {
@@ -113,13 +104,4 @@ body, html {
     position: absolute;
     left: 8%;
     bottom: 10px;
-}
-
-h1, p {
-    color: #FFFFFF;
-    margin-left: 30px;
-}
-
-h1{
-    font-size:22px;
 }

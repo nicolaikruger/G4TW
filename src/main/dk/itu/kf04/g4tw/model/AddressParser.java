@@ -51,8 +51,6 @@ public class AddressParser {
         // Split the address up into smaller parts
         String[] addressInfo = parseAddress(address);
 
-        System.out.println(addressInfo[0]);
-
         DynamicArray<Road> hits = namedRoads.get(addressInfo[0]);
         if(hits == null)
             hits = new DynamicArray<Road>();
@@ -154,35 +152,7 @@ public class AddressParser {
         return address;
     }
 
-    public static void setNamedRoads(HashMap<String, DynamicArray<Road>> map)
-    {
+    public static void setNamedRoads(HashMap<String, DynamicArray<Road>> map) {
         namedRoads = map;
-        System.out.println("Got the roads!");
-
-        /*Road r1 = null;
-        Road r2 = null;*/
-
-        //System.out.println(getRoad("Strøget 65 A").length());
-        //System.out.println(getRoad("Bispevej 37 R").length());
-
-        /*
-        DynamicArray<Road> da1 = getRoad("Bispevej 37 R");
-        DynamicArray<Road> da2 = getRoad("Bispevej 37 B");
-
-        if(da1.length() == 1)
-            r1 = da1.get(0);
-
-        if(da2.length() == 1)
-            r2 = da2.get(0);
-
-        DijkstraEdge[] path = DijkstraSP.shortestPath(r1, r2);
-        System.out.println("Got the path. Start printing!");
-
-        int prev = r2.getId();
-        do
-        {
-            System.out.println(path[prev] + "-->");
-            prev = path[prev].getId();
-        } while(path[prev] != null);*/
     }
 }

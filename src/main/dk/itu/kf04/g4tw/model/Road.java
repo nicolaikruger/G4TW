@@ -220,11 +220,11 @@ public class Road extends DijkstraEdge {
         road.appendChild(endNum);
 
         Element sLetter = doc.createElement("sl");
-        sLetter.appendChild(doc.createTextNode(String.valueOf(startLetter)));
+        sLetter.appendChild(doc.createTextNode(" " + startLetter)); // Prepend space to avoid empty element
         road.appendChild(sLetter);
 
         Element eLetter = doc.createElement("el");
-        eLetter.appendChild(doc.createTextNode(String.valueOf(endLetter)));
+        eLetter.appendChild(doc.createTextNode(" " + endLetter)); // Prepend space to avoid empty element
         road.appendChild(eLetter);
 
         Element lpc = doc.createElement("lpc"); //Left postal code
