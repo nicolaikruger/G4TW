@@ -1,29 +1,17 @@
 package dk.itu.kf04.g4tw.controller;
 
 import dk.itu.kf04.g4tw.model.MapModel;
-import dk.itu.kf04.g4tw.model.Road;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.geom.Point2D;
 import java.net.URLEncoder;
 
 /**
- * Tests the request parser.
+ * Tests malformed calls to the request parser which always should result in exceptions.
+ * Well formed tests are handled in {@link RequestParserTest}.
  */
 public class RequestParserMalformedTest {
 
     protected MapModel emptyModel = new MapModel();
-    protected MapModel model;
-
-    /**
-     * Setup a model.
-     */
-    @Before public void setUp() {
-        MapModel model = new MapModel();
-        Road r = new Road(12, "A Road", new Point2D.Double(0, 0), new Point2D.Double(-102, 311), MapModel.MINOR_ROAD, 80, 213, 1, 11, "A", "C", 6830, 6830);
-        model.addRoad(r);
-    }
 
     ///////////////////////////// PARSE QUERY ////////////////////////////////////
 

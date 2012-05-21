@@ -25,7 +25,7 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
     public static final int PATH           = 32;
     public static final int SEAWAY         = 64;
     public static final int LOCATION       = 128;
-    
+
     protected static final int numberOfRoads = 812301; // Number of roads + 1. ID = index in arrays. (ID starts at 1)
 
     /**

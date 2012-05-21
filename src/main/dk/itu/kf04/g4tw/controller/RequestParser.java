@@ -187,7 +187,6 @@ public class RequestParser {
             }
         }
 
-
         // Instantiate the builder
         try {
             XMLBuilder builder = new XMLBuilder();
