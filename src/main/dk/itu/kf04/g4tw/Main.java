@@ -19,8 +19,8 @@ public class Main {
     // TODO: Krüger: Comment Dijkstras methods
     // TODO: Krüger: Compile the turn-file into binary
     // TODO: Krüger: Move trim() to RoadParser
-    // TODO: Krüger: Der er en test i AddressParser der fejler - fikser du den? :P
-    // TODO: Krüger: Din test i DijkstraSP er udkommenteret. Er det meningen?
+    // TODO: Jens: Skriv RequestParser test
+    // TODO: Jens: Test for helvede, test!
 
     /**
      * The logging-util for the Main class.
