@@ -5,6 +5,7 @@ import dk.itu.kf04.g4tw.util.DynamicArray;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -15,6 +16,8 @@ import java.util.logging.Logger;
 
 /**
  * Handles request for the web-server via the paseToInputStream method.
+ * @author Nicolai Krüger <nkrk@itu.dk>
+ * @author Jens Egholm <jegp@itu.dk>
  */
 public class RequestParser {
 
@@ -24,8 +27,15 @@ public class RequestParser {
     public static Logger Log = Logger.getLogger(RequestParser.class.getName());
     
     /**
-     * Handles input from the server through the input parameter, decodes it and returns an appropriate
-     * message as an array of bytes, ready to dispatch to the sender.
+     * <p>Handles input from the server through the input parameter, decodes it and returns an appropriate
+     * message as an array of bytes, ready to dispatch to the sender.</p>
+     *
+     * <p>The input must be sent with variables set like so <code>name=value</code> separated with a
+     * <code>&</code>. To be understood correctly the method must be given four variables:
+     * <code>x1, x2, y1, y2 and filter</code>. <br/>
+     * <b>Example:</b> <code>x1=12.4&x2=14.97&y1=0.0&y2=102.5&filter=2</code>.
+     * </p>
+     *
      * @param model  The model to perform searches on
      * @param input  The input string received from the client
      * @return  A series of bytes as a response
@@ -33,7 +43,12 @@ public class RequestParser {
      * @throws UnsupportedEncodingException If the input cannot be understood under utf-8 encoding
      * @throws TransformerException  If we fail to transform the xml-document to actual output
      */
-    public static byte[] parseToInputStream(MapModel model, String input) throws IllegalArgumentException, UnsupportedEncodingException, TransformerException {
+    public static byte[] parseQuery(MapModel model, String input)
+            throws IllegalArgumentException, UnsupportedEncodingException, TransformerException {
+    	// Examine null values
+        if (model == null) throw new IllegalArgumentException("Model cannot be null.");
+        if (input == null || input.equals("")) throw new IllegalArgumentException("Input string may not be " + input + ".");
+
     	// Variables for the request
     	double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
     	int filter = 0;
@@ -69,59 +84,78 @@ public class RequestParser {
 		// Time when the search starts
         long startTime = System.currentTimeMillis();
 
-        // Instantiate the parse
-        XMLBuilder xmlParser = new XMLBuilder();
+        // Instantiate the builder
+        try {
+            XMLBuilder xmlParser = new XMLBuilder();
 
-        // Search the model and concatenate the results with the previous
-        DynamicArray<Road> search = model.search(x1, y1, x2, y2, filter);
+            // Search the model and concatenate the results with the previous
+            DynamicArray<Road> search = model.search(x1, y1, x2, y2, filter);
 
-		// Creates an XML document
-		Document docXML = xmlParser.createDocument();
-        
-        // Creates a roadCollection element inside the root and add namespaces
-        Element roads = docXML.createElement("roadCollection");
-        roads.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        roads.setAttribute("xsi:noNamespaceSchemaLocation", "kraX.xsd");
-        docXML.appendChild(roads);
+            // Creates an XML document
+            Document docXML = xmlParser.createDocument();
 
-		// Iterates through the search array, appending the XML element of the current
-		// road to the roadCollection element. This is creating the XML document.
-		for(int i = 0; i < search.length(); i++) {
-            roads.appendChild(search.get(i).toXML(docXML));
+            // Creates a roadCollection element inside the root and add namespaces
+            Element roads = docXML.createElement("roadCollection");
+            roads.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            roads.setAttribute("xsi:noNamespaceSchemaLocation", "kraX.xsd");
+            docXML.appendChild(roads);
+
+            // Iterates through the search array, appending the XML element of the current
+            // road to the roadCollection element. This is creating the XML document.
+            for(int i = 0; i < search.length(); i++) {
+                roads.appendChild(search.get(i).toXML(docXML));
+            }
+
+            // Create the source
+            Source source = new DOMSource(docXML);
+
+            // Instantiate output-sources
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            Result result            = new StreamResult(os);
+
+            // Instantiate xml-transformers
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer    = factory.newTransformer();
+
+            // Transform the xml
+            transformer.transform(source, result);
+
+            // calculates and prints the time taken.
+            long endTime = System.currentTimeMillis() - startTime;
+            Log.fine("Found and wrote " + search.length() + " roads in : " + endTime + "ms");
+
+            // Return the result-stream as a byte-array
+            return os.toByteArray();
+        } catch (ParserConfigurationException e) {
+            Log.severe("Could not instantiate XML parser.");
+            return null;
         }
-
-        // Create the source
-        Source source = new DOMSource(docXML);
-        
-        // Instantiate output-sources
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        Result result            = new StreamResult(os);
-        
-        // Instantiate xml-transformers
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer    = factory.newTransformer();
-
-        // Transform the xml
-        transformer.transform(source, result);
-        
-		// calculates and prints the time taken.
-		long endTime = System.currentTimeMillis() - startTime;
-		Log.info("Found and wrote " + search.length() + " roads in : " + endTime + "ms");
-
-        // Return the result-stream as a byte-array
-        return os.toByteArray();
     }
 
     /**
-     * Handles input from the server through the input parameter and returns an appropriate
-     * message as an array of bytes, ready to dispatch to the sender.
+     * <p>Handles input from the server through the input parameter and returns an appropriate
+     * message as an array of bytes, ready to dispatch to the sender.</p>
+     *
+     * <p>To parse a path we need a specific input string with variables <code>adr1 and adr2</code> OR
+     * <code>adr1, adr2, id1 and id2</code> set. This accounts for two situations: One where both the
+     * start and destination is known and one where the two given road-names have multiple hits, where
+     * we need to distinguish them by ids.<br />
+     * <b>Example:</b> adr1=Strøget 65 A&adr2=Åboulevarden 62
+     * <b>Example:</b> adr1=Strøget 65 A&adr2=Åboulevarden 62&id1=1323&id2=71539
+     * </p>
+     *
      * @param model  The model to perform the search on
      * @param input  The input string received from the client
      * @return  A series of bytes as a response
      * @throws IllegalArgumentException  If the input is malformed
      * @throws TransformerException  If we fail to transform the xml-document to actual output
      */
-    public static byte[] parsePathToInputStream(MapModel model, String input) throws IllegalArgumentException, TransformerException {
+    public static byte[] parsePath(MapModel model, String input)
+            throws IllegalArgumentException, TransformerException {
+    	// Examine null values
+        if (model == null) throw new IllegalArgumentException("Model cannot be null.");
+        if (input == null || input.equals("")) throw new IllegalArgumentException("Input string may not be " + input + ".");
+
         String[] inputs = input.split("&");
 
         // if there ain't exactly 2 arguments in the request, throw an error!
@@ -166,95 +200,97 @@ public class RequestParser {
 
 
         // Instantiate the builder
-        XMLBuilder builder = new XMLBuilder();
+        try {
+            XMLBuilder builder = new XMLBuilder();
 
-        // Creates an XML document
-        Document docXML = builder.createDocument();
+            // Creates an XML document
+            Document docXML = builder.createDocument();
 
-        // Creates a roadCollection element inside the root.
-        Element roads;
+            // Creates a roadCollection element inside the root.
+            Element roads;
 
-		// One or both of the addresses gave zero hits. User have to give a new address.
-        if(hits1.length() == 0 || hits2.length() == 0) {
-            roads = docXML.createElement("error");
-            roads.setAttribute("type", "1");
-            docXML.appendChild(roads);
+            // One or both of the addresses gave zero hits. User have to give a new address.
+            if(hits1.length() == 0 || hits2.length() == 0) {
+                roads = docXML.createElement("error");
+                roads.setAttribute("type", "1");
+                docXML.appendChild(roads);
 
-            if(hits1.length() == 0) {
-                Element element = docXML.createElement("address");
-                element.appendChild(docXML.createTextNode(adr1));
-                roads.appendChild(element);
-                Log.info("Could not find \"" + adr1 + "\" in the system");
+                if(hits1.length() == 0) {
+                    Element element = docXML.createElement("address");
+                    element.appendChild(docXML.createTextNode(adr1));
+                    roads.appendChild(element);
+                    Log.info("Could not find \"" + adr1 + "\" in the system");
+                }
+
+                if(hits2.length() == 0) {
+                    Element element = docXML.createElement("address");
+                    element.appendChild(docXML.createTextNode(adr2));
+                    roads.appendChild(element);
+                    Log.info("Could not find \"" + adr2 + "\" in the system");
+                }
+
+            // The addresses both gave only one hit. We can find a path.
+            } else if(hits1.length() == 1 && hits2.length() == 1) {
+                Log.info("Trying to find path");
+                Road[] result = (Road[]) model.shortestPath(hits1.get(0), hits2.get(0));
+
+                // Initialize the roadCollection element and add namespaces
+                roads = docXML.createElement("roadCollection");
+                roads.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+                roads.setAttribute("xsi:noNamespaceSchemaLocation", "kraX.xsd");
+                docXML.appendChild(roads);
+
+                // Iterates through the result array, appending the XML element of the current
+                // road to the roadCollection element. This is creating the XML document.
+                int prev = hits2.get(0).getId();
+                roads.appendChild(hits2.get(0).toXML(docXML));
+                while(result[prev] != null) {
+                    roads.appendChild(result[prev].toXML(docXML));
+                    prev = result[prev].getId();
+                }
+
+            // One or both of the addresses gave more than one hit. Make the user decide.
+            } else {
+                roads = docXML.createElement("error");
+                roads.setAttribute("type", "2");
+                docXML.appendChild(roads);
+
+                Element collection = docXML.createElement("collection");
+                roads.appendChild(collection);
+
+                for (int i = 0; i < hits1.length(); i++)
+                {
+                    collection.appendChild(hits1.get(i).toErrorXML(docXML));
+                }
+
+                Element collection2 = docXML.createElement("collection");
+                roads.appendChild(collection2);
+
+                for (int i = 0; i < hits2.length(); i++)
+                {
+                    collection2.appendChild(hits2.get(i).toErrorXML(docXML));
+                }
             }
 
-            if(hits2.length() == 0) {
-                Element element = docXML.createElement("address");
-                element.appendChild(docXML.createTextNode(adr2));
-                roads.appendChild(element);
-                Log.info("Could not find \"" + adr2 + "\" in the system");
-            }
+            // Create the source
+            Source source = new DOMSource(docXML);
 
-		// The addresses both gave only one hit. We can find a path.
-        } else if(hits1.length() == 1 && hits2.length() == 1) {
-            Log.info("Trying to find path");
-            Road[] result = (Road[]) model.shortestPath(hits1.get(0), hits2.get(0));
+            // Instantiate output-sources
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            Result result            = new StreamResult(os);
 
-            // Initialize the roadCollection element and add namespaces
-            roads = docXML.createElement("roadCollection");
-            roads.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            roads.setAttribute("xsi:noNamespaceSchemaLocation", "kraX.xsd");
-            docXML.appendChild(roads);
+            // Instantiate xml-transformers
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer    = factory.newTransformer();
 
-            // Iterates through the result array, appending the XML element of the current
-            // road to the roadCollection element. This is creating the XML document.
-            int prev = hits2.get(0).getId();
-            roads.appendChild(hits2.get(0).toXML(docXML));
-            System.out.println("result[prev]: " + result[prev]);
-            while(result[prev] != null) {
-                roads.appendChild(result[prev].toXML(docXML));
-                prev = result[prev].getId();
-            }
+            // Transform the xml
+            transformer.transform(source, result);
 
-            System.out.println("Start ID: " + hits1.get(0).getId());
-            System.out.println("End ID: " + hits2.get(0).getId());
-		// One or both of the addresses gave more than one hit. Make the user decide.
-        } else {
-            roads = docXML.createElement("error");
-            roads.setAttribute("type", "2");
-            docXML.appendChild(roads);
-
-			Element collection = docXML.createElement("collection");
-			roads.appendChild(collection);
-
-			for (int i = 0; i < hits1.length(); i++)
-			{
-				collection.appendChild(hits1.get(i).toErrorXML(docXML));
-			}
-
-			Element collection2 = docXML.createElement("collection");
-			roads.appendChild(collection2);
-
-			for (int i = 0; i < hits2.length(); i++)
-			{
-				collection2.appendChild(hits2.get(i).toErrorXML(docXML));
-			}
+            // Return the result-stream as a byte-array
+            return os.toByteArray();
+        } catch (ParserConfigurationException e) {
+            Log.severe("Could not instantiate XML parser.");
+            return null;
         }
-
-        // Create the source
-        Source source = new DOMSource(docXML);
-
-        // Instantiate output-sources
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        Result result            = new StreamResult(os);
-
-        // Instantiate xml-transformers
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer    = factory.newTransformer();
-
-        // Transform the xml
-        transformer.transform(source, result);
-
-        // Return the result-stream as a byte-array
-        return os.toByteArray();
     }
 }

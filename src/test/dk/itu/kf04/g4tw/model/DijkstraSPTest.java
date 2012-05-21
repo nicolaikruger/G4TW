@@ -4,15 +4,14 @@ import org.junit.Test;
 
 import java.awt.geom.Point2D;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 /**
  * Tests the Dijkstra graph searching algorithm.
+ *
+ * @author Nicolai Krüger <nkrk@itu.dk>
  */
 public class DijkstraSPTest {
-	@Test
-	public void truePath() throws Exception {
+
+    @Test public void truePath() throws Exception {
 		Point2D.Double p = new Point2D.Double(2.0, 2.0);
 
 		MapModel model = new MapModel();

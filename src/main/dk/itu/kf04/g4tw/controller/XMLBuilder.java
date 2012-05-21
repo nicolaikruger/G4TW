@@ -6,48 +6,42 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
-import java.io.StringWriter;
 
 /**
  * A class used to build XML using the javax.xml library.
+ * @author Alexander Jørgensen <akir@itu.dk>
+ * @author Jens Egholm <jegp@itu.dk>
  */
 public class XMLBuilder {
 
     /**
 	 * DocumentBuilder used to create fresh documents for further use.
 	 */
-	DocumentBuilderFactory dbFac;
-	DocumentBuilder docBuilder;
+	protected DocumentBuilderFactory dbFac;
+	protected DocumentBuilder docBuilder;
 
 	/**
 	 * Transformer used when translating Java objects to XML strings
 	 */
-	TransformerFactory transformerFactory;
-	Transformer transformer;
+	protected TransformerFactory transformerFactory;
+	protected Transformer transformer;
 
 	/**
 	 * Sets up the XMLBuilder for further use.
+     * @throws TransformerConfigurationException  If the configuration went wrong.
+     * @throws ParserConfigurationException  If the parser-configuration went wrong.
 	 */
-	public XMLBuilder() {
-		try {
-			// Creating a document builder
-			dbFac = DocumentBuilderFactory.newInstance();
-			docBuilder = dbFac.newDocumentBuilder();
+	public XMLBuilder() throws ParserConfigurationException, TransformerConfigurationException {
+        // Creating a document builder
+        dbFac = DocumentBuilderFactory.newInstance();
+        docBuilder = dbFac.newDocumentBuilder();
 
-			// Setup a transformer
-			// This is defining the properties that are needed by the transformer.
-			transformerFactory = TransformerFactory.newInstance();
-			transformer = transformerFactory.newTransformer();
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		} catch (TransformerException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		}
+        // Setup a transformer
+        // This is defining the properties that are needed by the transformer.
+        transformerFactory = TransformerFactory.newInstance();
+        transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 	}
 
 	/**
@@ -56,6 +50,8 @@ public class XMLBuilder {
 	 *
 	 * @return A freshly created document
 	 */
-	public Document createDocument() {return docBuilder.newDocument();}
+	public Document createDocument() {
+        return docBuilder.newDocument();
+    }
 
 }

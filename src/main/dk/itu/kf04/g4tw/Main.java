@@ -21,6 +21,7 @@ public class Main {
     // TODO: Krüger: Compile the turn-file into binary
     // TODO: Krüger: Move trim() to RoadParser
     // TODO: Krüger: Der er en test i AddressParser der fejler - fikser du den? :P
+    // TODO: Krüger: Din test i DijkstraSP er udkommenteret. Er det meningen?
 
     /**
      * The logging-util for the Main class.
@@ -47,6 +48,7 @@ public class Main {
         catch (ArrayIndexOutOfBoundsException e) {}
         catch (NumberFormatException e) {}
 
+        // Create the server instance.
         new WebServer(model, port);
     }
 

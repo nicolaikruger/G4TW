@@ -128,8 +128,11 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
      * @param type The type of roads to search in
      * @return  An array containing the search result
      */
-	public DynamicArray<Road> search(double xMin, double yMin, double xMax, double yMax, int type)
-	{
+	public DynamicArray<Road> search(double xMin, double yMin, double xMax, double yMax, int type) {
+
+        // Test input - avoid empty searches
+        if (type < 1 || type >= 256) throw new IllegalArgumentException("Unable to search in roads of type " + type + ".");
+
         DynamicArray<Road> results = new DynamicArray<Road>();
         for (Map.Entry<Integer, Tree2D> entry : roadTrees.entrySet()) {
             int key = entry.getKey();

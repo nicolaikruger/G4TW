@@ -12,9 +12,16 @@ import java.util.logging.Logger;
 
 /**
  * A WebServer that can respond to incoming HTTP requests.
+ * @author Nicolai Krüger <nkrk@itu.dk>
+ * @author Jens Egholm <jegp@itu.dk>
  */
 public class WebServer implements Closeable {
 
+    /**
+     * Number of attempts to start the server. 
+     */
+    protected int attempts = 0;
+    
     /**
      * Tests whether the server already has been started.
      */
@@ -48,9 +55,18 @@ public class WebServer implements Closeable {
     /**
      * Creates a new webserver with the given model on the given point
      * @param model  The model to perform the searches on.
-     * @param port  The port to listen on.               
+     * @param port  The port to listen on.
+     * @throws IllegalArgumentException If the model is null or the port is out of range
      */
-    public WebServer(MapModel model, int port) {
+    public WebServer(MapModel model, int port) throws IllegalArgumentException {
+        // Check arguments
+        if (model == null)
+            throw new IllegalArgumentException("Cannot start server with empty model.");
+
+        if (port <= 0 || port <= 1 << 16)
+            throw new IllegalArgumentException("Cannot set port to " + port + ".");
+
+        // Store model and port
         this.model = model;
         this.port = port;
         
@@ -69,12 +85,6 @@ public class WebServer implements Closeable {
             Log.warning("Exception occurred when attempting to shut down server: " + e.getMessage());
         }
     }
-
-    /**
-     * Returns the port of the WebServer.
-     * @return int  The port the WebServer listens to when initialized.
-     */
-    public int getPort() { return port; }
 
     /**
      * Handles a given request and respond appropriate output to the given PrintStream.
@@ -109,7 +119,7 @@ public class WebServer implements Closeable {
         if (fileRequest.startsWith("xml?")) {
             try {
                 // Set input stream via
-                input = RequestParser.parseToInputStream(model, fileRequest.substring(4, fileRequest.length()));
+                input = RequestParser.parseQuery(model, fileRequest.substring(4, fileRequest.length()));
             } catch (IllegalArgumentException e) {
                 Log.warning("Illegal argument: " + e.getMessage());
             } catch (UnsupportedEncodingException e) {
@@ -128,7 +138,7 @@ public class WebServer implements Closeable {
             try {
                 fileRequest = URLDecoder.decode(fileRequest, "UTF-8");
                 fileRequest = fileRequest.substring(5);
-                input = RequestParser.parsePathToInputStream(model, fileRequest);
+                input = RequestParser.parsePath(model, fileRequest);
             } catch (UnsupportedEncodingException e) {
                 Log.warning("Unsupported encoding: " + e.getMessage());
             } catch (TransformerException e) {
@@ -205,6 +215,17 @@ public class WebServer implements Closeable {
                 s.shutdownOutput();
                 s.close();
             }
+        // BindException - attempt to restart server
+        } catch (BindException e) {
+            if (attempts < 5) {
+                Log.warning("Unable to bind to local address or port. Retrying...");
+                attempts++;
+                port++;
+                init();
+            } else {
+                Log.severe("Unable to bind to local address or port after 5 retries.");
+                isInitialized = false;
+            }
         // SocketException
         } catch (SocketException e) {
             Log.warning("SocketException while starting the server: " + e);
@@ -223,24 +244,26 @@ public class WebServer implements Closeable {
      * @param is  The input stream of the response
      * @param os  The output stream to the client
      */
-    protected void respond(String contentType, byte[] is, PrintStream os) {
-        // Print HTTP meta-content
-        os.println("HTTP/1.1 200 OK");
-        os.println("Server: KraXServer/1.0");
-        os.println("Date: " + new Date());
-        if (contentType != null) { os.println("Content-Type: " + contentType); }
-        // Create a line between meta-content and content
-        os.println();
+    protected static void respond(String contentType, byte[] is, PrintStream os) {
+        // Avoid printing null data
+        if (is != null) {
+            // Print HTTP meta-content
+            os.print("HTTP/1.1 200 OK\nServer: KraXServer/1.0\nDate: " + new Date());
+            if (contentType != null) { os.println("Content-Type: " + contentType); }
 
-        // Send object
-        try {
-            os.write(is);
-        } catch (IOException e) { // IOException
-            Log.warning("IOException while writing to client: " + e.getMessage());
+            // Create a line between meta-content and content
+            os.println();
+
+            // Send object
+            try {
+                os.write(is);
+            } catch (IOException e) { // IOException
+                Log.warning("IOException while writing to client: " + e.getMessage());
+            }
         }
 
-
-        // Flush the stream
+        // Flush the stream and close it afterwards.
         os.flush();
+        os.close();
     }
 }
