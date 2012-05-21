@@ -1,6 +1,5 @@
 package dk.itu.kf04.g4tw.util;
 
-import dk.itu.kf04.g4tw.model.AddressParser;
 import dk.itu.kf04.g4tw.model.MapModel;
 import dk.itu.kf04.g4tw.model.Node;
 import dk.itu.kf04.g4tw.model.Road;
@@ -10,7 +9,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 /**
@@ -28,27 +30,30 @@ public class RoadParser {
      * 
      * @param nodes  The file to load the Nodes from.
      * @param edges  The file to load the edges from.
+     * @param turn  The file to direct the graph with.
      * @return A MapModel containing the loaded data
+     * @throws FileNotFoundException If one or more of the data-files could not be found.
      * @see MapModel
      * @see RoadParser
      */
-    public static MapModel load(File nodes, File edges) {
+    public static MapModel load(File nodes, File edges, File turn) throws FileNotFoundException {
         // Create the model
         MapModel model = new MapModel();
 
-        try {
-            // Log time
-            long start = System.currentTimeMillis();
-            
-            // Parse the nodes and edges
-            HashMap<Integer, Node> nodeMap = parseNodes(nodes);
-            int nr = parseEdges(edges, nodeMap, model);
-            
-            // Log success
-            Log.info("Successfully loaded " + nr + " roads in " + (System.currentTimeMillis() - start) + "ms.");
-        } catch (FileNotFoundException e) {
-            Log.warning("Exception while processing map-data, model might be empty: " + e.getMessage());
-        }
+        // Log the time
+        long start = System.currentTimeMillis();
+
+        // Parse the nodes
+        HashMap<Integer, Node> nodeMap = parseNodes(nodes);
+
+        // Parse the edges
+        int numberOfRoads = parseEdges(edges, nodeMap, model);
+        
+        // Direct the model
+        trim(turn, model);
+
+        // Log success
+        Log.info("Successfully loaded " + numberOfRoads + " roads in " + (System.currentTimeMillis() - start) + "ms.");
 
         // Return
         return model;
@@ -182,51 +187,11 @@ public class RoadParser {
         // Close the scanner
         scanner.close();
 
-        // Directs the model
-        trim(model);
-
         // Log success
         Log.fine("Successfully loaded Map edges into model.");
 
         // Return number of roads
         return id + 1;
-    }
-
-    /**
-     * Directs the graph, by following the turn.txt file
-     * @param model The model to direct
-     */
-    protected static void trim(MapModel model)
-    {
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(new FileReader("turn.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            scanner.nextLine();
-            while(scanner.hasNextLine())
-            {
-                String[] nextLine = scanner.nextLine().split(",");
-                int fID = Integer.parseInt(nextLine[2]);
-                int tID = Integer.parseInt(nextLine[3]);
-
-                // Make the graph directed
-                Iterator<Integer> it = model.getRoads()[fID].iterator();
-                while(it.hasNext()) {
-                    if(model.getRoad(it.next()).id == tID) {
-                        it.remove();
-                        break;
-                    }
-                }
-            }
-        } catch (NullPointerException e) {
-            Log.warning("Unable to direct graph - error in reading: " + e.getMessage());
-        } finally {
-            scanner.close();
-        }
     }
 
     /**
@@ -263,4 +228,43 @@ public class RoadParser {
         
         return nodeMap;
     }
+
+    /**
+     * Directs the graph, by following the turn.txt file
+     * @param file  The file with the directed graph-data.
+     * @param model The model to direct
+     */
+    protected static void trim(File file, MapModel model)
+    {
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            scanner.nextLine();
+            while(scanner.hasNextLine())
+            {
+                String[] nextLine = scanner.nextLine().split(",");
+                int fID = Integer.parseInt(nextLine[2]);
+                int tID = Integer.parseInt(nextLine[3]);
+
+                // Make the graph directed
+                Iterator<Integer> it = model.getRoads()[fID].iterator();
+                while(it.hasNext()) {
+                    if(model.getRoad(it.next()).id == tID) {
+                        it.remove();
+                        break;
+                    }
+                }
+            }
+        } catch (NullPointerException e) {
+            Log.warning("Unable to direct graph - error in reading: " + e.getMessage());
+        } finally {
+            scanner.close();
+        }
+    }
+
 }

@@ -12,25 +12,39 @@ import java.util.logging.Logger;
  */
 public class DataStore {
 
-    protected static final File dataFile = new File("data.bin");
-    
-    public static Logger Log = Logger.getLogger(DataStore.class.getName());
+    /**
+     * The data-file in which to store the binary compressed data.
+     */
+    static final File dataFile = new File("data.bin");
 
     /**
-     * Retrieves the data from the krak data-files and stores them in two binary files - roads.bin for
-     * roads and edges.bin for edges.
-     * @param args  The arguments for the run method.
+     * The nodes, i. e. the points, on the map.
      */
-    public static void main(String[] args) {          
-        storeRoads();
-    }
+    static final File nodes = new File("kdv_node_unload.txt");
+
+    /**
+     * The edges, i. e. the roads, on the map.
+     */
+    static final File edges = new File("kdv_unload.txt");
+
+    /**
+     * The file containing directed information about the roads.
+     */
+    static final File turn  = new File("turn.txt");
+
+    /**
+     * The logger for the DataStore.
+     */
+    public static Logger Log = Logger.getLogger(DataStore.class.getName());
 
     /**
      * This method loads the roads and edges from the data-files generated in the main method above
      * and adds them to the {@link MapModel}.
      * @return  A MapModel containing the fetched data.
+     * @throws IOException When encountering an IOException.
+     * @throws ClassNotFoundException If the binary loading fails to cast to the right class.
      */
-    public static MapModel loadRoads() {
+    public static MapModel loadRoads() throws IOException, ClassNotFoundException {
         // Create the model
         MapModel model = new MapModel();
 
@@ -41,40 +55,32 @@ public class DataStore {
         if (!dataFile.exists()) {
             Log.info("Could not locate " + dataFile + ". Compiling data anew.");
             storeRoads();
+        } else {
+            Log.info("Loading map-data from " + dataFile + ".");
         }
-        
-        // Load roads and edges
-        try {
-            // Create the stream from the data file
-            ObjectInputStream is = new ObjectInputStream(new FileInputStream(dataFile));
 
-            // Read the roads
-            model.readExternal(is);
-            
-            // Close stream
-            is.close();
+        // Create the stream from the data file
+        ObjectInputStream is = new ObjectInputStream(new FileInputStream(dataFile));
 
-            // Log success!
-            Log.info("Map-data successfully loaded in " + ((System.currentTimeMillis() - start)) + "ms.");
+        // Read the roads
+        model.readExternal(is);
 
-        } catch (FileNotFoundException e) {
-            Log.severe("Error loading data. Could not locate file: " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            Log.severe("Error loading data. Data was malformed: " + e.getMessage());
-        } catch (IOException e) {
-            Log.severe("Error loading data, bad format: " + e.getMessage());
-        }
+        // Close stream
+        is.close();
+
+        // Log success!
+        Log.info("Map-data successfully loaded in " + ((System.currentTimeMillis() - start)) + "ms.");
 
         // Return the model
         return model;
     }
 
     /**
-     * Stores the MapModel
+     * Stores the MapModel in a binary data-file loaded from the
+     * @throws FileNotFoundException If one or more of the data-files could not be found. 
      */
-    public static void storeRoads() {
-        // Load the roads
-        MapModel model = RoadParser.load(new File("kdv_node_unload.txt"), new File("kdv_unload.txt"));
+    public static void storeRoads() throws FileNotFoundException {
+        MapModel model = RoadParser.load(nodes, edges, turn);
 
         // Log status
         Log.info("Starting binary compression of data...");

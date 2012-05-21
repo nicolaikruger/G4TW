@@ -3,6 +3,8 @@ package dk.itu.kf04.g4tw;
 import dk.itu.kf04.g4tw.controller.WebServer;
 import dk.itu.kf04.g4tw.model.MapModel;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,10 +34,12 @@ public class Main {
      * @param args  The arguments to feed the application.
      */
     public static void main(String[] args) {
+        // Initialize port
+        int port;
+
         // Set properties
         System.setProperty("file.encoding", "ISO8859_1");
         Log.setLevel(Level.ALL);
-        int port;
 
         // Examine input
         if (args.length > 0) {
@@ -62,29 +66,36 @@ public class Main {
         }
 
         // Log program start
-        System.out.print("***********************************\n");
-        System.out.print("*** G4TW Map Server Application ***\n");
-        System.out.print("***   Compiled 22nd May 2012    ***\n");
-        System.out.print("***        Version 1.0          ***\n");
-        System.out.print("***********************************\n\n");
-
-        Log.info("Importing map-data...");
+        System.out.println("***********************************");
+        System.out.println("*** G4TW Map Server Application ***");
+        System.out.println("***   Compiled 22nd May 2012    ***");
+        System.out.println("***        Version 1.0          ***");
+        System.out.println("***********************************");
         
-        // Import data
-        MapModel model = DataStore.loadRoads();
-
-        // Create the server instance.
-        new WebServer(model, port);
+        // Try to initialize the program 
+        try {
+            // Import data
+            MapModel model = DataStore.loadRoads();
+    
+            // Create the server instance.
+            new WebServer(model, port);
+        } catch (FileNotFoundException e) {
+            Log.severe("Critical error: Unable to find data-file: " + e.getMessage());
+        } catch (IOException e) {
+            Log.severe("Critical error: IOException while loading data: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            Log.severe("Critical error: Could not load binary file. Please delete the current version and run the program again.");
+        }
     }
     
     protected static String helpText() {
         return "G4TW Map Server Application, version 1.0\n" +
-                "Usage: Main [PORT|OPTION]\n" +
-                "A Map Server Application which loads data from kdv-data files and serves them through a HTML5-interface at the given port, defaulting to 80.\n" +
-                "Port: A number between 1 and 65536 on which port the server listens." +
+                "Usage: java -jar Main.jar [ PORT | OPTION ]\n" +
+                "A Map Server Application which loads data from kdv-data files and serves them through a HTML5-interface at the given port, defaulting to 80.\n\n" +
+                "Port: A number between 1 and 65536 on which port the server listens.\n" +
                 "Options:\n" +
-                "\t\thelp\tDisplays this help text\n" +
-                "\t\tversion\nDisplays the version of the software";
+                "\thelp\tDisplays this help text.\n" +
+                "\tversion\tDisplays the version of the software.";
     }
 
 }
