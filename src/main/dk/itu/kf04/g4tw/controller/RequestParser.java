@@ -86,13 +86,13 @@ public class RequestParser {
 
         // Instantiate the builder
         try {
-            XMLBuilder xmlParser = new XMLBuilder();
+            XMLBuilder builder = new XMLBuilder();
 
             // Search the model and concatenate the results with the previous
             DynamicArray<Road> search = model.search(x1, y1, x2, y2, filter);
 
             // Creates an XML document
-            Document docXML = xmlParser.createDocument();
+            Document docXML = builder.createDocument();
 
             // Creates a roadCollection element inside the root and add namespaces
             Element roads = docXML.createElement("roadCollection");
@@ -106,26 +106,15 @@ public class RequestParser {
                 roads.appendChild(search.get(i).toXML(docXML));
             }
 
-            // Create the source
-            Source source = new DOMSource(docXML);
-
-            // Instantiate output-sources
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            Result result            = new StreamResult(os);
-
-            // Instantiate xml-transformers
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer    = factory.newTransformer();
-
-            // Transform the xml
-            transformer.transform(source, result);
+            // Get the result as a byte-array
+            byte[] result = documentToByteArray(docXML, builder.getTransformer());
 
             // calculates and prints the time taken.
             long endTime = System.currentTimeMillis() - startTime;
             Log.fine("Found and wrote " + search.length() + " roads in : " + endTime + "ms");
 
             // Return the result-stream as a byte-array
-            return os.toByteArray();
+            return result;
         } catch (ParserConfigurationException e) {
             Log.severe("Could not instantiate XML parser.");
             return null;
@@ -165,15 +154,15 @@ public class RequestParser {
         // The two addresses from the client
         String adr1 = inputs[0].substring(5);
         String adr2 = inputs[1].substring(5);
-        int id1, id2;
 
         // Array over all the roads that match the address.
         DynamicArray<Road> hits1 = AddressParser.getRoad(adr1);
         DynamicArray<Road> hits2 = AddressParser.getRoad(adr2);
 
+        // Use ID's if they are defined
         if(inputs.length == 4) {
-            id1 = Integer.parseInt(inputs[2].substring(4));
-            id2 = Integer.parseInt(inputs[3].substring(4));
+            int id1 = Integer.parseInt(inputs[2].substring(4));
+            int id2 = Integer.parseInt(inputs[3].substring(4));
 
 			// If the fromRoad has been specified by an ID, use that road
             if(hits1.length() > 1) {
@@ -230,9 +219,9 @@ public class RequestParser {
                 }
 
             // The addresses both gave only one hit. We can find a path.
-            } else if(hits1.length() == 1 && hits2.length() == 1) {
-                Log.info("Trying to find path");
-                Road[] result = (Road[]) model.shortestPath(hits1.get(0), hits2.get(0));
+            } else if (hits1.length() == 1 && hits2.length() == 1) {
+                Log.fine("Trying to find path");
+                Road[] result = model.shortestPath(hits1.get(0), hits2.get(0));
 
                 // Initialize the roadCollection element and add namespaces
                 roads = docXML.createElement("roadCollection");
@@ -272,25 +261,33 @@ public class RequestParser {
                 }
             }
 
-            // Create the source
-            Source source = new DOMSource(docXML);
-
-            // Instantiate output-sources
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            Result result            = new StreamResult(os);
-
-            // Instantiate xml-transformers
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer    = factory.newTransformer();
-
-            // Transform the xml
-            transformer.transform(source, result);
-
-            // Return the result-stream as a byte-array
-            return os.toByteArray();
+            // Return the result as a byte-array
+            return documentToByteArray(docXML, builder.getTransformer());
         } catch (ParserConfigurationException e) {
             Log.severe("Could not instantiate XML parser.");
             return null;
         }
+    }
+
+    /**
+     * Converts a document to an array of bytes.
+     * @param doc  The document to transform.
+     * @param transformer  The transformer used to convert the document to a result stream.
+     * @return An array of bytes containing the document.
+     * @throws TransformerException  If the transformation fails.
+     */
+    protected static byte[] documentToByteArray(Document doc, Transformer transformer) throws TransformerException{
+        // Create the source
+        Source source = new DOMSource(doc);
+
+        // Instantiate output-sources
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Result result            = new StreamResult(os);
+
+        // Transform the xml
+        transformer.transform(source, result);
+
+        // Return the result-stream as a byte-array
+        return os.toByteArray();
     }
 }

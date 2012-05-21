@@ -9,5 +9,10 @@ import org.junit.runners.Suite;
  * @author Jens Egholm <jegp@itu.dk>
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( {WebServerTest.class, XMLBuilderTest.class} )
+@Suite.SuiteClasses({
+        RequestParserTest.class,
+        RequestParserMalformedTest.class,
+        WebServerTest.class,
+        XMLBuilderTest.class
+})
 public class ControllerSuite { }

@@ -71,22 +71,6 @@ public class RequestParserMalformedTest {
     public void queryMalformedLetterTest() throws Exception {
         RequestParser.parseQuery(emptyModel, "x1=A&x2=2&y1=C&y2=4&filter=X");
     }
-    
-    /**
-     * Test a malformed request - wrong order.
-     * @throws Exception If something unexpected happens.
-     */
-    @Test public void queryMalformedOrderTest() throws Exception {
-        RequestParser.parseQuery(emptyModel, "y2=1.2&x2=2&x1=2&x2=4&filter=3");
-    }
-    
-    /**
-     * Test a malformed request - wrong variable names.
-     * @throws Exception If something unexpected happens.
-     */
-    @Test public void queryMalformedNameTest() throws Exception {
-        RequestParser.parseQuery(emptyModel, "y3=1.2&x2=2&x1=2&x2=4&filter=16");
-    }
 
     /**
      * Test a malformed request - wrong filter value.
@@ -143,7 +127,7 @@ public class RequestParserMalformedTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void requestNullTest() throws Exception {
-        RequestParser.parseQuery(emptyModel, null);
+        RequestParser.parsePath(emptyModel, null);
     }
 
     /**
@@ -152,50 +136,7 @@ public class RequestParserMalformedTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void requestMalformedParameterTest() throws Exception {
-        RequestParser.parseQuery(emptyModel, "x1=1&y1=2&x1=3&filter=1");
-    }
-
-    /**
-     * Test a malformed request - letters.
-     * @throws Exception If something unexpected happens.
-     */
-    @Test (expected = IllegalArgumentException.class)
-    public void requestMalformedLetterTest() throws Exception {
-        RequestParser.parseQuery(emptyModel, "x1=A&x2=2&y1=C&y2=4&filter=X");
-    }
-
-    /**
-     * Test a malformed request - wrong order.
-     * @throws Exception If something unexpected happens.
-     */
-    @Test public void requestMalformedOrderTest() throws Exception {
-        RequestParser.parseQuery(emptyModel, "y2=1.2&x2=2&x1=2&x2=4&filter=3");
-    }
-
-    /**
-     * Test a malformed request - wrong variable names.
-     * @throws Exception If something unexpected happens.
-     */
-    @Test public void requestMalformedNameTest() throws Exception {
-        RequestParser.parseQuery(emptyModel, "y3=1.2&x2=2&x1=2&x2=4&filter=16");
-    }
-
-    /**
-     * Test a malformed request - wrong filter value.
-     * @throws Exception If something unexpected happens.
-     */
-    @Test (expected = IllegalArgumentException.class)
-    public void requestMalformedFilterValueTest1() throws Exception {
-        RequestParser.parseQuery(emptyModel, "y3=1.2&x2=2&x1=2&x2=4&filter=3000");
-    }
-
-    /**
-     * Test a malformed request - wrong filter value.
-     * @throws Exception If something unexpected happens.
-     */
-    @Test (expected = IllegalArgumentException.class)
-    public void requestMalformedFilterValueTest2() throws Exception {
-        RequestParser.parseQuery(emptyModel, "y3=1.2&x2=2&x1=2&x2=4&filter=0");
+        RequestParser.parsePath(emptyModel, "adr1=Tomsgårdsvej 12");
     }
 
     /**
@@ -204,9 +145,9 @@ public class RequestParserMalformedTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void requestMalformedDecodingTest() throws Exception {
-        String input = "y3=1.2&x2=2&x1=2&x2=4&filter=0";
+        String input = "adr1=Ællingekjæret 18&adr2=Øresundslæ 150 A";
         String encoded = URLEncoder.encode(input, "Cp1252"); // Windows Latin-1
-        RequestParser.parseQuery(emptyModel, encoded);
+        RequestParser.parsePath(emptyModel, encoded);
     }
 
 }

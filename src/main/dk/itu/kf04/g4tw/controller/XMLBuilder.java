@@ -54,4 +54,12 @@ public class XMLBuilder {
         return docBuilder.newDocument();
     }
 
+    /**
+     * Retrieves the Transformer for this builder.
+     * @return  The transformer-instance used by this builder.
+     */
+    public Transformer getTransformer() {
+        return transformer;
+    }
+
 }

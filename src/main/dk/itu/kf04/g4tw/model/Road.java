@@ -164,65 +164,75 @@ public class Road extends DijkstraEdge {
 		Element road = doc.createElement("r");
 
 		Element idElement = doc.createElement("i");
-		idElement.appendChild(doc.createTextNode("" + id));
+		idElement.appendChild(doc.createTextNode(String.valueOf(id)));
 		road.appendChild(idElement);
 
 		Element typeElement = doc.createElement("t");
-		typeElement.appendChild(doc.createTextNode("" + type));
+		typeElement.appendChild(doc.createTextNode(String.valueOf(type)));
 		road.appendChild(typeElement);
 
 		Element fxElement = doc.createElement("fx");
-		fxElement.appendChild(doc.createTextNode("" + from.x));
+		fxElement.appendChild(doc.createTextNode(String.valueOf(from.x)));
 		road.appendChild(fxElement);
 
 		Element fyElement = doc.createElement("fy");
-		fyElement.appendChild(doc.createTextNode("" + from.y));
+		fyElement.appendChild(doc.createTextNode(String.valueOf(from.y)));
 		road.appendChild(fyElement);
 
 		Element txElement = doc.createElement("tx");
-		txElement.appendChild(doc.createTextNode("" + to.x));
+		txElement.appendChild(doc.createTextNode(String.valueOf(to.x)));
 		road.appendChild(txElement);
 
 		Element tyElement = doc.createElement("ty");
-		tyElement.appendChild(doc.createTextNode("" + to.y));
+		tyElement.appendChild(doc.createTextNode(String.valueOf(to.y)));
 		road.appendChild(tyElement);
 
 		return road;
 	}
 
+    /**
+     * Converts a road into an XML element which contains additional information so the user
+     * can handle collisions from the search-string given to the server. 
+     * <br />
+     * Like the <code>toXML</code> the resulting element can be inserted into a document making 
+     * searching and printing faster.
+     *
+     * @param doc The document used to create the elements
+     * @return The road converted to an XML element.
+     */
     public Element toErrorXML(Document doc) {
         Element road = doc.createElement("r");
 
 		Element ID = doc.createElement("id");
-		ID.appendChild(doc.createTextNode("" + id));
+		ID.appendChild(doc.createTextNode(String.valueOf(id)));
 		road.appendChild(ID);
 
 		Element name = doc.createElement("n");
-		name.appendChild(doc.createTextNode("" + this.name));
+		name.appendChild(doc.createTextNode(String.valueOf(this.name)));
 		road.appendChild(name);
 
 		Element startNum = doc.createElement("sn");
-        startNum.appendChild(doc.createTextNode("" + startNumber));
+        startNum.appendChild(doc.createTextNode(String.valueOf(startNumber)));
         road.appendChild(startNum);
 
         Element endNum = doc.createElement("en");
-        endNum.appendChild(doc.createTextNode("" + endNumber));
+        endNum.appendChild(doc.createTextNode(String.valueOf(endNumber)));
         road.appendChild(endNum);
 
         Element sLetter = doc.createElement("sl");
-        sLetter.appendChild(doc.createTextNode(" " + startLetter));
+        sLetter.appendChild(doc.createTextNode(String.valueOf(startLetter)));
         road.appendChild(sLetter);
 
         Element eLetter = doc.createElement("el");
-        eLetter.appendChild(doc.createTextNode(" " + endLetter));
+        eLetter.appendChild(doc.createTextNode(String.valueOf(endLetter)));
         road.appendChild(eLetter);
 
         Element lpc = doc.createElement("lpc"); //Left postal code
-        lpc.appendChild(doc.createTextNode("" + leftPostalCode));
+        lpc.appendChild(doc.createTextNode(String.valueOf(leftPostalCode)));
         road.appendChild(lpc);
 
         Element rpc = doc.createElement("rpc"); // right postal code
-        rpc.appendChild(doc.createTextNode("" + rightPostalCode));
+        rpc.appendChild(doc.createTextNode(String.valueOf(rightPostalCode)));
         road.appendChild(rpc);
 
         return road;
