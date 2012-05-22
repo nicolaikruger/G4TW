@@ -6,16 +6,29 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- *
+ * Makes it possible to find the shortest path within a graph of T by using the Dijkstra's algorithm
  */
 public abstract class DijkstraSP<T extends DijkstraEdge> {
 
     public abstract T getEdge(int i);
-    
+
+    /**
+     * Calls onLiner, but with a fixed number for N
+     * @see DijkstraSP.onLiner(int N, T from, T to);
+     */
     public T[] shortestPath(T from, T to) {
         return onLiner(MapModel.numberOfRoads, from, to);
     }
 
+    /**
+     * Perform a shortest path search with Dijkstra's algorithm on a given graph of T.
+     * @param N     Number of nodes in the graph
+     * @param from  The start node
+     * @param to    The end node
+     * @return      Returns a array of T with the previous node. If A leads to B, then array[B.ID] = A.
+     *              The start node has no previous, so array[from.ID] = null.
+     *              If no path could be found, null will be returned.
+     */
     protected T[] onLiner(int N, T from, T to)
     {
         final double[] dist = new double[N]; // Holds the distance from a node back to the starting node
