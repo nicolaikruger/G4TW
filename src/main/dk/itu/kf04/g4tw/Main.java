@@ -13,9 +13,6 @@ import java.util.logging.Logger;
  */
 public class Main {
 
-    // General TODOs for the project
-    // TODO: Adjust colours
-
     /**
      * The logging-util for the Main class.
      */
