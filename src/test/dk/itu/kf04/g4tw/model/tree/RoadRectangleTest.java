@@ -17,19 +17,19 @@ public class RoadRectangleTest {
     @Before
     public void setUp() { r1 = null; r2 = null; }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void sameValueTest() {
         new RoadRectangle(0, 0, 0, 0);
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void sameXValueTest() {
-        new RoadRectangle(0, -12313.42, 0, 71023.12);
+        r1 = new RoadRectangle(0, -12313.42, 0, 71023.12);
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void sameYValueTest() {
-        new RoadRectangle(92721.3, 0, -123312.14, 0);
+        r1 = new RoadRectangle(92721.3, 0, -123312.14, 0);
     }
 
     @Test public void storeCorrectValueTest() {

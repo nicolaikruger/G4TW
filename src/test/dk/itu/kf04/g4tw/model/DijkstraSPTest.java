@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import java.awt.geom.Point2D;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+
 /**
  * Tests the Dijkstra graph searching algorithm.
  *
@@ -35,10 +38,10 @@ public class DijkstraSPTest {
 		EG.addEdge(FG.id);
 
 
-		//DijkstraEdge[] arr = model.Dijkstra(8, AAA, FG);
+		DijkstraEdge[] arr = model.onLiner(8, AAA, FG);
 		int prev = FG.getId();
 
-		//assertEquals(DF, arr[prev]);
+		assertEquals(DF, arr[prev]);
 	}
 
 	@Test
@@ -64,9 +67,9 @@ public class DijkstraSPTest {
 		EG.addEdge(FG.id);
 
 
-		//DijkstraEdge[] arr = model.Dijkstra(8, AAA, FG);
+		DijkstraEdge[] arr = model.onLiner(8, AAA, FG);
 		int prev = FG.getId();
 
-		//assertNull(arr[prev]);
+		assertNull(arr[prev]);
 	}
 }

@@ -87,7 +87,6 @@ public abstract class DijkstraSP<T extends DijkstraEdge> {
 			// If the ID of node U is the same as the ID of the end node, the path has been found.
 			// no need to continue the search.
             if(U.getId() == to.getId()) {
-				System.out.println("Found the road");
 				break;
 			}
 

@@ -37,12 +37,8 @@ public class RoadRectangle {
      * @param y1  The first y-coordinate.
      * @param x2  The second x-coordinate.
      * @param y2  The second y-coordinate.
-     * @throws IllegalArgumentException If the given coordinates are the same.
      */
-	public RoadRectangle(double x1, double y1, double x2, double y2) throws IllegalArgumentException {
-        // Make sure the rectangle isn't empty
-        if (Double.compare(x1, x2) == 0) throw new IllegalArgumentException("The two given x-coordinates are the same.");
-        if (Double.compare(y1, y2) == 0) throw new IllegalArgumentException("The two given y-coordinates are the same.");
+	public RoadRectangle(double x1, double y1, double x2, double y2) {
 
         this.xMin = Math.min(x1, x2);
         this.yMin = Math.min(y1, y2);
@@ -55,12 +51,8 @@ public class RoadRectangle {
      * appropriate places.
      * @param p1  The first point of the rectangle.
      * @param p2  The second point of the rectangle.
-     * @throws IllegalArgumentException If the given coordinates are the same.
      */
-    public RoadRectangle(Point2D.Double p1, Point2D.Double p2)throws IllegalArgumentException {
-        // Make sure the rectangle isn't empty
-        if (Double.compare(p1.getX(), p2.getX()) == 0) throw new IllegalArgumentException("The two given x-coordinates are the same.");
-        if (Double.compare(p1.getY(), p2.getY()) == 0) throw new IllegalArgumentException("The two given y-coordinates are the same.");
+    public RoadRectangle(Point2D.Double p1, Point2D.Double p2) {
 
         this.xMin = Math.min(p1.getX(), p2.getX());
         this.yMin = Math.min(p1.getY(), p2.getY());
