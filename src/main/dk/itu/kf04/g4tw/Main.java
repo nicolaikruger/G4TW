@@ -14,9 +14,7 @@ import java.util.logging.Logger;
 public class Main {
 
     // General TODOs for the project
-    // TODO: Clean up in the javascript code
     // TODO: Adjust colours
-    // TODO: Jens: Skriv RequestParser test
 
     /**
      * The logging-util for the Main class.

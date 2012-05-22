@@ -51,7 +51,7 @@ public class WebServer implements Closeable {
     /**
      * The root directory of the www files.
      */
-    protected String webRoot = "www/";
+    protected String webRoot = "www" + System.getProperty("file.separator");
 
     /**
      * Creates a new webserver with the given model on the given point

@@ -25,6 +25,13 @@ public class MapModelTest extends MapModel {
     }
 
     /**
+     * Test the number of roads inside.
+     */
+    @Test public void arraySizeTest() {
+        assertEquals(numberOfRoads, roads.length);
+    }
+
+    /**
      * Test that roads and edges are alike.
      */
     @Test public void edgeAndRoadTheSame() {
