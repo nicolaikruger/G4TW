@@ -26,7 +26,7 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
     public static final int SEAWAY         = 64;
     public static final int LOCATION       = 128;
 
-    protected static final int numberOfRoads = 812301; // Number of roads + 1. ID = index in arrays. (ID starts at 1)
+    public static final int numberOfRoads = 812301; // Number of roads + 1. ID = index in arrays. (ID starts at 1)
 
     /**
      * The logger for the class
@@ -75,6 +75,9 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
         
         // Insert
         roadTrees.get(road.type).addNode(road);
+        
+        // Log
+        Log.fine("Successfully added road: " + road);
 	}
 
     /**
@@ -104,8 +107,8 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
      */
     protected void setTypeReference(int type, int... values) {
         // Insert a map from the road id to the road type
-        for (int i = 0; i < values.length; i++) {
-            roadTypeMap.put(values[i], type);
+        for (int v : values) {
+            roadTypeMap.put(v, type);
         }
     }
 
@@ -181,6 +184,9 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
             // Write the tree
             entry.getValue().writeExternal(out);
         }
+        
+        // Log
+        Log.fine("Successfully wrote MapModel to external.");
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
@@ -245,40 +251,9 @@ public class MapModel extends DijkstraSP<Road> implements Externalizable {
         } catch (EOFException e) {
             // Expected
         }
+        
+        // Log
+        Log.fine("Successfully read MapModel from external.");
     }
 
-    /**
-     * Directs the graph, by following the turn.txt file
-     */
-    protected void trim()
-    {
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(new FileReader("turn.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            scanner.nextLine();
-            while(scanner.hasNextLine()) {
-                String[] nextLine = scanner.nextLine().split(",");
-                int fID = Integer.parseInt(nextLine[2])-1;
-                int tID = Integer.parseInt(nextLine[3])-1;
-
-                // Make the graph directed
-                Iterator<Integer> it = roads[fID].iterator();
-                while(it.hasNext()) {
-                    if(it.next() == tID) {
-                        it.remove();
-                        break;
-                    }
-                }
-            }
-        } catch (NullPointerException e) {
-            Log.warning("Unable to direct graph - error in reading: " + e.getMessage());
-        } finally {
-            scanner.close();
-        }
-    }
 }

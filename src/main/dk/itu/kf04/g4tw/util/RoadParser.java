@@ -1,7 +1,6 @@
 package dk.itu.kf04.g4tw.util;
 
 import dk.itu.kf04.g4tw.model.MapModel;
-import dk.itu.kf04.g4tw.model.Node;
 import dk.itu.kf04.g4tw.model.Road;
 
 import java.awt.geom.Point2D;
@@ -44,7 +43,7 @@ public class RoadParser {
         long start = System.currentTimeMillis();
 
         // Parse the nodes
-        HashMap<Integer, Node> nodeMap = parseNodes(nodes);
+        HashMap<Integer, Point2D.Double> nodeMap = parseNodes(nodes);
 
         // Parse the edges
         int numberOfRoads = parseEdges(edges, nodeMap, model);
@@ -68,7 +67,7 @@ public class RoadParser {
      * @throws FileNotFoundException If the given file could not be found
      * @return The number of roads loaded.
      */
-    protected static int parseEdges(File file, HashMap<Integer, Node> nodeMap, MapModel model) throws FileNotFoundException {
+    protected static int parseEdges(File file, HashMap<Integer, Point2D.Double> nodeMap, MapModel model) throws FileNotFoundException {
         // Start the id-counter
         // We use our own id's to promise consistency
         int id = 0;
@@ -92,8 +91,8 @@ public class RoadParser {
             int a = Integer.parseInt(nextLine[0]);
             int b = Integer.parseInt(nextLine[1]);
 
-            Node nodeA = nodeMap.get(a);
-            Node nodeB = nodeMap.get(b);
+            Point2D.Double nodeA = nodeMap.get(a);
+            Point2D.Double nodeB = nodeMap.get(b);
 
             Point2D.Double pointA = new Point2D.Double(nodeA.x,nodeA.y);
             Point2D.Double pointB = new Point2D.Double(nodeB.x,nodeB.y);
@@ -200,12 +199,12 @@ public class RoadParser {
      * @return  The HashMap of nodes
      * @throws FileNotFoundException  If the file could not be found
      */
-    protected static HashMap<Integer, Node> parseNodes(File file) throws FileNotFoundException {
+    protected static HashMap<Integer, Point2D.Double> parseNodes(File file) throws FileNotFoundException {
         // Load the file
         Scanner scanner = new Scanner(new FileReader(file));
 
         // Create The HashMap
-        HashMap<Integer, Node> nodeMap = new HashMap<Integer, Node>();
+        HashMap<Integer, Point2D.Double> nodeMap = new HashMap<Integer, Point2D.Double>();
         
         // Try to load the data
         scanner.nextLine();
@@ -217,7 +216,7 @@ public class RoadParser {
             double yPos = Double.parseDouble(nextLine[4]);
             
             // Create the node
-            Node node = new Node(xPos, yPos);
+            Point2D.Double node = new Point2D.Double(xPos, yPos);
 
             // Insert it into the map
             nodeMap.put(id, node);

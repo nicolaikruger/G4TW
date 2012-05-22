@@ -10,13 +10,21 @@ import java.util.PriorityQueue;
  */
 public abstract class DijkstraSP<T extends DijkstraEdge> {
 
+    /**
+     * Retrieves the edge with the given id connecting to this edge.
+     * @param i  The id of the edge.
+     * @return  The edge in the model.
+     */
     public abstract T getEdge(int i);
 
     /**
      * Calls onLiner, but with a fixed number for N
-     * @see DijkstraSP.onLiner(int N, T from, T to);
+     * @param from  The edge from which to find the shortest path.
+     * @param to  The edge to which the shortest path should go.
+     * @return An array of elements completing the path.
+     * @see DijkstraSP#onLiner(int N, T from, T to);
      */
-    @SuppressWarnings("JavadocReference")
+    @SuppressWarnings("unchecked")
     public T[] shortestPath(T from, T to) {
         return onLiner(MapModel.numberOfRoads, from, to);
     }
@@ -30,6 +38,7 @@ public abstract class DijkstraSP<T extends DijkstraEdge> {
      *              The start node has no previous, so array[from.ID] = null.
      *              If no path could be found, null will be returned.
      */
+    @SuppressWarnings("unchecked")
     protected T[] onLiner(int N, T from, T to)
     {
         final double[] dist = new double[N]; // Holds the distance from a node back to the starting node
@@ -78,7 +87,6 @@ public abstract class DijkstraSP<T extends DijkstraEdge> {
 			// If the ID of node U is the same as the ID of the end node, the path has been found.
 			// no need to continue the search.
             if(U.getId() == to.getId()) {
-				System.out.println("Found the road");
 				break;
 			}
 

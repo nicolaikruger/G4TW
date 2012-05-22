@@ -39,11 +39,12 @@ public class RoadRectangle {
      * @param y2  The second y-coordinate.
      */
 	public RoadRectangle(double x1, double y1, double x2, double y2) {
-		this.xMin = Math.min(x1, x2);
-		this.yMin = Math.min(y1, y2);
-		this.xMax = Math.max(x1, x2);
-		this.yMax = Math.max(y1, y2);
-	}
+
+        this.xMin = Math.min(x1, x2);
+        this.yMin = Math.min(y1, y2);
+        this.xMax = Math.max(x1, x2);
+        this.yMax = Math.max(y1, y2);
+    }
 
     /**
      * Builds a RoadRectangle from two points testing for the least values and storing them in the 
@@ -52,6 +53,7 @@ public class RoadRectangle {
      * @param p2  The second point of the rectangle.
      */
     public RoadRectangle(Point2D.Double p1, Point2D.Double p2) {
+
         this.xMin = Math.min(p1.getX(), p2.getX());
         this.yMin = Math.min(p1.getY(), p2.getY());
         this.xMax = Math.max(p1.getX(), p2.getX());
@@ -79,8 +81,10 @@ public class RoadRectangle {
     @Override public boolean equals(Object obj) {
         if (obj instanceof RoadRectangle) {
             RoadRectangle that = (RoadRectangle) obj;
-            return (that.xMin == this.xMin && that.yMin == this.yMin &&
-                    that.xMax == this.xMax && that.yMax == this.xMax);
+            return (Double.compare(that.xMin, this.xMin) == 0 && 
+                    Double.compare(that.yMin, this.yMin) == 0 &&
+                    Double.compare(that.xMax, this.xMax) == 0 &&
+                    Double.compare(that.yMax, this.yMax) == 0);
         } else {
             return false;
         }

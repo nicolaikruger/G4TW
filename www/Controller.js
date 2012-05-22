@@ -10,11 +10,11 @@ var Controller = (function() {
         var x = 0;
         var y = 0;
         if (!e) e = window.event;
-        if (e.pageX || e.pageY) 	{
+        if (e.pageX || e.pageY) {
             x = e.pageX;
             y = e.pageY;
         }
-        else if (e.clientX || e.clientY) 	{
+        else if (e.clientX || e.clientY) {
         x = e.clientX + document.body.scrollLeft
           + document.documentElement.scrollLeft;
         y = e.clientY + document.body.scrollTop

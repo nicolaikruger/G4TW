@@ -26,6 +26,9 @@ public class RequestParser {
      */
     public static Logger Log = Logger.getLogger(RequestParser.class.getName());
     
+    protected static String schemaURL  = "http://www.w3.org/2001/XMLSchema-instance";
+    protected static String schemaFile = "kraX.xsd";
+
     /**
      * <p>Handles input from the server through the input parameter, decodes it and returns an appropriate
      * message as an array of bytes, ready to dispatch to the sender.</p>
@@ -95,10 +98,7 @@ public class RequestParser {
             Document docXML = builder.createDocument();
 
             // Creates a roadCollection element inside the root and add namespaces
-            Element roads = docXML.createElement("roadCollection");
-            roads.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            roads.setAttribute("xsi:noNamespaceSchemaLocation", "kraX.xsd");
-            docXML.appendChild(roads);
+            Element roads = insertRoadCollection(docXML);
 
             // Iterates through the search array, appending the XML element of the current
             // road to the roadCollection element. This is creating the XML document.
@@ -223,10 +223,7 @@ public class RequestParser {
                 Road[] result = model.shortestPath(hits1.get(0), hits2.get(0));
 
                 // Initialize the roadCollection element and add namespaces
-                roads = docXML.createElement("roadCollection");
-                roads.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-                roads.setAttribute("xsi:noNamespaceSchemaLocation", "kraX.xsd");
-                docXML.appendChild(roads);
+                roads = insertRoadCollection(docXML);
 
                 // Iterates through the result array, appending the XML element of the current
                 // road to the roadCollection element. This is creating the XML document.
@@ -266,6 +263,19 @@ public class RequestParser {
             Log.severe("Could not instantiate XML parser.");
             return null;
         }
+    }
+
+    /**
+     * Appends a universal road-collection to the XML document containing meta-information for our XML. 
+     * @param doc  The document in which to append the collection.
+     * @return An Element in which roads can be inserted.             
+     */
+    protected static Element insertRoadCollection(Document doc) {
+        Element roads = doc.createElement("roadCollection");
+        roads.setAttribute("xmlns:xsi", schemaURL);
+        roads.setAttribute("xsi:noNamespaceSchemaLocation", schemaFile);
+        doc.appendChild(roads);
+        return roads;
     }
 
     /**

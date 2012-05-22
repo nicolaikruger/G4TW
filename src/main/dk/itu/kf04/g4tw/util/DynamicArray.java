@@ -59,7 +59,7 @@ public class DynamicArray<Item> implements Iterable<Item> {
         return new Iterator<Item>() {
             int i = 0;
             public boolean hasNext() {
-                return i <= N;
+                return i < N;
             }
 
             public Item next() {
@@ -96,7 +96,7 @@ public class DynamicArray<Item> implements Iterable<Item> {
                 resize(a.length/2);
         }
     }
-	
+
 	
     /**
      * Resizes the array (hence the "dynamic" in DynamicArray).

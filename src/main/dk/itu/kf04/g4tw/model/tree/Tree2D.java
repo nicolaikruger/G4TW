@@ -32,8 +32,11 @@ public class Tree2D implements Externalizable {
     /**
      * Creates a tree based in the given model.
      * @param model  The model in which the roads of the tree are stored.
+     * @throws IllegalArgumentException If the model is null.
      */
-    public Tree2D(MapModel model) {
+    public Tree2D(MapModel model) throws IllegalArgumentException {
+        if (model == null) throw new IllegalArgumentException("Model cannot be null.");
+
         this.model = model;
     }
 
@@ -45,7 +48,7 @@ public class Tree2D implements Externalizable {
 	{
         // Add the road
 		if(root == null) root = new TreeNode(true, road);
-		else             root.addTreeNode(road);
+		else             root.add(road);
         
         // Increment size
         size++;
@@ -76,7 +79,7 @@ public class Tree2D implements Externalizable {
      * Writes nodes recursively
      * @param out  The output stream to write to
      * @param node  The parent node of the sub-tree to write
-     * @throws IOException
+     * @throws IOException Unexpected IO exception.
      */
     protected void writeNode(ObjectOutput out, TreeNode node) throws IOException {
         if (node != null) {
@@ -96,10 +99,22 @@ public class Tree2D implements Externalizable {
         }
     }
 
+    /**
+     * Reads an external ObjectInput and attempts to convert it to a Tree2D.
+     * @param in  The ObjectInput from which to read the data.
+     * @throws IOException  Unexpected IO exception.
+     * @throws ClassNotFoundException  If casting to Tree2D - or TreeNode - fails.
+     */
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         this.root = readNode(in);
     }
-    
+
+    /**
+     * Reads a single node and its children recursively.
+     * @param in  The ObjectInput containing the data.
+     * @return A TreeNode with the loaded data.
+     * @throws IOException  Unexpected IO exception.
+     */
     protected TreeNode readNode(ObjectInput in) throws IOException {
         // Test if the node exists
         boolean exists = in.readBoolean();

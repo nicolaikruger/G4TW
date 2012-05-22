@@ -7,7 +7,6 @@ import java.net.URLEncoder;
 
 /**
  * Tests malformed calls to the request parser which always should result in exceptions.
- * Well formed tests are handled in {@link RequestParserTest}.
  */
 public class RequestParserMalformedTest {
 
