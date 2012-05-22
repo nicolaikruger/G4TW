@@ -11,9 +11,9 @@ import java.util.PriorityQueue;
 public abstract class DijkstraSP<T extends DijkstraEdge> {
 
     /**
-     * Retrieves the edge with the given id connecting to this edge, if any.
+     * Retrieves the edge with the given id connecting to this edge.
      * @param i  The id of the edge.
-     * @return  The edge or null if it does not exist.
+     * @return  The edge in the model.
      */
     public abstract T getEdge(int i);
 
