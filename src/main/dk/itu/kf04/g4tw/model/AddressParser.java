@@ -45,7 +45,6 @@ public class AddressParser {
          * index 2 = house letter
          * index 3 = house floor
          * index 4 = postal code
-         * index 5 = city
          */
 
         // Split the address up into smaller parts

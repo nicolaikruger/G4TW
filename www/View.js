@@ -61,11 +61,11 @@ var View = (function() {
             if(drawBlack)
                 drawFromArray(Model.getRoads("black"), "#000000", 2);
 
-            if (drawBlue)
-                drawFromArray(Model.getRoads("blue"), "#FFFF00", 3);
-
             if(drawGreen)
                 drawFromArray(Model.getRoads("green"), "#ADD8E6", 1);
+
+            if (drawBlue)
+                drawFromArray(Model.getRoads("blue"), "#FFFF00", 3);
 
             if(drawRed)
                 drawFromArray(Model.getRoads("red"), "#FFA500", 4);

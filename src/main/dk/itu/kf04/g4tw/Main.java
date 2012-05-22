@@ -16,7 +16,6 @@ public class Main {
     // General TODOs for the project
     // TODO: Clean up in the javascript code
     // TODO: Make som white- and blackbox testing
-    // TODO: Adjust colours
     // TODO: Jens: Skriv RequestParser test
     // TODO: Jens: Test for helvede, test!
 
