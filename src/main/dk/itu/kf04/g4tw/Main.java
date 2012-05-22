@@ -43,7 +43,7 @@ public class Main {
                 System.out.print(helpText());
                 return;
             } else if (args[0].equals("version")) {
-                System.out.print("G4TW Map Server Application\nVersion 1.0");
+                System.out.print("G4TW Map Server\nVersion 1.0");
                 return;
             } else {
                 // Start the server on the given port or, if none, 80
@@ -63,7 +63,7 @@ public class Main {
 
         // Log program start
         System.out.println("***********************************");
-        System.out.println("*** G4TW Map Server Application ***");
+        System.out.println("***      G4TW  Map Server       ***");
         System.out.println("***   Compiled 22nd May 2012    ***");
         System.out.println("***        Version 1.0          ***");
         System.out.println("***********************************");
@@ -85,7 +85,7 @@ public class Main {
     }
     
     protected static String helpText() {
-        return "G4TW Map Server Application, version 1.0\n" +
+        return "G4TW Map Server, version 1.0\n" +
                 "Usage: java -jar Main.jar [ PORT | OPTION ]\n" +
                 "A Map Server Application which loads data from kdv-data files and serves them through a HTML5-interface at the given port, defaulting to 80.\n\n" +
                 "Port: A number between 1 and 65536 on which port the server listens.\n" +
