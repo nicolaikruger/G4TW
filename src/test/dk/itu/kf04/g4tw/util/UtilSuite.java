@@ -11,5 +11,5 @@ import org.junit.runners.Suite;
  * The main test entry-point and the overall TestSuite for the project.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( {DynamicArray.class} )
+@Suite.SuiteClasses( {DynamicArrayTest.class} )
 public class UtilSuite {}
