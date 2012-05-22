@@ -45,7 +45,7 @@ public class Tree2D implements Externalizable {
 	{
         // Add the road
 		if(root == null) root = new TreeNode(true, road);
-		else             root.addTreeNode(road);
+		else             root.add(road);
         
         // Increment size
         size++;

@@ -17,12 +17,12 @@ public class TreeNode {
 	/**
 	 * The left TreeNode - if any.
 	 */
-	private TreeNode leftTreeNode = null;
+	protected TreeNode leftTreeNode = null;
 
     /**
 	 * The right TreeNode - if any.
 	 */
-	private TreeNode rightTreeNode = null;
+	protected TreeNode rightTreeNode = null;
 
 	/**
 	 * The id of the road.
@@ -55,26 +55,26 @@ public class TreeNode {
     }
 
 	/**
-	 * Adds a tree node beneath this node.
+	 * Adds a road beneath this node.
      * @param that  The road to add.
 	 */
-	public void addTreeNode(Road that)
+	public void add(Road that)
 	{
 		if(useX) {
 			if(road.rect.xMin < that.rect.xMin) {
 				if(rightTreeNode == null)	rightTreeNode = new TreeNode(false, that);
-				else						rightTreeNode.addTreeNode(that);
+				else						rightTreeNode.add(that);
 			} else {
 				if(leftTreeNode == null)	leftTreeNode = new TreeNode(false, that);
-				else						leftTreeNode.addTreeNode(that);
+				else						leftTreeNode.add(that);
 			}
 		} else {
 			if(road.rect.yMin < that.rect.yMin) {
 				if(rightTreeNode == null)	rightTreeNode = new TreeNode(true, that);
-				else						rightTreeNode.addTreeNode(that);
+				else						rightTreeNode.add(that);
 			} else {
 				if(leftTreeNode == null)	leftTreeNode = new TreeNode(true, that);
-				else						leftTreeNode.addTreeNode(that);
+				else						leftTreeNode.add(that);
 			}
 		}
 	}
