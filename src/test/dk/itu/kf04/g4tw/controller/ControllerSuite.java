@@ -10,8 +10,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        RequestParserTest.class,
         RequestParserMalformedTest.class,
+        RequestParserTest.class,
         WebServerTest.class,
         XMLBuilderTest.class
 })

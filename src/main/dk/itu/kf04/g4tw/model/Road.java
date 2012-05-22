@@ -108,9 +108,11 @@ public class Road extends DijkstraEdge {
      * @param endLetter         The last letter on the road.
      * @param leftPostalCode    The postal code for the left side of the road.
      * @param rightPostalCode   The postal code for the right side of the road.
+     * @throws IllegalArgumentException If an error occurred during construction.
      */
 	public Road(int id, String name, Point2D.Double f, Point2D.Double t, int type, double speed, double length,
-                int startNumber, int endNumber, String startLetter, String endLetter, int leftPostalCode, int rightPostalCode ) {
+                int startNumber, int endNumber, String startLetter, String endLetter, int leftPostalCode, int rightPostalCode )
+            throws IllegalArgumentException {
         this.id   = id;
 
 		if(name != null) this.name = name;

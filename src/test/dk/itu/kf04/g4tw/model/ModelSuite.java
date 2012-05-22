@@ -8,5 +8,11 @@ import org.junit.runners.Suite;
  * Tests the classes in the Model.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( {AddressParserTest.class, MapModelTest.class, TreeSuite.class} )
+@Suite.SuiteClasses( {
+        AddressParserTest.class,
+        DijkstraSPTest.class,
+        MapModelTest.class,
+        RoadTest.class,
+        TreeSuite.class
+} )
 public class ModelSuite {}
