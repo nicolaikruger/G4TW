@@ -81,6 +81,7 @@ var Controller = (function() {
                 case 0:
                     // No errors!
                     drawPath();
+                    loader.style.display = "none";
                     break;
                 case 1:
                     // Could not find the address

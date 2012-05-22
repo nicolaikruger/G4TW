@@ -17,10 +17,6 @@ public class Main {
     // TODO: Clean up in the javascript code
     // TODO: Make som white- and blackbox testing
     // TODO: Adjust colours
-    // TODO: Krüger: Comment Road - Especially all the fields
-    // TODO: Krüger: Comment Dijkstras methods
-    // TODO: Krüger: Compile the turn-file into binary
-    // TODO: Krüger: Move trim() to RoadParser
     // TODO: Jens: Skriv RequestParser test
     // TODO: Jens: Test for helvede, test!
 

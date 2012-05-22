@@ -95,19 +95,19 @@ public class Road extends DijkstraEdge {
 
     /**
      * Instantiates a new road represented as the connection between the two given points f and t.
-     * @param id  The unique identifier of the road.
-     * @param name  The name of the road
-     * @param f  The first end-point of the road.
-     * @param t  The other end-point of the road. 
-     * @param type  The road-type of the road corresponding to the ones given in {@link MapModel}.
-     * @param speed  The speed with which you can drive on the road.
-     * @param length  The length of the road.
-     * @param startNumber  The first house-number on the road.
-     * @param endNumber  The last house-number on the road.
-     * @param startLetter  The first letter on the road.
-     * @param endLetter  The last letter on the road.
-     * @param leftPostalCode  The postal code for the left side of the road.
-     * @param rightPostalCode  The postal code for the right side of the road.
+     * @param id                The unique identifier of the road.
+     * @param name              The name of the road
+     * @param f                 The first end-point of the road.
+     * @param t                 The other end-point of the road.
+     * @param type              The road-type of the road corresponding to the ones given in {@link MapModel}.
+     * @param speed             The speed with which you can drive on the road.
+     * @param length            The length of the road.
+     * @param startNumber       The first house-number on the road.
+     * @param endNumber         The last house-number on the road.
+     * @param startLetter       The first letter on the road.
+     * @param endLetter         The last letter on the road.
+     * @param leftPostalCode    The postal code for the left side of the road.
+     * @param rightPostalCode   The postal code for the right side of the road.
      */
 	public Road(int id, String name, Point2D.Double f, Point2D.Double t, int type, double speed, double length,
                 int startNumber, int endNumber, String startLetter, String endLetter, int leftPostalCode, int rightPostalCode ) {
@@ -148,7 +148,8 @@ public class Road extends DijkstraEdge {
      */
 	public double getLength() { return length; }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return ("Road[Id " + id + " Name '" + name + "' houseNumberStart: " + startNumber + " houseNumberEnd: " + endNumber + " houseLetterStart: " + startLetter + " houseLetterEnd: " + endLetter + "]");
     }
 

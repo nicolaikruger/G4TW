@@ -58,16 +58,20 @@ var View = (function() {
             t.translate(pan);
             t.scale(zoom, -zoom);
 
-            if(drawRed)
-                drawFromArray(Model.getRoads("red"), "#003300", 4);
-            if(drawBlue)
-                drawFromArray(Model.getRoads("blue"), "#663300", 3);
-            if(drawGreen)
-                drawFromArray(Model.getRoads("green"), "#FFCCCC", 1);
             if(drawBlack)
-                drawFromArray(Model.getRoads("black"), "#CCCCCC", 2);
+                drawFromArray(Model.getRoads("black"), "#000000", 2);
+
+            if (drawBlue)
+                drawFromArray(Model.getRoads("blue"), "#FFFF00", 3);
+
+            if(drawGreen)
+                drawFromArray(Model.getRoads("green"), "#ADD8E6", 1);
+
+            if(drawRed)
+                drawFromArray(Model.getRoads("red"), "#FFA500", 4);
+
             if(drawPath)
-                drawFromArray(Model.getRoads("path"),"#FFFF00", 6);
+                drawFromArray(Model.getRoads("path"),"#FF0000", 6);
 
             c.restore();
 

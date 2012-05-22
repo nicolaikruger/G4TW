@@ -16,6 +16,7 @@ public abstract class DijkstraSP<T extends DijkstraEdge> {
      * Calls onLiner, but with a fixed number for N
      * @see DijkstraSP.onLiner(int N, T from, T to);
      */
+    @SuppressWarnings("JavadocReference")
     public T[] shortestPath(T from, T to) {
         return onLiner(MapModel.numberOfRoads, from, to);
     }
